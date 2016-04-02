@@ -1,0 +1,17 @@
+{
+	"folders":
+	[
+		{
+			"path": "."
+		}
+	],
+	 "settings":
+    {
+        "auto_complete_triggers": [
+            {
+                "selector": "source.cs",
+                "characters": ".<"
+            }
+        ]
+    }
+}
