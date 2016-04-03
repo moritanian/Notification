@@ -119,5 +119,8 @@ public class Util {
   public static void SaveData(string key,string val){
 		PlayerPrefs.SetString(key,val);
 	}
+	public static string LoadData(string key){
+		return PlayerPrefs.GetString(key);
+	}
 
 }

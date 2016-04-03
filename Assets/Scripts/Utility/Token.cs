@@ -33,6 +33,7 @@ public class Token : MonoBehaviour
     return CreateInstance<Type> (prefab,pos,0,0);
 
   }
+  /*
  public static Type CreateCanvasInstance<Type>(string prefab_name,float x = 0,float y = 0)where Type : Token
   {
     GameObject prefab = null;
@@ -43,6 +44,7 @@ public class Token : MonoBehaviour
     Type obj = g.GetComponent<Type> ();
     return obj;
   }
+  */
   
   /// 生存フラグ.
   bool _exists = true;
