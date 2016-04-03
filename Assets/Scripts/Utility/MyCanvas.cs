@@ -74,9 +74,9 @@ public class MyCanvas : MonoBehaviour {
     }
     return _canvas.transform.FindChild(name).gameObject.GetComponent<Type>();
   }
-/*
+
   public static Canvas GetCanvas(){
     return _canvas;
   }
-*/
+
 }

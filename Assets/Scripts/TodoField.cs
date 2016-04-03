@@ -17,21 +17,25 @@ datetime = DateTime.Parse()
 // タイトル
 public class TodoField : Token {
 
-	static int crt_id = 0; // 現在編集中のid
+	// 管理オブジェクト
+	public static TokenMgr<TodoField> parent = null;
 	static string Title = "";
 	public InputField _inputField;
 
 	public Text text;
 	public static TodoField Add(float x,float y,int id){
-		TodoField obj = CreateInstanceEasy<TodoField>("TodoField",x,y);
-		//MyCanvas.SetCanvasChild<TodoField>(obj);
-		//obj.transform.SetParent(MyCanvas.GetCanvas().transform,false);
+		//TodoField obj = CreateInstanceEasy<TodoField>("TodoField",x,y);
+		TodoField obj = parent.Add(0,0);
+		if(obj == null){
+			Debug.Log("null TodoField作成できず");
+			return null;
+		}
 		obj.id = id;
 		return obj;
 	}
 
 
-	int id; // todo のid 本文との紐づけにも
+	public int id; // todo のid 本文との紐づけにも
 	// todo idのわりあて方法考える
 	enum Status{
 		Inactive,	//利用なし
@@ -43,16 +47,23 @@ public class TodoField : Token {
 
 	// Use this for initialization
 	
-	void Start () {
-		//Create();
+	void Update(){
+		/*
+		if(Main.Vanish_Flg){
+			Vanish();
+		}
+		*/
 	}
-	
 	// 作成時の処理
 	public void Create(int _id){
 		string create_time = DateTime.Now.ToString();
 		id = _id;
 		status = Status.Active;
 		Util.SaveData(TodoData._get_data_key(DataKeys.MaxId),id.ToString());
+		Util.SaveData(TodoData._get_data_key(DataKeys.TodoTime),create_time);
+		Util.DoneSave();
+		//再利用している場合、値が入っていることがあるため消去
+		SetText("");
 	}
 	
 
@@ -70,7 +81,10 @@ public class TodoField : Token {
 	void _edit(){
 		Title = GetText();
 		TodoText.TitleSet(Title);
+		TodoText._todoText.Id = id;
+		TodoText._todoText.SetUp();
 		Body.GoBoardText();
+
 	}
 
 	// タイトル編集完了ボタン

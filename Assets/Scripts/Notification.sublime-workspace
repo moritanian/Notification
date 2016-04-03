@@ -4,8 +4,28 @@
 		"selected_items":
 		[
 			[
-				"T",
+				"Todo",
 				"TodoField"
+			],
+			[
+				"_",
+				"_todoText"
+			],
+			[
+				"TO",
+				"TODOFIELD_DIST"
+			],
+			[
+				"TODO",
+				"TODOFIELD_INIT_POS_Y"
+			],
+			[
+				"To",
+				"TodoField"
+			],
+			[
+				"T",
+				"TodoTime"
 			],
 			[
 				"M",
@@ -18,10 +38,6 @@
 			[
 				"Todo_",
 				"Todo_ModifiedTime_id"
-			],
-			[
-				"Todo",
-				"TodoTime"
 			],
 			[
 				"C",
@@ -38,10 +54,6 @@
 			[
 				"TODOFIELD_",
 				"TODOFIELD_POS_X"
-			],
-			[
-				"TODO",
-				"TODOFIELD_DIST"
 			],
 			[
 				"Text",
@@ -86,10 +98,6 @@
 			[
 				"Hash",
 				"Hashtable	Hashtable"
-			],
-			[
-				"To",
-				"Tower	Tower"
 			],
 			[
 				"Create",
@@ -143,15 +151,15 @@
 			"file": "TodoField.cs",
 			"settings":
 			{
-				"buffer_size": 2709,
+				"buffer_size": 1812,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "TodoText.cs",
+			"file": "TodoData.cs",
 			"settings":
 			{
-				"buffer_size": 429,
+				"buffer_size": 2276,
 				"line_ending": "Unix"
 			}
 		},
@@ -159,15 +167,31 @@
 			"file": "Main.cs",
 			"settings":
 			{
-				"buffer_size": 785,
+				"buffer_size": 1609,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "Body.cs",
+			"file": "Setting.cs",
 			"settings":
 			{
-				"buffer_size": 334,
+				"buffer_size": 760,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Utility/FileIo.cs",
+			"settings":
+			{
+				"buffer_size": 1261,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "TodoText.cs",
+			"settings":
+			{
+				"buffer_size": 1021,
 				"line_ending": "Unix"
 			}
 		},
@@ -175,23 +199,26 @@
 			"file": "Utility/PanelSlider.cs",
 			"settings":
 			{
-				"buffer_size": 1227,
+				"buffer_size": 1272,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "Utility/MyCanvas.cs",
+			"file": "Utility/Token.cs",
 			"settings":
 			{
-				"buffer_size": 1491,
+				"buffer_size": 10219,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "Utility/Util.cs",
+			"contents": "using UnityEngine;\nusing System.Collections;\nusing System.Collections.Generic;\n\n/// Token管理クラス\npublic class TokenMgr<Type> where Type : Token {\n	int _size = 0;\n	GameObject _prefab = null;\n	List<Type> _pool = null;\n	/// Order in Layer\n	int _order = 0;\n  /// ForEach関数に渡す関数の型\n  public delegate void FuncT(Type t);\n	/// コンストラクタ\n	/// プレハブは必ず\"Resources/Prefabs/\"に配置すること\n	public TokenMgr(string prefabName, int size=0) {\n		_size = size;\n		_prefab = Resources.Load(\"Prefabs/\"+prefabName) as GameObject;\n    if(_prefab == null) {\n      Debug.LogError(\"Not found prefab. name=\"+prefabName);\n    }\n		_pool = new List<Type>();\n\n		if(size > 0) {\n			// サイズ指定があれば固定アロケーションとする\n			for(int i = 0; i < size; i++) {\n				GameObject g = GameObject.Instantiate(_prefab, new Vector3(), Quaternion.identity) as GameObject;\n				Type obj = g.GetComponent<Type>();\n        obj.VanishCannotOverride();\n				_pool.Add(obj);\n			}\n		}\n	}\n	/// オブジェクトを再利用する\n	Type _Recycle(Type obj, float x, float y, float direction, float speed) {\n		// 復活\n		obj.Revive();\n		obj.SetPosition(x, y);\n    if(obj.RigidBody != null) {\n      // Rigidbody2Dがあるときのみ速度を設定する\n      obj.SetVelocity(direction, speed);\n    }\n		obj.Angle = 0;\n		// Order in Layerをインクリメントして設定する\n		obj.SortingOrder = _order;\n		_order++;\n		return obj;\n	}\n\n	/// インスタンスを取得する\n	public Type Add(float x, float y, float direction=0.0f, float speed=0.0f) {\n		foreach(Type obj in _pool) {\n			if(obj.Exists == false) {\n				// 未使用のオブジェクトを見つけた\n				return _Recycle(obj, x, y, direction, speed);\n			}\n		}\n\n		if(_size == 0) {\n			// 自動で拡張\n			GameObject g = GameObject.Instantiate(_prefab, new Vector3(), Quaternion.identity) as GameObject;\n			Type obj = g.GetComponent<Type>();\n			_pool.Add(obj);\n			return _Recycle(obj, x, y, direction, speed);\n		}\n		return null;\n	}\n\n  /// 生存するインスタンスに対してラムダ式を実行する\n  public void ForEachExists(FuncT func) {\n    foreach(var obj in _pool) {\n      if(obj.Exists) {\n        func(obj);\n      }\n    }\n  }\n\n  /// 生存しているインスタンスをすべて破棄する\n  public void Vanish() {\n    ForEachExists(t => t.Vanish());\n  }\n  \n  /// インスタンスの生存数を取得する\n  public int Count() {\n    int ret = 0;\n    ForEachExists(t => ret++);\n\n    return ret;\n  }\n\n  /// 指定のTokenに一番近いインスタンスを返す\n  /// ※見つからなかった場合は null\n  public Type Nearest(Token t1) {\n    Type ret = null;\n    float distance = float.MaxValue;\n    ForEachExists(t2 => {\n      var d = Util.DistanceBetween(t1, t2);\n      if(d < distance) {\n        distance = d;\n        ret = t2;\n      }\n    });\n    return ret;\n  }\n}\n",
+			"file": "Utility/TokenMgr.cs",
+			"file_size": 2896,
+			"file_write_time": 131041760670780386,
 			"settings":
 			{
-				"buffer_size": 3235,
+				"buffer_size": 2463,
 				"line_ending": "Unix"
 			}
 		}
@@ -243,12 +270,22 @@
 	],
 	"file_history":
 	[
+		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Utility/MyCanvas.cs",
+		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Utility/Util.cs",
+		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Dialog.cs",
+		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Body.cs",
+		"/C/Users/moritania/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
+		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Utility/Token.cs",
+		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/ScrollController.cs",
+		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/AppData/TodoText_id1.txt",
+		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Setting.cs",
+		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/TodoText.cs",
+		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Utility/PanelSlider.cs",
+		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Main.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/TimeController.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Notification.sln",
 		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Notification.sublime-project",
 		"/C/Users/moritania/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
-		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Utility/Util.cs",
-		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Utility/Token.cs",
 		"/C/Users/moritania/AppData/Roaming/Sublime Text 3/Packages/User/OmniSharpSublime.sublime-settings",
 		"/C/Users/moritania/Desktop/wavserver/unity/prac_2d/Assets/Scripts/Alloy.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/prac_2d/Assets/Scripts/Settings.cs",
@@ -290,7 +327,6 @@
 		"/C/Users/moritania/Desktop/wavserver/unity/prac_2d/Assets/Scripts/Towerdefense/TowerParam.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/prac_2d/Assets/Scripts/Unity/SoundManager.cs",
 		"/C/Users/moritania/AppData/Roaming/Sublime Text 3/Packages/User/Default.sublime-keymap",
-		"/C/Users/moritania/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
 		"/C/Users/moritania/Desktop/wavserver/unity/prac_2d/Assets/Scripts/SettingDialog.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/prac_2d/Assets/Scripts/StartScene/StartScene.cs",
 		"/C/Users/moritania/AppData/Roaming/Sublime Text 3/Packages/User/Unity_Td.sublime-project",
@@ -310,7 +346,7 @@
 	],
 	"find":
 	{
-		"height": 23.0
+		"height": 34.0
 	},
 	"find_in_files":
 	{
@@ -325,6 +361,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"SetParent",
+			"MaxId",
 			"Getprefab",
 			"CreateAllData",
 			"Slider",
@@ -374,7 +412,7 @@
 		"replace_history":
 		[
 		],
-		"reverse": false,
+		"reverse": true,
 		"show_context": true,
 		"use_buffer2": true,
 		"whole_word": false,
@@ -392,15 +430,46 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2709,
+						"buffer_size": 1812,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2653,
-								2653
+								726,
+								726
+							]
+						],
+						"settings":
+						{
+							"hasHeader": false,
+							"syntax": "Packages/C#/C#.sublime-syntax",
+							"translate_tabs_to_spaces": false,
+							"wrap_width": 0
+						},
+						"translation.x": 0.0,
+						"translation.y": 225.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "TodoData.cs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2276,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								676,
+								676
 							]
 						],
 						"settings":
@@ -410,33 +479,65 @@
 							"wrap_width": 0
 						},
 						"translation.x": 0.0,
-						"translation.y": 1458.0,
+						"translation.y": 225.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 1,
 					"type": "text"
 				},
 				{
-					"buffer": 1,
-					"file": "TodoText.cs",
+					"buffer": 2,
+					"file": "Main.cs",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 429,
+						"buffer_size": 1609,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								95,
-								95
+								491,
+								491
 							]
 						],
 						"settings":
 						{
 							"hasHeader": false,
 							"syntax": "Packages/C#/C#.sublime-syntax",
+							"translate_tabs_to_spaces": false,
+							"wrap_width": 0
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "Setting.cs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 760,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								631,
+								631
+							]
+						],
+						"settings":
+						{
+							"hasHeader": false,
+							"syntax": "Packages/C#/C#.sublime-syntax",
+							"translate_tabs_to_spaces": false,
 							"wrap_width": 0
 						},
 						"translation.x": 0.0,
@@ -447,80 +548,88 @@
 					"type": "text"
 				},
 				{
-					"buffer": 2,
-					"file": "Main.cs",
+					"buffer": 4,
+					"file": "Utility/FileIo.cs",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 785,
+						"buffer_size": 1261,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								525,
-								525
+								947,
+								947
 							]
 						],
 						"settings":
 						{
 							"hasHeader": false,
 							"syntax": "Packages/C#/C#.sublime-syntax",
+							"translate_tabs_to_spaces": false,
 							"wrap_width": 0
 						},
 						"translation.x": 0.0,
-						"translation.y": 162.0,
+						"translation.y": 450.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 8,
 					"type": "text"
-				},
+				}
+			]
+		},
+		{
+			"selected": 3,
+			"sheets":
+			[
 				{
-					"buffer": 3,
-					"file": "Body.cs",
+					"buffer": 5,
+					"file": "TodoText.cs",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 334,
+						"buffer_size": 1021,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								231,
-								231
+								329,
+								364
 							]
 						],
 						"settings":
 						{
 							"hasHeader": false,
 							"syntax": "Packages/C#/C#.sublime-syntax",
+							"translate_tabs_to_spaces": false,
 							"wrap_width": 0
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 5,
 					"type": "text"
 				},
 				{
-					"buffer": 4,
+					"buffer": 6,
 					"file": "Utility/PanelSlider.cs",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1227,
+						"buffer_size": 1272,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								320,
-								320
+								482,
+								482
 							]
 						],
 						"settings":
@@ -537,28 +646,22 @@
 					},
 					"stack_index": 6,
 					"type": "text"
-				}
-			]
-		},
-		{
-			"selected": 1,
-			"sheets":
-			[
+				},
 				{
-					"buffer": 5,
-					"file": "Utility/MyCanvas.cs",
+					"buffer": 7,
+					"file": "Utility/Token.cs",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1491,
+						"buffer_size": 10219,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1328,
-								1328
+								0,
+								0
 							]
 						],
 						"settings":
@@ -570,27 +673,27 @@
 							"wrap_width": 0
 						},
 						"translation.x": 0.0,
-						"translation.y": 322.0,
+						"translation.y": 6795.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 7,
 					"type": "text"
 				},
 				{
-					"buffer": 6,
-					"file": "Utility/Util.cs",
+					"buffer": 8,
+					"file": "Utility/TokenMgr.cs",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3235,
+						"buffer_size": 2463,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2922,
-								2922
+								2026,
+								2026
 							]
 						],
 						"settings":
@@ -600,10 +703,10 @@
 							"wrap_width": 0
 						},
 						"translation.x": 0.0,
-						"translation.y": 1348.0,
+						"translation.y": 900.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 4,
 					"type": "text"
 				}
 			]
@@ -611,7 +714,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 23.0
+		"height": 34.0
 	},
 	"input":
 	{
@@ -637,7 +740,7 @@
 		"cols":
 		[
 			0.0,
-			0.5,
+			0.451845906902,
 			1.0
 		],
 		"rows":

@@ -12,19 +12,19 @@ public class Util {
 		return Mathf.Sin(Mathf.Deg2Rad * Deg);
 	}
 
-  /// 指定した2つのTokenの距離を取得する
-  public static float DistanceBetween(Token t1, Token t2) {
-    var dx = t2.X - t1.X;
-    var dy = t2.Y - t1.Y;
-    return Mathf.Sqrt(dx*dx + dy*dy);
-  }
+	/// 指定した2つのTokenの距離を取得する
+ 	public static float DistanceBetween(Token t1, Token t2) {
+    	var dx = t2.X - t1.X;
+    	var dy = t2.Y - t1.Y;
+    	return Mathf.Sqrt(dx*dx + dy*dy);
+    }
 
   /// t1からみたt2がいる方向を求める（単位は度）
-  public static float AngleBetween(Token t1, Token t2) {
-    var dx = t2.X - t1.X;
-    var dy = t2.Y - t1.Y;
-    return Mathf.Atan2(dy, dx) * Mathf.Rad2Deg;
-  }
+    public static float AngleBetween(Token t1, Token t2) {
+    	var dx = t2.X - t1.X;
+    	var dy = t2.Y - t1.Y;
+    	return Mathf.Atan2(dy, dx) * Mathf.Rad2Deg;
+    }
 
 
   /// 入力方向を取得する.
@@ -70,10 +70,10 @@ public class Util {
 
   /// プレハブ取得.
   /// プレハブは必ず"Resources/Prefabs/"に配置すること.
-  public static GameObject GetPrefab (GameObject prefab, string name)
-  {
-    return prefab ?? (prefab = Resources.Load ("Prefabs/" + name) as GameObject);
-  }
+	public static GameObject GetPrefab (GameObject prefab, string name)
+	{
+		return prefab ?? (prefab = Resources.Load ("Prefabs/" + name) as GameObject);
+	}
 
 	private static Rect _guiRect = new Rect();
 	static Rect GetGUIRect() {
@@ -92,10 +92,10 @@ public class Util {
 		GetGUIStyle().normal.textColor = color;
 	}
   /// フォント位置設定
-  public static void SetFontAlignment(TextAnchor align)
-  {
-    GetGUIStyle().alignment = align;
-  }
+	public static void SetFontAlignment(TextAnchor align)
+	{
+		GetGUIStyle().alignment = align;
+	}
   /// ラベルの描画.
 	public static void GUILabel(float x, float y, float w, float h, string text) {
 		Rect rect = GetGUIRect();
@@ -107,20 +107,28 @@ public class Util {
 		GUI.Label(rect, text, GetGUIStyle());
 	}
   /// ボタンの配置.
-  public static bool GUIButton(float x, float y, float w, float h, string text) {
-    Rect rect = GetGUIRect();
-    rect.x = x;
-    rect.y = y;
-    rect.width = w;
-    rect.height = h;
+	public static bool GUIButton(float x, float y, float w, float h, string text) {
+		Rect rect = GetGUIRect();
+		rect.x = x;
+		rect.y = y;
+		rect.width = w;
+		rect.height = h;
 
-    return GUI.Button(rect, text, GetGUIStyle());
-  }
-  public static void SaveData(string key,string val){
+		return GUI.Button(rect, text, GetGUIStyle());
+	}
+	public static void SaveData(string key,string val){
 		PlayerPrefs.SetString(key,val);
 	}
 	public static string LoadData(string key){
 		return PlayerPrefs.GetString(key);
 	}
+	public static void DoneSave(){
+		PlayerPrefs.Save();
+	}
+	
+	public static bool isRunningOnAndroid() {
+        return (Application.platform == RuntimePlatform.Android);
+    }
+
 
 }
