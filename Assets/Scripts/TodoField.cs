@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using System;
@@ -23,6 +23,22 @@ public class TodoField : Token {
 	public InputField _inputField;
 
 	public Text text;
+	TextObj _timeText;
+
+	public int id; // todo のid 本文との紐づけにも
+	// todo idのわりあて方法考える
+	enum Status{
+		Inactive,	//利用なし
+		Active,	//利用している
+		Protected,	//利用しているが、表示に制限あり
+	};
+	
+	Toggle _toggle = null;
+	public bool IsNotify{
+		set { _toggle.isOn = value;}
+		get {return _toggle.isOn;}
+	}
+
 	public static TodoField Add(float x,float y,int id){
 		//TodoField obj = CreateInstanceEasy<TodoField>("TodoField",x,y);
 		TodoField obj = parent.Add(0,0);
@@ -33,26 +49,21 @@ public class TodoField : Token {
 		obj.id = id;
 		return obj;
 	}
-
-
-	public int id; // todo のid 本文との紐づけにも
-	// todo idのわりあて方法考える
-	enum Status{
-		Inactive,	//利用なし
-		Active,	//利用している
-		Protected,	//利用しているが、表示に制限あり
-	};
 	
 	Status status = Status.Inactive;
 
 	// Use this for initialization
-	
+	void Awake(){
+		_timeText = transform.FindChild("Time/TimeText").gameObject.GetComponent<TextObj>();
+		_timeText.Label = "";
+		_toggle = transform.FindChild("Toggle").gameObject.GetComponent<Toggle>();
+	}
+
+	void Start(){
+
+	}
+
 	void Update(){
-		/*
-		if(Main.Vanish_Flg){
-			Vanish();
-		}
-		*/
 	}
 	// 作成時の処理
 	public void Create(int _id){
@@ -60,7 +71,7 @@ public class TodoField : Token {
 		id = _id;
 		status = Status.Active;
 		Util.SaveData(TodoData._get_data_key(DataKeys.MaxId),id.ToString());
-		Util.SaveData(TodoData._get_data_key(DataKeys.TodoTime),create_time);
+		
 		Util.DoneSave();
 		//再利用している場合、値が入っていることがあるため消去
 		SetText("");
@@ -92,5 +103,29 @@ public class TodoField : Token {
 		TodoData.TitleModify(id,GetText());
 	}
 
+	public string TimeText{
+		set { _timeText.Label = value;}
+		get{ return _timeText.Label;}
+	}
+	// DateTime型からset
+	public void SetTimeText(DateTime Dt){
+		//TimeText = Dt.Year.ToString() + "\n" + Dt.Month.ToString() + "/" + Dt.Day;
+		TimeText = Dt.ToString("yy/MM/dd") + "\n" + Dt.ToString("  HH:mm");
+
+	}
+
+	public void SetTime(DateTime Dt){
+		Util.SaveData(TodoData._get_data_key(DataKeys.TodoTime,id),Dt.ToString());
+		// 表示の更新
+		SetTimeText(Dt);
+	}
+	// 通知On/Off
+	public void OnClickIsNotify(){
+		Util.SaveData(TodoData._get_data_key(DataKeys.IsNotify, id),IsNotify.ToString());
+	}
+	// 時間ボタン
+	public void OnClickTime(){
+		MyCanvas.Find<MyCalendar>("MyCalendar").GoCal(_celTime => SetTimeText(_celTime));
+	}
 	
 }

@@ -11,7 +11,8 @@ using System;
 		ModifiedTime,
 		NotificationTime,
 		TodoTime,
-		MaxId
+		MaxId,
+		IsNotify
 	}
 //Todoの情報をもつ/ Todoの管理
 public class TodoData {
@@ -28,7 +29,7 @@ public class TodoData {
 	DateTime modified_time;	//更新日時
 	DateTime notification_time;	//通知する時間
 	DateTime todo_time;	// 予定のある日程
-	DateTime TodoTime {
+	public DateTime TodoTime {
 		get {return todo_time;}
 		set {todo_time = value; }
 	}
@@ -39,7 +40,7 @@ public class TodoData {
 		set {_title = value;}
 	}
 
-	
+	public bool IsNotify = false;
 
 
 // 保存するデータのキー
@@ -57,6 +58,8 @@ public class TodoData {
 				return "Todo_NotificationTime_id"+id;
 			case DataKeys.MaxId:
 				return "Todo_MaxId";
+			case DataKeys.IsNotify:
+				return "Todo_IsNotify" + id;	
 		}
 		return "";
 	}
@@ -92,11 +95,13 @@ public class TodoData {
 			for(int id= 1; id<=head_id; id++){
 				string todo_time = Util.LoadData(_get_data_key(DataKeys.TodoTime,id));
 				string title = Util.LoadData(_get_data_key(DataKeys.Title,id));
+				string isNotifyStr = Util.LoadData(_get_data_key(DataKeys.IsNotify,id));
 				TodoData todo = new TodoData();
 				todo.Id = id;
 				Debug.Log(todo_time);
 				if(todo_time != "")todo.TodoTime = DateTime.Parse(todo_time);
 				todo.Title = title;
+				todo.IsNotify = (isNotifyStr == "True"); 
 				_todos.Add(todo);
 			}
 		}

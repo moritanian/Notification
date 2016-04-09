@@ -5,7 +5,7 @@ using UnityEngine.UI;
 /// <summary>
 /// uGUI Button操作モジュール
 /// </summary>
-public class ButtonObj : MonoBehaviour {
+public class ButtonObj : Token {
 
   /// uGUI Button
   Button _button = null;

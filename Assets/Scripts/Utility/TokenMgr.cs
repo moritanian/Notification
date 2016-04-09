@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -17,7 +17,7 @@ public class TokenMgr<Type> where Type : Token {
 		_size = size;
 		_prefab = Resources.Load("Prefabs/"+prefabName) as GameObject;
     if(_prefab == null) {
-      Debug.LogError("Not found prefab. name="+prefabName);
+      Debug.LogError("Not found prefabs/"+prefabName);
     }
 		_pool = new List<Type>();
 
@@ -79,7 +79,7 @@ public class TokenMgr<Type> where Type : Token {
   public void Vanish() {
     ForEachExists(t => t.Vanish());
   }
-
+  
   /// インスタンスの生存数を取得する
   public int Count() {
     int ret = 0;

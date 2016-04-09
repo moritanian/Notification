@@ -1,1 +1,12 @@
+Android 開発者向けソフトウェア開発キット
 http://spf.fmworld.net/oss/appkit/
+
+通知
+http://qiita.com/ToshikiImagawa/items/8f150a0645da8e5ba9d6
+http://klabgames.tech.blog.jp.klab.com/archives/1046446808.html
+http://qiita.com/relzx/items/a35f7ab6dbacb48f7e26
+http://nirasan.hatenablog.com/entry/2014/06/23/090440
+http://befool.co.jp/blog/raharu/localnotification-android/
+
+スワイプ
+http://naichilab.blogspot.jp/2015/02/unity.html

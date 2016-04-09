@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class MyCanvas : MonoBehaviour {
 
   static Canvas _canvas;
-  void Start () {
+  void Awake () {
     // Canvasコンポーネントを保持
     _canvas = GetComponent<Canvas>();
   }

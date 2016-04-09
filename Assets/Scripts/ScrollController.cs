@@ -5,7 +5,7 @@ public class ScrollController : MonoBehaviour {
 
 	public static ScrollController scroll;
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		scroll = GetComponent<ScrollController>();
 	}
 	
