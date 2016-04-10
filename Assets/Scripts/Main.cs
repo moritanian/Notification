@@ -40,31 +40,34 @@ public class Main : Token {
 	}
 
 	
-
+	// 追加モードのカレンダーで日にちを押したさいに呼ばれる
 	public void TodoAdd(DateTime Dt){
 		max_id++;
-		TodoField _todoField = TodoField.Add(0,0,max_id);
+		TodoData new_todo = new TodoData(max_id);
+		Todos.Add(new_todo);
+		TodoField _todoField = TodoField.Add(0,0,new_todo);
 		//_todoField.transform.SetParent(this.transform,false);
 		ScrollController.SetContent(_todoField.transform);
-		_todoField.Create(max_id);	//新規に作成時の処理
-		_todoField.SetTime(Dt);
+		_todoField.Create(Dt);	//新規に作成時の処理
+	
 	}
 
 	void ShowAll (){	
 		// todo ソート
 		Debug.Log("ShowAll count:" + Todos.Count);
 		for(int i=0; i<Todos.Count; i++){
-			TodoField _todoField = TodoField.Add(0,0,Todos[i].Id);
+			TodoField _todoField = TodoField.Add(0,0,Todos[i]);
 			//_todoField.transform.SetParent(this.transform,false);
 			ScrollController.SetContent(_todoField.transform);
 			_todoField.SetText(Todos[i].Title);
 			_todoField.IsNotify = Todos[i].IsNotify;
-			_todoField.SetTime(Todos[i].TodoTime);
+			_todoField.SetTimeText(Todos[i].TodoTime);
 		}	
 	}
 
 	// 再読み込みして表示
 	public void Reload(){
+		// 読み込む前にセーブ対象をすべてセーブ
 		Util.DoneSave();
 		// 破棄する前に場所をcanvas 直下に移動
 		TodoField.parent.ForEachExists(t => t.transform.SetParent(MyCanvas.GetCanvas().transform,false));

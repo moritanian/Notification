@@ -24,6 +24,10 @@ public class TodoData {
 		set {id = value;}
 	}
 
+	// コンストラクタ
+	public TodoData(int id){
+		Id = id;
+	}
 	// 以下、時間
 	DateTime create_time;	// 作成日時
 	DateTime modified_time;	//更新日時
@@ -63,6 +67,7 @@ public class TodoData {
 		}
 		return "";
 	}
+	/*
 	// タイトルセーブ
 	public static void TitleSave(int id,string title){
 		Util.SaveData(_get_data_key(DataKeys.Title,id),title);
@@ -74,14 +79,30 @@ public class TodoData {
 		//modified_time = DateTime.Now.ToString();
 		TitleSave(id,title);
 	}
-
-	void LoadByDay(DateTime _time){
-
+	*/
+	// タイトル更新
+	public void UpdateTitle(string new_title){
+		Title = new_title;
+		Util.SaveData(_get_data_key(DataKeys.Title,id),new_title);
+		Util.SaveData(_get_data_key(DataKeys.ModifiedTime,id),DateTime.Now.ToString());
 	}
-	void LoadById(int id){
 
+	public void UpdateTodoTime(DateTime Dt){
+		Debug.Log("UpDateTodoTime " + Dt.ToString());
+		todo_time = Dt;
+		Util.SaveData(_get_data_key(DataKeys.TodoTime, id),Dt.ToString());
+		Util.SaveData(_get_data_key(DataKeys.ModifiedTime,id),DateTime.Now.ToString());
 	}
-
+	// 新規追加を保存
+	public void UpdateCreate(){
+		string create_time = DateTime.Now.ToString();
+		Util.SaveData(_get_data_key(DataKeys.MaxId),id.ToString());
+	}
+	// Isnotify 更新
+	public void UpdateIsNotify(bool _IsNotify){
+		IsNotify = _IsNotify;
+		Util.SaveData(_get_data_key(DataKeys.IsNotify, id),IsNotify.ToString());
+	}
 
 
 	public static List<TodoData> LoadAll(){
@@ -96,8 +117,7 @@ public class TodoData {
 				string todo_time = Util.LoadData(_get_data_key(DataKeys.TodoTime,id));
 				string title = Util.LoadData(_get_data_key(DataKeys.Title,id));
 				string isNotifyStr = Util.LoadData(_get_data_key(DataKeys.IsNotify,id));
-				TodoData todo = new TodoData();
-				todo.Id = id;
+				TodoData todo = new TodoData(id);
 				Debug.Log(todo_time);
 				if(todo_time != "")todo.TodoTime = DateTime.Parse(todo_time);
 				todo.Title = title;

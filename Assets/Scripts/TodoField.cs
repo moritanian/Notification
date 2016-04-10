@@ -25,7 +25,10 @@ public class TodoField : Token {
 	public Text text;
 	TextObj _timeText;
 
-	public int id; // todo のid 本文との紐づけにも
+	//public int id; // todo のid 本文との紐づけにも
+	// todofield が　TodoDataを持つ
+	public TodoData _todoData;
+
 	// todo idのわりあて方法考える
 	enum Status{
 		Inactive,	//利用なし
@@ -41,14 +44,14 @@ public class TodoField : Token {
 
 	DateTime TodoDate;
 
-	public static TodoField Add(float x,float y,int id){
+	public static TodoField Add(float x,float y,TodoData todoData){
 		//TodoField obj = CreateInstanceEasy<TodoField>("TodoField",x,y);
 		TodoField obj = parent.Add(0,0);
 		if(obj == null){
 			Debug.Log("null TodoField作成できず");
 			return null;
 		}
-		obj.id = id;
+		obj._todoData = todoData;
 		return obj;
 	}
 	
@@ -68,13 +71,10 @@ public class TodoField : Token {
 	void Update(){
 	}
 	// 作成時の処理
-	public void Create(int _id){
-		string create_time = DateTime.Now.ToString();
-		id = _id;
+	public void Create(DateTime Dt){
+		SetTime(Dt);
+		_todoData.UpdateCreate();
 		status = Status.Active;
-		Util.SaveData(TodoData._get_data_key(DataKeys.MaxId),id.ToString());
-		
-		Util.DoneSave();
 		//再利用している場合、値が入っていることがあるため消去
 		SetText("");
 	}
@@ -90,11 +90,11 @@ public class TodoField : Token {
 	public void OnclickEdit(){
 		_edit();
 	}
-
+	// 本文を編集する
 	void _edit(){
 		Title = GetText();
 		TodoText.TitleSet(Title);
-		TodoText._todoText.Id = id;
+		TodoText._todoText.Id = _todoData.Id;
 		TodoText._todoText.SetUp();
 		Body.GoBoardText();
 
@@ -102,7 +102,7 @@ public class TodoField : Token {
 
 	// タイトル編集完了ボタン
 	public void Modified(){
-		TodoData.TitleModify(id,GetText());
+		_todoData.UpdateTitle(GetText());
 	}
 
 	public string TimeText{
@@ -118,17 +118,17 @@ public class TodoField : Token {
 	}
 
 	public void SetTime(DateTime Dt){
-		Util.SaveData(TodoData._get_data_key(DataKeys.TodoTime,id),Dt.ToString());
+		_todoData.UpdateTodoTime(Dt);
 		// 表示の更新
 		SetTimeText(Dt);
 	}
 	// 通知On/Off
 	public void OnClickIsNotify(){
-		Util.SaveData(TodoData._get_data_key(DataKeys.IsNotify, id),IsNotify.ToString());
+		_todoData.UpdateIsNotify(IsNotify);
 	}
 	// 時間ボタン
 	public void OnClickTime(){
-		MyCanvas.Find<MyCalendar>("MyCalendar").GoCal(TodoDate,_celTime => SetTimeText(_celTime));
+		MyCanvas.Find<MyCalendar>("MyCalendar").GoCal(TodoDate,_celTime => SetTime(_celTime));
 	}
 	
 }
