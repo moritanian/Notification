@@ -121,16 +121,21 @@ public class CalendarCel : Token {
     void Start(){
     	UpdateCel();
     } 
-
+/*
 	void Update(){
 		// セルの変更が必要か
 		if(_celTime.Month != _mycalendar.CelMonth || _celTime.Year != _mycalendar.CelYear ){
 			UpdateCel();
 		}
 	}
+*/
+	// 全てのセルを更新する
+	public static void AllUpdate(){
+		parent.ForEachExists(cel => cel.UpdateCel());
+	}
 
 	public void UpdateCel(){
-		_celTime = new DateTime(_mycalendar.CelYear, _mycalendar.CelMonth,1);
+		_celTime = new DateTime(_mycalendar.ShowDateTime.Year, _mycalendar.ShowDateTime.Month,1);
 			
 		// 割り当ての日にち取得
 		int new_day = GetMyDay();
@@ -149,7 +154,6 @@ public class CalendarCel : Token {
 		if(IsDayEq(today, _celTime))status(Status.Today);
 		if(IsDayEq(_mycalendar.MyDateTime, _celTime)){
 			status(Status.Pointed);
-			Debug.Log("POinted_set " + row + ":" + col);
 		}
 
 	}
