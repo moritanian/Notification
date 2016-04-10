@@ -842,6 +842,8 @@ MonoBehaviour:
   CEL_HEIGHT: 28.3
   FIRST_X: -96
   FIRST_Y: 30
+  TodayColor: {r: 0.6102941, g: 1, b: 0.90324545, a: 0.984}
+  MyDayColor: {r: 0.9852941, g: 0.34050602, b: 0.34050602, a: 0.978}
 --- !u!212 &478365262
 SpriteRenderer:
   m_ObjectHideFlags: 0

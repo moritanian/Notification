@@ -16,6 +16,7 @@ public class CalendarCel : Token {
   		set { _text.text = value; }
   	}
 
+  	Image CelImage; 
 	// 管理オブジェクト
 	public static TokenMgr<CalendarCel> parent = null;
 
@@ -29,25 +30,49 @@ public class CalendarCel : Token {
 		set;
 	}
 
+	enum Status{
+		OutOfRange,
+		Normal,
+		Today,
+		Pointed
+	}
+	Status _status;
+	void status(Status stat){
+		_status = stat;
+		switch(_status){
+			case Status.OutOfRange:
+				CelImage.color = new Color(255,255,255,0.5f);
+				break;
+			case Status.Today:
+				CelImage.color = _mycalendar.TodayColor;
+				break;
+			case Status.Pointed:
+				CelImage.color = _mycalendar.MyDayColor;
+				break;
+			case Status.Normal:
+			default:
+				CelImage.color = new Color(255,255,255,1.0f);
+				break;
+		}
+	}
+
 	// これはMyCalendarの月が変更され、処理が必要か判別するため
 	DateTime _celTime;
-	// 日にちが割り当てられているか
-	bool IsHasDay = false;
 	
 	public int Day{
 		get {
-			if(!IsHasDay) return 0;
+			if(_status == Status.OutOfRange) return 0;
 			return _celTime.Day;
 		}
 		// 
 		set {
 			if(value > 0){
-				IsHasDay = true;
+				status(Status.Normal);
 				_celTime = new DateTime(_celTime.Year,_celTime.Month, value);
 				Label = value.ToString();
 			}else{
 				Label = "";
-				IsHasDay = false;
+				status(Status.OutOfRange);
 			}
 			
 		}
@@ -79,7 +104,7 @@ public class CalendarCel : Token {
 	void Awake(){
 		if(_mycalendar == null)_mycalendar = MyCanvas.Find<MyCalendar>("MyCalendar");
 		 _button = GetComponent<Button>();
-
+		CelImage = GetComponent<Image>();
     	// 下の階層にあるTextを取得する
     	foreach(Transform child in transform) {
     		if(child.name.Contains("Text")) {
@@ -88,8 +113,9 @@ public class CalendarCel : Token {
     			break;
     		}
     	}
-
+    	status(Status.OutOfRange);
     	_celTime = DateTime.Now;
+
     }
 
     void Start(){
@@ -103,7 +129,7 @@ public class CalendarCel : Token {
 		}
 	}
 
-	void UpdateCel(){
+	public void UpdateCel(){
 		_celTime = new DateTime(_mycalendar.CelYear, _mycalendar.CelMonth,1);
 			
 		// 割り当ての日にち取得
@@ -115,6 +141,17 @@ public class CalendarCel : Token {
 			Label = "";
 			Day = 0;
 		}
+		// 範囲外の時はここで処理終了 
+		if(_status == Status.OutOfRange)return ;
+		
+		//　今日のセル、指定されたセル　の場合、status 更新
+		DateTime today = DateTime.Now;
+		if(IsDayEq(today, _celTime))status(Status.Today);
+		if(IsDayEq(_mycalendar.MyDateTime, _celTime)){
+			status(Status.Pointed);
+			Debug.Log("POinted_set " + row + ":" + col);
+		}
+
 	}
 
 	int GetMyDay(){
@@ -134,6 +171,14 @@ public class CalendarCel : Token {
 
 			MyCanvas.Find<MyCalendar>("MyCalendar").ExitCalWithCallBack(_celTime);
 		}
+	}
+
+	// 二つのDateTime が同じ日か
+	bool IsDayEq(DateTime dt1 , DateTime dt2){
+		if(dt1.Year == dt2.Year && 
+			dt1.Month == dt2.Month && 
+			dt1.Day ==  dt2.Day)return true;
+		return false;
 	}
 
 

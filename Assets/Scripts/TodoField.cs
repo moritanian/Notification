@@ -39,6 +39,8 @@ public class TodoField : Token {
 		get {return _toggle.isOn;}
 	}
 
+	DateTime TodoDate;
+
 	public static TodoField Add(float x,float y,int id){
 		//TodoField obj = CreateInstanceEasy<TodoField>("TodoField",x,y);
 		TodoField obj = parent.Add(0,0);
@@ -109,6 +111,7 @@ public class TodoField : Token {
 	}
 	// DateTime型からset
 	public void SetTimeText(DateTime Dt){
+		TodoDate = Dt;
 		//TimeText = Dt.Year.ToString() + "\n" + Dt.Month.ToString() + "/" + Dt.Day;
 		TimeText = Dt.ToString("yy/MM/dd") + "\n" + Dt.ToString("  HH:mm");
 
@@ -125,7 +128,7 @@ public class TodoField : Token {
 	}
 	// 時間ボタン
 	public void OnClickTime(){
-		MyCanvas.Find<MyCalendar>("MyCalendar").GoCal(_celTime => SetTimeText(_celTime));
+		MyCanvas.Find<MyCalendar>("MyCalendar").GoCal(TodoDate,_celTime => SetTimeText(_celTime));
 	}
 	
 }

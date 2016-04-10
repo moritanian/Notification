@@ -12,6 +12,7 @@ Sunday :0 ~ 6
 public class MyCalendar : Token {
 
 	PanelSlider _panelSlider;
+	//表示する月と年指定用
 	DateTime _dateTime;
 	  [SerializeField]
 	float CEL_WIDTH = 0; 
@@ -23,11 +24,17 @@ public class MyCalendar : Token {
 	public float FIRST_Y = 0;
 	readonly public int DAYS_IN_WEEK = 7;
 	readonly public int NUM_OF_ROW = 5;
+	// 
+	public DateTime MyDateTime;
+	[SerializeField]
+	public Color TodayColor;
+	public Color MyDayColor;
 
 	TextObj _dateText = null;
 
 
 	// CalendarCelに参照させるパラメータ 読み取り専用
+	// これらは　
 	int first_col; //一日の行番号 
 	public int FirstCol{
 		get {return first_col;}
@@ -53,6 +60,7 @@ public class MyCalendar : Token {
 		get {return cel_year;}
 	}
 
+	// カレンダーの日にちを決定したときに処理される内容
 	public delegate void CallBack(DateTime _time);
 	CallBack _callBack;
 
@@ -61,6 +69,7 @@ public class MyCalendar : Token {
 		_panelSlider = GetComponent<PanelSlider>();
 		_dateTime = DateTime.Now;
 		_dateText = MyCanvas.Find<TextObj>("Date");
+
 		InitCalendar();
 		SetCalendar();
 	
@@ -71,9 +80,12 @@ public class MyCalendar : Token {
 	
 	}
 
-	public void GoCal(CallBack callBack){
+	public void GoCal(DateTime PointedTime ,CallBack callBack){
 		_panelSlider.SlideIn();
 		_callBack = callBack;
+		MyDateTime = PointedTime;
+		_dateTime = PointedTime;
+		SetCalendar();
 	}
 	
 	public void ExitCalWithCallBack(DateTime _celTime){
@@ -119,6 +131,7 @@ public class MyCalendar : Token {
 		cel_month = _dateTime.Month;
 		cel_year = _dateTime.Year;
 
+		CalendarCel.parent.ForEachExists(cel => cel.UpdateCel());
 		// 年月表示更新
 		_dateText.Label = cel_year.ToString() + "年" + cel_month.ToString() + "月";
 

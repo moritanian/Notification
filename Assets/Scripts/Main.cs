@@ -32,7 +32,7 @@ public class Main : Token {
 
 	public void OnclickTodoAdd(){
 		//TodoAdd(DateTime.Now);
-		MyCanvas.Find<MyCalendar>("MyCalendar").GoCal(_celTime => MyCanvas.Find<Main>("BoardMain").TodoAdd(_celTime));
+		MyCanvas.Find<MyCalendar>("MyCalendar").GoCal(DateTime.Now, _celTime => MyCanvas.Find<Main>("BoardMain").TodoAdd(_celTime));
 	}
 
 	public void OnClickGoSetting(){
