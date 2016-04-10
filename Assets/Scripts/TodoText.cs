@@ -8,11 +8,11 @@ public class TodoText : MonoBehaviour {
 	public InputField _inputField;
 	public static TodoText _todoText;
 	public InputField _inputTitle;
-	int id;
-	public int Id{
-		get {return id;}
-		set {id = value;}
-	} 
+	public TodoField _todoField;
+	public TodoData todoData{
+		set {_todoField._todoData = value;}
+	}
+	
 
 	void Awake(){
 		//_title = MyCanvas.Find<>("Titletxt");
@@ -29,9 +29,14 @@ public class TodoText : MonoBehaviour {
 	
 	}
 
-
-	public void SetUp(){
-		SetText(_load());
+	// テキスト本文編集画面遷移時の処理
+	public static void SetUp(TodoField Tf){
+		// Tododata をセット
+		_todoText._todoField = Tf;
+		// タイトル表示
+		TitleSet(Tf._todoData.Title);
+		// ファイルから本文のテキストを読み込んで表示
+		_todoText.SetText(_todoText._load());
 	}
 
 	public void OnClickGoBack(){
@@ -43,11 +48,11 @@ public class TodoText : MonoBehaviour {
 	}
 
 	void _save(){
-		FileIo.Write(_get_filename(id),_get_text());
+		FileIo.Write(_get_filename(_todoField._todoData.Id),_get_text());
 	}
 
 	string _load(){
-		return FileIo.Load(_get_filename(id));
+		return FileIo.Load(_get_filename(_todoField._todoData.Id));
 	}
 
 	string _get_filename(int id){
@@ -57,6 +62,11 @@ public class TodoText : MonoBehaviour {
 	string _get_text(){
 		return _inputField.text;
 	}
+
+	string _get_title_text(){
+		return _inputTitle.text;
+	}
+
 	void SetText(string text){
 		_inputField.text = text;
 	}
@@ -64,8 +74,14 @@ public class TodoText : MonoBehaviour {
 	void GoBack(){
 		Body.GoBoardMain();
 	} 
+
+	// タイトル編集完了
+	public void TitleModified(){
+		string title_str = _get_title_text();
+		_todoField.SetText(title_str);
+		_todoField._todoData.UpdateTitle(title_str);
+	}
 	public static void TitleSet(string txt){
-		Debug.Log("TitleSet" + txt);
 		MyCanvas.Find<TodoText>("BoardText")._inputTitle.text = txt;
 	}
 }

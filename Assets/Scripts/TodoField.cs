@@ -19,7 +19,6 @@ public class TodoField : Token {
 
 	// 管理オブジェクト
 	public static TokenMgr<TodoField> parent = null;
-	static string Title = "";
 	public InputField _inputField;
 
 	public Text text;
@@ -92,12 +91,8 @@ public class TodoField : Token {
 	}
 	// 本文を編集する
 	void _edit(){
-		Title = GetText();
-		TodoText.TitleSet(Title);
-		TodoText._todoText.Id = _todoData.Id;
-		TodoText._todoText.SetUp();
+		TodoText.SetUp(this);
 		Body.GoBoardText();
-
 	}
 
 	// タイトル編集完了ボタン

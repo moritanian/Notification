@@ -118,7 +118,6 @@ public class TodoData {
 				string title = Util.LoadData(_get_data_key(DataKeys.Title,id));
 				string isNotifyStr = Util.LoadData(_get_data_key(DataKeys.IsNotify,id));
 				TodoData todo = new TodoData(id);
-				Debug.Log(todo_time);
 				if(todo_time != "")todo.TodoTime = DateTime.Parse(todo_time);
 				todo.Title = title;
 				todo.IsNotify = (isNotifyStr == "True"); 
