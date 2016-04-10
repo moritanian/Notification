@@ -7,16 +7,20 @@ public class TodoText : MonoBehaviour {
 	static TextObj _title;
 	public InputField _inputField;
 	public static TodoText _todoText;
-
+	public InputField _inputTitle;
 	int id;
 	public int Id{
 		get {return id;}
 		set {id = value;}
 	} 
+
+	void Awake(){
+		//_title = MyCanvas.Find<>("Titletxt");
+		_todoText = this;
+	}
 	// Use this for initialization
 	void Start () {
-		_title = MyCanvas.Find<TextObj>("Titletxt");
-		_todoText = this;
+		
 	
 	}
 	
@@ -61,6 +65,7 @@ public class TodoText : MonoBehaviour {
 		Body.GoBoardMain();
 	} 
 	public static void TitleSet(string txt){
-		_title.Label = txt;
+		Debug.Log("TitleSet" + txt);
+		MyCanvas.Find<TodoText>("BoardText")._inputTitle.text = txt;
 	}
 }
