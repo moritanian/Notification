@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 /// キャラクター基底クラス.
 /// SpriteRendererが必要.
@@ -480,4 +481,13 @@ public class Token : MonoBehaviour
     gameObject.SetActive (false);
     Exists = false;
   }
+
+  // 二つのDateTime が同じ日か
+  public bool IsDayEq(DateTime dt1 , DateTime dt2){
+    if(dt1.Year == dt2.Year && 
+      dt1.Month == dt2.Month && 
+      dt1.Day ==  dt2.Day)return true;
+    return false;
+  }
+
 }

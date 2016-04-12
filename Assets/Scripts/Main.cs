@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Reflection;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using System;
 
 public class Main : Token {
@@ -12,20 +13,38 @@ public class Main : Token {
 	TextObj _title ;
 	List<TodoData> Todos;
 
+	Dropdown _dpDown; 
+	// コンボボックス用選択肢列挙
+	enum  SelectOpt{
+		All,
+		Today,
+		ThisMonth,
+		Previous,
+		Future
+	}
+	// 一覧表示するtodoにふくまれるかどうか判定するラムダ式を入れる型
+	delegate bool IsContain(TodoData td);
+	readonly IsContain AllContain = (td) => {return true;};  
+
 	// Use this for initialization
 	// コンポーネント取得はStartの前に処理する
 	void Awake(){
 		_title = MyCanvas.Find<TextObj>("MainTitle");
 		TodoField.parent = new TokenMgr<TodoField>("TodoField",40);
+		_dpDown = MyCanvas.Find<Dropdown>("Dropdown");
+
+		
 	}
+
 	void Start () {	
+
 		crt_time = DateTime.Now;
 		_title.Label = crt_time.Month + "月" + crt_time.Day +"日" + "今日のTodo"; 	
 		Todos = TodoData.LoadAll();
 		// Todo 合計ではなく、idの最大取得するようにすべき
 		max_id = Todos.Count;
-		ShowAll();
-		//Reload();	
+		// 全て表示
+		Show(AllContain);
 	}
 
 
@@ -52,10 +71,15 @@ public class Main : Token {
 	
 	}
 
-	void ShowAll (){	
+	void Show (IsContain _eq){	
 		// todo ソート
-		Debug.Log("ShowAll count:" + Todos.Count);
+		Debug.Log("Show AllCount:" + Todos.Count);
+		// 破棄する前に場所をcanvas 直下に移動
+		TodoField.parent.ForEachExists(t => t.transform.SetParent(MyCanvas.GetCanvas().transform,false));
+		// 生存しているフィールドをすべて破棄
+		TodoField.parent.Vanish();
 		for(int i=0; i<Todos.Count; i++){
+			if(!_eq(Todos[i]))continue;
 			TodoField _todoField = TodoField.Add(0,0,Todos[i]);
 			//_todoField.transform.SetParent(this.transform,false);
 			ScrollController.SetContent(_todoField.transform);
@@ -69,14 +93,47 @@ public class Main : Token {
 	public void Reload(){
 		// 読み込む前にセーブ対象をすべてセーブ
 		Util.DoneSave();
-		// 破棄する前に場所をcanvas 直下に移動
-		TodoField.parent.ForEachExists(t => t.transform.SetParent(MyCanvas.GetCanvas().transform,false));
-		// 生存しているフィールドをすべて破棄
-		TodoField.parent.Vanish();
+		
 		Todos = TodoData.LoadAll();
-		ShowAll();
+		// 全て表示
+		Show(AllContain);
 		max_id = Todos.Count;
 	}
 
+	// コンボボックスが変更された
+	// todo一覧内容更新する
+	public void OnChangeSelectOpt(){
+		SelectOpt opt = (SelectOpt)GetSelectOpt();
+		Debug.Log("OnChangeSelect" + opt.ToString());
+		IsContain _eq;
+		// SelectOpt型にキャストして比較
+		switch((SelectOpt)opt){
+			case SelectOpt.All:
+				_eq = AllContain;
+				break;
+			case SelectOpt.Today:
+				_eq = (td) => {return(IsDayEq(td.TodoTime,DateTime.Now));};
+				break;
+			case SelectOpt.ThisMonth:
+				_eq = (td) => {return (td.TodoTime.Year == DateTime.Now.Year 
+									&& td.TodoTime.Month == DateTime.Now.Month);};
+				break;
+			case SelectOpt.Previous:
+				_eq = (td) => {return (td.TodoTime.CompareTo(DateTime.Now) < 0);};
+				break;
+			case SelectOpt.Future:
+				_eq = (td) => {return (td.TodoTime.CompareTo(DateTime.Now) > 0);};
+				break;
+			default:
+				_eq = AllContain;
+				break;
+		}
+		Show(_eq);
 
+	}
+	// コンボボックスの値を取得
+	int GetSelectOpt(){
+		_dpDown = MyCanvas.Find<Dropdown>("Dropdown");
+		return _dpDown.value;
+	}
 }

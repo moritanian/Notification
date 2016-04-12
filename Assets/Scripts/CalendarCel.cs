@@ -176,14 +176,4 @@ public class CalendarCel : Token {
 			MyCanvas.Find<MyCalendar>("MyCalendar").ExitCalWithCallBack(_celTime);
 		}
 	}
-
-	// 二つのDateTime が同じ日か
-	bool IsDayEq(DateTime dt1 , DateTime dt2){
-		if(dt1.Year == dt2.Year && 
-			dt1.Month == dt2.Month && 
-			dt1.Day ==  dt2.Day)return true;
-		return false;
-	}
-
-
 }

@@ -110,8 +110,6 @@ public class TodoData {
 		string str = Util.LoadData(_get_data_key(DataKeys.MaxId).ToString());
 		if(str == "") return _todos; //データなかった
 		int head_id = int.Parse(str);
-		
-		Debug.Log(head_id);
 		if(head_id>0){
 			for(int id= 1; id<=head_id; id++){
 				string todo_time = Util.LoadData(_get_data_key(DataKeys.TodoTime,id));

@@ -71,10 +71,12 @@ public class TodoField : Token {
 	}
 	// 作成時の処理
 	public void Create(DateTime Dt){
+		//再利用している場合、値が入っているこ
 		SetTime(Dt);
 		_todoData.UpdateCreate();
 		status = Status.Active;
 		//再利用している場合、値が入っていることがあるため消去
+		Debug.Log("Created!! ");
 		SetText("");
 	}
 	
@@ -82,8 +84,11 @@ public class TodoField : Token {
 	public string GetText(){
 		return _inputField.text;
 	}
+	
 	public void SetText(string text){
-		_inputField.text = text;
+		if(_inputField == null) Debug.Log("SetText null!! ");
+		Debug.Log("SetText + " + _inputField.text);
+		if(_inputField.text  != null)_inputField.text = text;
 	}
 
 	public void OnclickEdit(){
