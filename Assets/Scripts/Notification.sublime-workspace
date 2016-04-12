@@ -4,6 +4,18 @@
 		"selected_items":
 		[
 			[
+				"show",
+				"ShowToday(IsContain _eq)	void"
+			],
+			[
+				"Todo",
+				"TodoData	TodoData"
+			],
+			[
+				"Scroll",
+				"ScrollController	ScrollController"
+			],
+			[
 				"Myca",
 				"MyCanvas	MyCanvas"
 			],
@@ -50,10 +62,6 @@
 			[
 				"_in",
 				"_inputTitle	InputField"
-			],
-			[
-				"Todo",
-				"TodoText	TodoText"
 			],
 			[
 				"Up",
@@ -371,21 +379,14 @@
 			}
 		},
 		{
+			"contents": "using UnityEngine;\nusing System.Collections;\nusing System.Reflection;\nusing System.Collections.Generic;\nusing UnityEngine.UI;\nusing System;\n\npublic class Main : Token {\n\n	DateTime crt_time;\n	int max_id;\n	\n	TextObj _title ;\n	List<TodoData> Todos;\n\n	Dropdown _dpDown; \n	// コンボボックス用選択肢列挙\n	enum  SelectOpt{\n		All,\n		Today,\n		ThisMonth,\n		Previous,\n		Future\n	}\n	// 一覧表示するtodoにふくまれるかどうか判定するラムダ式を入れる型\n	delegate bool IsContain(TodoData td);\n	readonly IsContain AllContain = (td) => {return true;};  \n\n	// スクロ＾ルcontent\n	ScrollController today_scl;\n	ScrollController todo_scl;\n\n	// Use this for initialization\n	// コンポーネント取得はStartの前に処理する\n	void Awake(){\n		_title = MyCanvas.Find<TextObj>(\"MainTitle\");\n		TodoField.parent = new TokenMgr<TodoField>(\"TodoField\",40);\n		_dpDown = MyCanvas.Find<Dropdown>(\"Dropdown\");\n		today_scl = MyCanvas.Find<ScrollController>(\"TodayContent\");\n		todo_scl = MyCanvas.Find<ScrollController>(\"TodoContent\");\n		\n	}\n\n	void Start () {	\n\n		crt_time = DateTime.Now;\n		_title.Label = crt_time.Month + \"月\" + crt_time.Day +\"日\" + \"今日のTodo\"; 	\n		Todos = TodoData.LoadAll();\n		// Todo 合計ではなく、idの最大取得するようにすべき\n		max_id = Todos.Count;\n		// 全て表示\n		Show(AllContain);\n	}\n\n\n\n	public void OnclickTodoAdd(){\n		//TodoAdd(DateTime.Now);\n		MyCanvas.Find<MyCalendar>(\"MyCalendar\").GoCal(DateTime.Now, _celTime => MyCanvas.Find<Main>(\"BoardMain\").TodoAdd(_celTime));\n	}\n\n	public void OnClickGoSetting(){\n		Body.GoBoardSetting();\n	}\n\n	\n	// 追加モードのカレンダーで日にちを押したさいに呼ばれる\n	public void TodoAdd(DateTime Dt){\n		max_id++;\n		TodoData new_todo = new TodoData(max_id);\n		Todos.Add(new_todo);\n		TodoField _todoField = TodoField.Add(0,0,new_todo);\n		//_todoField.transform.SetParent(this.transform,false);\n		todo_scl.SetContent(_todoField.transform);\n		_todoField.Create(Dt);	//新規に作成時の処理\n	\n	}\n\n	void Show (IsContain _eq){	\n		// todo ソート\n		Debug.Log(\"Show AllCount:\" + Todos.Count);\n		// 破棄する前に場所をcanvas 直下に移動\n		TodoField.parent.ForEachExists(t => t.transform.SetParent(MyCanvas.GetCanvas().transform,false));\n		// 生存しているフィールドをすべて破棄\n		TodoField.parent.Vanish();\n		for(int i=0; i<Todos.Count; i++){\n			if(!_eq(Todos[i]))continue;\n			TodoField _todoField = TodoField.Add(0,0,Todos[i]);\n			//_todoField.transform.SetParent(this.transform,false);\n			todo_scl.SetContent(_todoField.transform);\n			_todoField.SetText(Todos[i].Title);\n			_todoField.IsNotify = Todos[i].IsNotify;\n			_todoField.SetTimeText(Todos[i].TodoTime);\n		}	\n		ShowToday(GetEq(SelectOpt.Today));\n	}\n\n	void SortBy(){\n		\n	}\n\n	// 再読み込みして表示\n	public void Reload(){\n		// 読み込む前にセーブ対象をすべてセーブ\n		Util.DoneSave();\n		\n		Todos = TodoData.LoadAll();\n		// 全て表示\n		Show(AllContain);\n		max_id = Todos.Count;\n	}\n\n	// コンボボックスが変更された\n	// todo一覧内容更新する\n	public void OnChangeSelectOpt(){\n		SelectOpt opt = (SelectOpt)GetSelectOpt();\n		Debug.Log(\"OnChangeSelect\" + opt.ToString());\n		IsContain _eq = GetEq(opt);\n		Show(_eq);\n	}\n\n	IsContain GetEq(SelectOpt opt){\n		IsContain _eq;\n		switch(opt){\n			case SelectOpt.All:\n				_eq = AllContain;\n				break;\n			case SelectOpt.Today:\n				_eq = (td) => {return(IsDayEq(td.TodoTime,DateTime.Now));};\n				break;\n			case SelectOpt.ThisMonth:\n				_eq = (td) => {return (td.TodoTime.Year == DateTime.Now.Year \n									&& td.TodoTime.Month == DateTime.Now.Month);};\n				break;\n			case SelectOpt.Previous:\n				_eq = (td) => {return (td.TodoTime.CompareTo(DateTime.Now) < 0);};\n				break;\n			case SelectOpt.Future:\n				_eq = (td) => {return (td.TodoTime.CompareTo(DateTime.Now) > 0);};\n				break;\n			default:\n				_eq = AllContain;\n				break;\n		}\n		return _eq;\n	}\n\n	// コンボボックスの値を取得\n	int GetSelectOpt(){\n		_dpDown = MyCanvas.Find<Dropdown>(\"Dropdown\");\n		return _dpDown.value;\n	}\n\n	// 上のボード、今日のtodo表示\n	void ShowToday(IsContain _eq){\n		for(int i=0; i<Todos.Count; i++){\n			if(!_eq(Todos[i]))continue;\n			TodoField _todoField = TodoField.Add(0,0,Todos[i]);\n			//_todoField.transform.SetParent(this.transform,false);\n			today_scl.SetContent(_todoField.transform);\n			_todoField.SetText(Todos[i].Title);\n			_todoField.IsNotify = Todos[i].IsNotify;\n			_todoField.SetTimeText(Todos[i].TodoTime);\n		}	\n	}\n}\n",
 			"file": "Main.cs",
+			"file_size": 4497,
+			"file_write_time": 131049554502982567,
 			"settings":
 			{
-				"buffer_size": 3341,
+				"buffer_size": 4046,
 				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "Searching 19 files for \"MaxId\"\n\nC:\\Users\\moritania\\Desktop\\wavserver\\unity\\Notification\\Assets\\Scripts\\TodoData.cs:\n   12  		NotificationTime,\n   13  		TodoTime,\n   14: 		MaxId,\n   15  		IsNotify\n   16  	}\n   ..\n   61  			case DataKeys.NotificationTime:\n   62  				return \"Todo_NotificationTime_id\"+id;\n   63: 			case DataKeys.MaxId:\n   64: 				return \"Todo_MaxId\";\n   65  			case DataKeys.IsNotify:\n   66  				return \"Todo_IsNotify\" + id;	\n   ..\n   97  	public void UpdateCreate(){\n   98  		string create_time = DateTime.Now.ToString();\n   99: 		Util.SaveData(_get_data_key(DataKeys.MaxId),id.ToString());\n  100  	}\n  101  	// Isnotify 更新\n  ...\n  108  	public static List<TodoData> LoadAll(){\n  109  		List<TodoData> _todos = new List<TodoData>();\n  110: 		string str = Util.LoadData(_get_data_key(DataKeys.MaxId).ToString());\n  111  		if(str == \"\") return _todos; //データなかった\n  112  		int head_id = int.Parse(str);\n\n5 matches in 1 file\n",
-			"settings":
-			{
-				"buffer_size": 936,
-				"line_ending": "Windows",
-				"name": "Find Results",
-				"scratch": true
 			}
 		},
 		{
@@ -424,24 +425,18 @@
 			"file": "ScrollController.cs",
 			"settings":
 			{
-				"buffer_size": 571,
+				"buffer_size": 453,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "BackGound.cs",
+			"contents": "Searching 19 files for \"SetContent\"\n\nC:\\Users\\moritania\\Desktop\\wavserver\\unity\\Notification\\Assets\\Scripts\\Main.cs:\n   67  		TodoField _todoField = TodoField.Add(0,0,new_todo);\n   68  		//_todoField.transform.SetParent(this.transform,false);\n   69: 		ScrollController.SetContent(_todoField.transform);\n   70  		_todoField.Create(Dt);	//新規に作成時の処理\n   71  	\n   ..\n   83  			TodoField _todoField = TodoField.Add(0,0,Todos[i]);\n   84  			//_todoField.transform.SetParent(this.transform,false);\n   85: 			ScrollController.SetContent(_todoField.transform);\n   86  			_todoField.SetText(Todos[i].Title);\n   87  			_todoField.IsNotify = Todos[i].IsNotify;\n\nC:\\Users\\moritania\\Desktop\\wavserver\\unity\\Notification\\Assets\\Scripts\\ScrollController.cs:\n   15  	}\n   16  	// Content の下にオブジェクトを置き、スクロールできるようにする\n   17: 	public void SetContent(Transform tf){\n   18  		if(tf == null) Debug.Log(\"scroll null\");\n   19  		tf.SetParent(scroll.transform,false);\n\n3 matches across 2 files\n",
 			"settings":
 			{
-				"buffer_size": 720,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "Body.cs",
-			"settings":
-			{
-				"buffer_size": 395,
-				"line_ending": "Unix"
+				"buffer_size": 966,
+				"line_ending": "Windows",
+				"name": "Find Results",
+				"scratch": true
 			}
 		}
 	],
@@ -452,13 +447,17 @@
 	"build_varint": "",
 	"command_palette":
 	{
-		"height": 384.0,
-		"last_filter": "",
+		"height": 288.0,
+		"last_filter": "git",
 		"selected_items":
 		[
 			[
+				"git",
+				"Package Control: Install Package"
+			],
+			[
 				"",
-				"42 : Add a header"
+				"42 headers: settings"
 			],
 			[
 				"install",
@@ -472,6 +471,7 @@
 		"height": 126.0,
 		"history":
 		[
+			"git:init",
 			"mono",
 			"import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc59f460fa1548d1514676163dafc88'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
 		]
@@ -492,16 +492,18 @@
 	],
 	"file_history":
 	[
+		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Body.cs",
+		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/BackGound.cs",
+		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/ScrollController.cs",
+		"/C/Users/moritania/AppData/Roaming/Sublime Text 3/Packages/User/42-headers.sublime-settings",
 		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Utility/Token.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/TodoField.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Utility/TokenMgr.cs",
-		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/ScrollController.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/TodoData.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Utility/MyCanvas.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Utility/TextObj.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Setting.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Utility/ButtonObj.cs",
-		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Body.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Main.cs",
 		"/C/Users/moritania/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 		"/C/Users/moritania/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
@@ -595,6 +597,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"SetContent",
 			"MaxId",
 			"GetComponent",
 			"Show",
@@ -729,7 +732,7 @@
 						"translation.y": 858.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 5,
 					"type": "text"
 				},
 				{
@@ -768,10 +771,10 @@
 							"wrap_width": 0
 						},
 						"translation.x": 0.0,
-						"translation.y": 980.0,
+						"translation.y": 925.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
@@ -807,13 +810,13 @@
 						"translation.y": 339.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 7,
 					"type": "text"
 				}
 			]
 		},
 		{
-			"selected": 6,
+			"selected": 0,
 			"sheets":
 			[
 				{
@@ -822,123 +825,60 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3341,
+						"buffer_size": 4046,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2217,
-								2217
+								2459,
+								2459
 							]
 						],
 						"settings":
 						{
 							"oops":
 							{
-								"1178,1194": "Method 'OnClickGoSetting' can be made static.",
-								"1290,1292": "'Dt' should start with a lower case letter. (Rule 'Parameters')",
-								"1309,1317": "Use 'var' keyword",
-								"1604,1607": "no known errors.",
+								"1187,1201": "Method 'OnclickTodoAdd' can be made static.",
+								"1376,1392": "Method 'OnClickGoSetting' can be made static.",
+								"1488,1490": "'Dt' should start with a lower case letter. (Rule 'Parameters')",
+								"1507,1515": "Use 'var' keyword",
+								"1794,1797": "no known errors.",
 								"19,24": "Using directive is not used by code and can be removed safely.",
-								"2464,2473": "Use 'var' keyword",
-								"2538,2541": "Redundant ToString() call",
-								"2606,2607": "Type cast is redundant",
-								"2714,2715": "Redundant lambda signature parentheses",
-								"2715,2717": "Redundant lambda signature parentheses",
-								"2723,2729": "Can be converted to expression",
-								"2818,2819": "Redundant lambda signature parentheses",
-								"2819,2821": "Redundant lambda signature parentheses",
-								"2827,2833": "Can be converted to expression",
-								"2979,2980": "Redundant lambda signature parentheses",
-								"2980,2982": "Redundant lambda signature parentheses",
-								"2988,2994": "Can be converted to expression",
-								"3087,3088": "Redundant lambda signature parentheses",
-								"3088,3090": "Redundant lambda signature parentheses",
-								"3096,3102": "Can be converted to expression",
+								"2683,2692": "Use 'var' keyword",
+								"2757,2760": "Redundant ToString() call",
+								"2977,2978": "Redundant lambda signature parentheses",
+								"2978,2980": "Redundant lambda signature parentheses",
+								"2986,2992": "Can be converted to expression",
+								"3081,3082": "Redundant lambda signature parentheses",
+								"3082,3084": "Redundant lambda signature parentheses",
+								"3090,3096": "Can be converted to expression",
+								"3242,3243": "Redundant lambda signature parentheses",
+								"3243,3245": "Redundant lambda signature parentheses",
+								"3251,3257": "Can be converted to expression",
+								"3350,3351": "Redundant lambda signature parentheses",
+								"3351,3353": "Redundant lambda signature parentheses",
+								"3359,3365": "Can be converted to expression",
+								"3650,3653": "no known errors.",
 								"45,50": "Using directive is not used by code and can be removed safely.",
 								"466,467": "Redundant lambda signature parentheses",
 								"467,469": "Redundant lambda signature parentheses",
-								"475,481": "Can be converted to expression",
-								"989,1003": "Method 'OnclickTodoAdd' can be made static."
+								"475,481": "Can be converted to expression"
 							},
 							"syntax": "Packages/C#/C#.sublime-syntax",
 							"translate_tabs_to_spaces": false,
 							"wrap_width": 0
 						},
 						"translation.x": 0.0,
-						"translation.y": 715.0,
+						"translation.y": 1066.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
 					"buffer": 4,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 936,
-						"regions":
-						{
-							"match":
-							{
-								"flags": 112,
-								"regions":
-								[
-									[
-										171,
-										176
-									],
-									[
-										327,
-										332
-									],
-									[
-										358,
-										363
-									],
-									[
-										584,
-										589
-									],
-									[
-										808,
-										813
-									]
-								],
-								"scope": ""
-							}
-						},
-						"selection":
-						[
-							[
-								836,
-								836
-							]
-						],
-						"settings":
-						{
-							"detect_indentation": false,
-							"line_numbers": false,
-							"output_tag": 1,
-							"result_base_dir": "",
-							"result_file_regex": "^([^ 	].*):$",
-							"result_line_regex": "^ +([0-9]+):",
-							"scroll_past_end": true,
-							"syntax": "Packages/Default/Find Results.hidden-tmLanguage",
-							"wrap_width": 0
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
 					"file": "Utility/MyCanvas.cs",
 					"semi_transient": false,
 					"settings":
@@ -969,7 +909,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 6,
+					"buffer": 5,
 					"file": "CalendarCel.cs",
 					"semi_transient": false,
 					"settings":
@@ -1012,7 +952,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 7,
+					"buffer": 6,
 					"file": "TodoData.cs",
 					"semi_transient": false,
 					"settings":
@@ -1060,11 +1000,11 @@
 						"translation.y": 1401.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 6,
 					"type": "text"
 				},
 				{
-					"buffer": 8,
+					"buffer": 7,
 					"file": "TodoField.cs",
 					"semi_transient": false,
 					"settings":
@@ -1106,28 +1046,33 @@
 						"translation.y": 1079.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
-					"buffer": 9,
+					"buffer": 8,
 					"file": "ScrollController.cs",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 571,
+						"buffer_size": 453,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								452,
+								452
 							]
 						],
 						"settings":
 						{
+							"oops":
+							{
+								"120,126": "Name should have prefix '_'. (Rule 'Fields').",
+								"19,24": "Using directive is not used by code and can be removed safely."
+							},
 							"syntax": "Packages/C#/C#.sublime-syntax",
 							"translate_tabs_to_spaces": false,
 							"wrap_width": 0
@@ -1136,73 +1081,62 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
-					"buffer": 10,
-					"file": "BackGound.cs",
+					"buffer": 9,
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 720,
+						"buffer_size": 966,
 						"regions":
 						{
-						},
-						"selection":
-						[
-							[
-								483,
-								483
-							]
-						],
-						"settings":
-						{
-							"oops":
+							"match":
 							{
-								"101,102": "Initializing field by default value is redundant",
-								"115,116": "Initializing field by default value is redundant",
-								"135,137": "'BG' should start with a lower case letter. (Rule 'Fields')",
-								"161,165": "Initializing field by default value is redundant",
-								"19,24": "Using directive is not used by code and can be removed safely."
-							},
-							"syntax": "Packages/C#/C#.sublime-syntax",
-							"wrap_width": 0
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 10,
-					"type": "text"
-				},
-				{
-					"buffer": 11,
-					"file": "Body.cs",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 395,
-						"regions":
-						{
+								"flags": 112,
+								"regions":
+								[
+									[
+										269,
+										279
+									],
+									[
+										517,
+										527
+									],
+									[
+										817,
+										827
+									]
+								],
+								"scope": ""
+							}
 						},
 						"selection":
 						[
 							[
-								394,
-								394
+								79,
+								79
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/C#/C#.sublime-syntax",
+							"detect_indentation": false,
+							"line_numbers": false,
+							"output_tag": 1,
+							"result_base_dir": "",
+							"result_file_regex": "^([^ 	].*):$",
+							"result_line_regex": "^ +([0-9]+):",
+							"scroll_past_end": true,
+							"syntax": "Packages/Default/Find Results.hidden-tmLanguage",
 							"wrap_width": 0
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 11,
+					"stack_index": 1,
 					"type": "text"
 				}
 			]

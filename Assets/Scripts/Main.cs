@@ -26,13 +26,18 @@ public class Main : Token {
 	delegate bool IsContain(TodoData td);
 	readonly IsContain AllContain = (td) => {return true;};  
 
+	// スクロ＾ルcontent
+	ScrollController today_scl;
+	ScrollController todo_scl;
+
 	// Use this for initialization
 	// コンポーネント取得はStartの前に処理する
 	void Awake(){
 		_title = MyCanvas.Find<TextObj>("MainTitle");
 		TodoField.parent = new TokenMgr<TodoField>("TodoField",40);
 		_dpDown = MyCanvas.Find<Dropdown>("Dropdown");
-
+		today_scl = MyCanvas.Find<ScrollController>("TodayContent");
+		todo_scl = MyCanvas.Find<ScrollController>("TodoContent");
 		
 	}
 
@@ -66,7 +71,7 @@ public class Main : Token {
 		Todos.Add(new_todo);
 		TodoField _todoField = TodoField.Add(0,0,new_todo);
 		//_todoField.transform.SetParent(this.transform,false);
-		ScrollController.SetContent(_todoField.transform);
+		todo_scl.SetContent(_todoField.transform);
 		_todoField.Create(Dt);	//新規に作成時の処理
 	
 	}
@@ -82,11 +87,12 @@ public class Main : Token {
 			if(!_eq(Todos[i]))continue;
 			TodoField _todoField = TodoField.Add(0,0,Todos[i]);
 			//_todoField.transform.SetParent(this.transform,false);
-			ScrollController.SetContent(_todoField.transform);
+			todo_scl.SetContent(_todoField.transform);
 			_todoField.SetText(Todos[i].Title);
 			_todoField.IsNotify = Todos[i].IsNotify;
 			_todoField.SetTimeText(Todos[i].TodoTime);
 		}	
+		ShowToday(GetEq(SelectOpt.Today));
 	}
 
 	// 再読み込みして表示
@@ -105,9 +111,13 @@ public class Main : Token {
 	public void OnChangeSelectOpt(){
 		SelectOpt opt = (SelectOpt)GetSelectOpt();
 		Debug.Log("OnChangeSelect" + opt.ToString());
+		IsContain _eq = GetEq(opt);
+		Show(_eq);
+	}
+
+	IsContain GetEq(SelectOpt opt){
 		IsContain _eq;
-		// SelectOpt型にキャストして比較
-		switch((SelectOpt)opt){
+		switch(opt){
 			case SelectOpt.All:
 				_eq = AllContain;
 				break;
@@ -128,12 +138,25 @@ public class Main : Token {
 				_eq = AllContain;
 				break;
 		}
-		Show(_eq);
-
+		return _eq;
 	}
+
 	// コンボボックスの値を取得
 	int GetSelectOpt(){
 		_dpDown = MyCanvas.Find<Dropdown>("Dropdown");
 		return _dpDown.value;
+	}
+
+	// 上のボード、今日のtodo表示
+	void ShowToday(IsContain _eq){
+		for(int i=0; i<Todos.Count; i++){
+			if(!_eq(Todos[i]))continue;
+			TodoField _todoField = TodoField.Add(0,0,Todos[i]);
+			//_todoField.transform.SetParent(this.transform,false);
+			today_scl.SetContent(_todoField.transform);
+			_todoField.SetText(Todos[i].Title);
+			_todoField.IsNotify = Todos[i].IsNotify;
+			_todoField.SetTimeText(Todos[i].TodoTime);
+		}	
 	}
 }
