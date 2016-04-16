@@ -7,6 +7,12 @@ public class Dialog : Token {
 	TextObj text;
 	// Use this for initialization
 	void Start () {
+	}
+	void Awake(){
+		
+	}
+	public override void Revive(){
+		base.Revive();
 		text = MyCanvas.Find<TextObj>("DialogText");
 	}
 	
@@ -22,5 +28,9 @@ public class Dialog : Token {
 	}
 	public void OnClickCancel(){
 		Vanish();
+	}
+	public string Text{
+		get{return text.Label;}
+		set{text.Label = value;}
 	}
 }

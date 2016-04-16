@@ -8,8 +8,6 @@ using System;
 public class Main : Token {
 
 	DateTime crt_time;
-	int max_id;
-	
 	TextObj _title ;
 	List<TodoData> Todos;
 
@@ -46,8 +44,7 @@ public class Main : Token {
 		crt_time = DateTime.Now;
 		_title.Label = crt_time.Month + "月" + crt_time.Day +"日" + "今日のTodo"; 	
 		Todos = TodoData.LoadAll();
-		// Todo 合計ではなく、idの最大取得するようにすべき
-		max_id = Todos.Count;
+		TodoData.SortByDate(Todos);
 		// 全て表示
 		Show(AllContain);
 	}
@@ -66,19 +63,19 @@ public class Main : Token {
 	
 	// 追加モードのカレンダーで日にちを押したさいに呼ばれる
 	public void TodoAdd(DateTime Dt){
-		max_id++;
-		TodoData new_todo = new TodoData(max_id);
+		int id = TodoData.NewId(Todos);
+		TodoData new_todo = new TodoData(id);
+		//new_todo.UpdateCreate();
 		Todos.Add(new_todo);
 		TodoField _todoField = TodoField.Add(0,0,new_todo);
-		//_todoField.transform.SetParent(this.transform,false);
 		todo_scl.SetContent(_todoField.transform);
 		_todoField.Create(Dt);	//新規に作成時の処理
-	
+		// ドロップダウンのセレクト表示をAllにしておく
+		_dpDown.value = (int)SelectOpt.All;
 	}
 
 	void Show (IsContain _eq){	
-		// todo ソート
-		Debug.Log("Show AllCount:" + Todos.Count);
+		//Debug.Log("Show AllCount:" + Todos.Count);
 		// 破棄する前に場所をcanvas 直下に移動
 		TodoField.parent.ForEachExists(t => t.transform.SetParent(MyCanvas.GetCanvas().transform,false));
 		// 生存しているフィールドをすべて破棄
@@ -95,15 +92,18 @@ public class Main : Token {
 		ShowToday(GetEq(SelectOpt.Today));
 	}
 
+
 	// 再読み込みして表示
 	public void Reload(){
 		// 読み込む前にセーブ対象をすべてセーブ
 		Util.DoneSave();
 		
 		Todos = TodoData.LoadAll();
+		TodoData.SortByDate(Todos);
+		TodoData.LogAll(Todos);
 		// 全て表示
 		Show(AllContain);
-		max_id = Todos.Count;
+		_dpDown.value = (int)SelectOpt.All;//
 	}
 
 	// コンボボックスが変更された
@@ -115,6 +115,8 @@ public class Main : Token {
 		Show(_eq);
 	}
 
+	// TodoData の条件つき取得用の条件
+	// delegate が返る
 	IsContain GetEq(SelectOpt opt){
 		IsContain _eq;
 		switch(opt){
@@ -159,4 +161,11 @@ public class Main : Token {
 			_todoField.SetTimeText(Todos[i].TodoTime);
 		}	
 	}
+
+	public bool DeleteDataById(int id){
+		return TodoData.DeleteDataById(Todos,id);
+	}
+
+
+
 }

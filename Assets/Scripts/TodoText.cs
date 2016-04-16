@@ -47,6 +47,11 @@ public class TodoText : MonoBehaviour {
 		_save();
 	}
 
+	// idに対応するファイル削除
+	public static void DeleteFile(int id){
+		FileIo.Delete(_todoText._get_filename(id));
+	} 
+
 	void _save(){
 		FileIo.Write(_get_filename(_todoField._todoData.Id),_get_text());
 	}

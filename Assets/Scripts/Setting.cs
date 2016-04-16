@@ -2,8 +2,10 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class Setting : MonoBehaviour {
+public class Setting : Token {
 
+
+	Text outputText;
 	// Use this for initialization
 	void Start () {
 	
@@ -12,6 +14,10 @@ public class Setting : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
+	}
+
+	void Awake(){
+		outputText = MyCanvas.Find<Text>("outputText");
 	}
 
 	// 設定保存
@@ -26,19 +32,26 @@ public class Setting : MonoBehaviour {
 	}
 
 	public void OnClickGoMain(){
+		outputText.text = "";
 		Body.GoBoardMain();
 	}
 	public void OnClickDataDelete(){
 		Debug.Log("OnClickDataDelete");
 		Dialog dialog = MyCanvas.FindChild<Dialog>("DialogBack");
 		dialog.Revive();
+		dialog.Text = "本当に消去してよろしいですか？";
 		dialog._yesCallBack = new YesCallBack(deleteData);
 		
 	}
 	void  deleteData(){
+		int max_id = TodoData.MaxId();
+		// ファイル消去
+		for(int i=1; i<=max_id; i++){
+			TodoText.DeleteFile(i);
+		}
 		PlayerPrefs.DeleteAll();
 		PlayerPrefs.Save();
-		Debug.Log("DeleteAllData!!");
+		outputText.text = "全てのデータを削除しました!";
 		Main _main = MyCanvas.Find<Main>("BoardMain");
 		_main.Reload();
 	}
@@ -47,6 +60,7 @@ public class Setting : MonoBehaviour {
 	public void OnClickReload(){
 		Main _main = MyCanvas.Find<Main>("BoardMain");
 		_main.Reload();
+		outputText.text = "リロードしました。";
 	}
 
 	public void OnClickBGChange(){
@@ -56,8 +70,6 @@ public class Setting : MonoBehaviour {
 		GetComponent<Image>().color = new Color(255, 255,255 , 0.5f); 
 		StartCoroutine(ImageR());
 	}
-
-	
 
 	IEnumerator ImageR()
  	{

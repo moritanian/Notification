@@ -43,6 +43,8 @@ public class TodoField : Token {
 
 	DateTime TodoDate;
 
+	public Color SelectedColor;
+
 	public static TodoField Add(float x,float y,TodoData todoData){
 		//TodoField obj = CreateInstanceEasy<TodoField>("TodoField",x,y);
 		TodoField obj = parent.Add(0,0);
@@ -61,6 +63,11 @@ public class TodoField : Token {
 		_timeText = transform.FindChild("Time/TimeText").gameObject.GetComponent<TextObj>();
 		_timeText.Label = "";
 		_toggle = transform.FindChild("Toggle").gameObject.GetComponent<Toggle>();
+	}
+
+	public override void Revive(){
+		base.Revive();
+		
 	}
 
 	void Start(){
@@ -87,7 +94,6 @@ public class TodoField : Token {
 	
 	public void SetText(string text){
 		if(_inputField == null) Debug.Log("SetText null!! ");
-		Debug.Log("SetText + " + _inputField.text);
 		if(_inputField.text  != null)_inputField.text = text;
 	}
 
@@ -129,6 +135,33 @@ public class TodoField : Token {
 	// 時間ボタン
 	public void OnClickTime(){
 		MyCanvas.Find<MyCalendar>("MyCalendar").GoCal(TodoDate,_celTime => SetTime(_celTime));
+	}
+
+	// 長押し選択
+	public void TouchSelected(){
+		Image _image = transform.FindChild("image").gameObject.GetComponent<Image>();
+		_image.color = SelectedColor;
+	}
+	public void UnTouch(){
+		Image _image = transform.FindChild("image").gameObject.GetComponent<Image>();
+		_image.color = SelectedColor;
+	}
+
+	// 消去するかダイアログ表示
+	public void AppDeleteDailog(){
+		Dialog dialog = MyCanvas.FindChild<Dialog>("DialogBack");
+		dialog.Revive();
+		dialog.Text = "削除する";
+		dialog._yesCallBack = new YesCallBack(this.Delete);
+	}
+
+	// 自分を消去(データごと)
+	public void Delete(){
+		// Todo Mainがもってるデータ消去、保存データ消去
+		MyCanvas.Find<Main>("BoardMain").DeleteDataById(_todoData.Id);
+		// ファイル削除
+		TodoText.DeleteFile(_todoData.Id);
+		Vanish();
 	}
 	
 }

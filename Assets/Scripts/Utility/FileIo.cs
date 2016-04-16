@@ -7,7 +7,11 @@ using System.Text; //Encoding
 
 public class FileIo  {
 
-
+	public static void Delete(string filename){
+		string path = Application.dataPath + "/AppData/"+ filename;
+		File.Delete(path);
+		Debug.Log("delete file " + path);
+	} 
 
 	public static void Write(string filename, string text){
 		StreamWriter sw;
