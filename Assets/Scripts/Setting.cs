@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 
+
 public class Setting : Token {
 
 
@@ -10,13 +11,40 @@ public class Setting : Token {
 	Toggle _normalToggle;
 	public InputField _inputField;
 
-	public static int fontsize = 20;
+	Text _fontColorChgText;
+
+	static int fontsize = 20;
 	public static int FontSize{
 		get {return fontsize;}
+		set {
+			if(value>0)fontsize = value;
+		}
 	}
+
+	static Color fontcolor = Color.white;
+	int color_id = 0;
+	public static Color FontColor{
+		get{return fontcolor;}
+	}
+ 	const int color_nums = 7;
+
+   	Color[] font_colors = {
+   		Color.white,
+   		new Color(0.14f,0.03f,0.9f), //new Color(35,9,234,1.0f), // 青系
+   		new Color(0.14f, 0.3f, 0.05f),// new Color(34,70,16, 1.0f), // 緑系
+   		new Color(0.4f,0.1f,0.1f),  // 赤系
+   		new Color(0.3f,0.1f,0.4f),  // 紫系
+   		new Color(0.03f,0.4f, 0.4f), // 青緑
+   		Color.black // 黒 
+   	};
+
+
 	// Use this for initialization
 	void Start () {
-	
+		string size_str = Util.LoadData(GetDataKey(DataKeys.FontSize));
+		if(size_str != "")fontsize = int.Parse(size_str);
+		string color_str = Util.LoadData(GetDataKey(DataKeys.Color));
+		if(color_str != "")ChangeColor(int.Parse(color_str));
 	}
 	
 	// Update is called once per frame
@@ -28,6 +56,8 @@ public class Setting : Token {
 		outputText = MyCanvas.Find<Text>("outputText");
 		_debugToggle = transform.FindChild("IsDebugLog").gameObject.GetComponent<Toggle>();
 		_normalToggle = transform.FindChild("NormalToggle").gameObject.GetComponent<Toggle>();
+		_fontColorChgText = transform.FindChild("TextColor").gameObject.GetComponent<Text>();
+
 	}
 
 	// 設定保存
@@ -95,11 +125,28 @@ public class Setting : Token {
 	public void OnChangeFontSize(){
 		int font_size = int.Parse(_inputField.text); 
 		if(font_size > 0)fontsize = font_size;
+		Util.SaveData(GetDataKey(DataKeys.FontSize), font_size.ToString());
 	}
 
 	IEnumerator ImageR()
  	{
         yield return new WaitForSeconds(3.0f);
         GetComponent<Image>().color = new Color(255, 255,255 , 1.0f);
+    }
+
+   
+    // 文字色変更
+    public void OnClickFontColorChange(){
+    	ChangeColor(color_id + 1);
+    }
+
+    public void ChangeColor(int id){
+    	if(id < 0 || color_nums <= id)id = 0;
+    	color_id = id;
+    	fontcolor = font_colors[id];
+    	_fontColorChgText.color = fontcolor;
+
+    	Util.SaveData(GetDataKey(DataKeys.Color),color_id.ToString());
+    	
     }
 }

@@ -132,7 +132,7 @@ public class Util {
 
     // 戻るボタン押されたか
     public static bool BackButton(){
-    	 if (Application.platform == RuntimePlatform.Android)
+    	 if (Application.platform == RuntimePlatform.Android || true)
 		{
 			if (Input.GetKey(KeyCode.Home) || Input.GetKey(KeyCode.Escape) || Input.GetKey(KeyCode.Menu))
 			{

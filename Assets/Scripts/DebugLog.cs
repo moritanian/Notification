@@ -70,7 +70,7 @@ public class DebugLog: MonoBehaviour {
         float height = 400f;
         if(Util.isRunningOnAndroid()){
             width = 1000f;
-            height = 1500f;
+            height = 1600f;
         }
        
         Rect drawArea = new Rect(5, 30 , width, height);

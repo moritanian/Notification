@@ -13,6 +13,9 @@ public class Body : Token {
 
 	
 	static Screen screen;
+	// いったんボタンが押された場合、次にボタンが押されたと判定するのはボタンが上がってから
+	bool Is_Button = false;
+
 
 	// Use this for initialization
 	void Awake(){
@@ -24,22 +27,35 @@ public class Body : Token {
 	}
 
 	void Update(){
-		if(Util.BackButton()){
+		if(Util.BackButton() && !Is_Button){
+			Is_Button = true;
 			switch(screen){
 				case Screen.Main:
+					Debug.Log("ApplicationFinish");
 					Application.Quit();
 					break;
 				case Screen.Setting:
+					Debug.Log("Back Main");
 					MyCanvas.Find<Setting>("BoardSetting").OnClickGoMain();
 					break;
 				case Screen.Text:
+					Debug.Log("Back Main");
 					MyCanvas.Find<TodoText>("BoardText").OnClickGoBack();
 					break;
 				default:
 					break;
 			}
+		}else{
+			if(Is_Button){
+				StartCoroutine(Is_Button_True());
+			}
 		}
 			
+	}
+
+	IEnumerator Is_Button_True(){
+		yield return new WaitForSeconds(1.0f);
+		Is_Button = false;
 	}
 
 	

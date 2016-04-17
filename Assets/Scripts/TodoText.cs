@@ -29,8 +29,20 @@ public class TodoText : MonoBehaviour {
 	
 	}
 
+	public void SetTextColor(Color color){
+		MyCanvas.Find<Text>("TodoTextField").color = color;
+	}
+	public void SetTextFontSize(int size){
+		MyCanvas.Find<Text>("TodoTextField").fontSize= size;
+	}
+
 	// テキスト本文編集画面遷移時の処理
 	public static void SetUp(TodoField Tf){
+		// 文字カラー設定
+		_todoText.SetTextColor(Setting.FontColor);
+		
+		// 文字サイズ設定
+		_todoText.SetTextFontSize(Setting.FontSize);
 		// Tododata をセット
 		_todoText._todoField = Tf;
 		// タイトル表示
