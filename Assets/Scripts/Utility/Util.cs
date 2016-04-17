@@ -130,5 +130,19 @@ public class Util {
         return (Application.platform == RuntimePlatform.Android);
     }
 
+    // 戻るボタン押されたか
+    public static bool BackButton(){
+    	 if (Application.platform == RuntimePlatform.Android)
+		{
+			if (Input.GetKey(KeyCode.Home) || Input.GetKey(KeyCode.Escape) || Input.GetKey(KeyCode.Menu))
+			{
+				// Application.Quit();
+				return true;
+			}
+		}
+		return false;
+    }
+   
+
 
 }

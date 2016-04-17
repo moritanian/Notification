@@ -207,7 +207,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _inputField: {fileID: 11482662}
   text: {fileID: 11437084}
-  SelectedColor: {r: 1, g: 0.99978375, b: 1, a: 0.991}
+  SelectedColor: {r: 0.984, g: 0.816, b: 0.516, a: 0.991}
+  NormalColor: {r: 0.947, g: 0.947, b: 0.506, a: 0.991}
 --- !u!114 &11418848
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -727,7 +728,7 @@ MonoBehaviour:
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.9632353, g: 0.65868294, b: 0.9170273, a: 1}
+    m_PressedColor: {r: 1, g: 0.99951345, b: 1, a: 1}
     m_DisabledColor: {r: 1, g: 1, b: 1, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -770,7 +771,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RequiredTime: 1
-  SelectTime: 0.4
+  SelectTime: 0.01
   LpEvent:
     m_PersistentCalls:
       m_Calls:
@@ -792,6 +793,22 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 11414448}
         m_MethodName: TouchSelected
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  UntouchEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11414448}
+        m_MethodName: UnTouch
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

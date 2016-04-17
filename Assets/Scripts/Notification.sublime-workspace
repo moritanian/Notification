@@ -4,6 +4,46 @@
 		"selected_items":
 		[
 			[
+				"Todo",
+				"TodoText	TodoText"
+			],
+			[
+				"out",
+				"outputText	Text"
+			],
+			[
+				"De",
+				"Delete(string path)	void"
+			],
+			[
+				"Re",
+				"Reload()	void"
+			],
+			[
+				"new",
+				"new_max	int"
+			],
+			[
+				"Enumera",
+				"IEnumerable	IEnumerable"
+			],
+			[
+				"dele",
+				"deletekeys	List<DataKeys>"
+			],
+			[
+				"_",
+				"_tododata	TodoData"
+			],
+			[
+				"Ca",
+				"Canvas	Canvas"
+			],
+			[
+				"todo",
+				"Todos	List<TodoData>"
+			],
+			[
 				"Se",
 				"SelectEvent	UnityEvent"
 			],
@@ -12,16 +52,8 @@
 				"FindChild(string name)	Transform"
 			],
 			[
-				"Re",
-				"Revive()	void"
-			],
-			[
 				"UnityE",
 				"UnityEvent	UnityEvent"
-			],
-			[
-				"_",
-				"_event	LongPressEvent"
 			],
 			[
 				"Long",
@@ -34,10 +66,6 @@
 			[
 				"show",
 				"ShowToday(IsContain _eq)	void"
-			],
-			[
-				"Todo",
-				"TodoData	TodoData"
 			],
 			[
 				"Scroll",
@@ -86,10 +114,6 @@
 			[
 				"Up",
 				"UpdateTodoTime(DateTime Dt)	void"
-			],
-			[
-				"new",
-				"new_title	string"
 			],
 			[
 				"_to",
@@ -372,34 +396,10 @@
 	"buffers":
 	[
 		{
-			"file": "MyCalendar.cs",
-			"settings":
-			{
-				"buffer_size": 2967,
-				"line_ending": "Unix"
-			}
-		},
-		{
 			"file": "TodoData.cs",
 			"settings":
 			{
-				"buffer_size": 3351,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "TodoText.cs",
-			"settings":
-			{
-				"buffer_size": 1588,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "LongPress.cs",
-			"settings":
-			{
-				"buffer_size": 1121,
+				"buffer_size": 4989,
 				"line_ending": "Unix"
 			}
 		},
@@ -407,7 +407,7 @@
 			"file": "Dialog.cs",
 			"settings":
 			{
-				"buffer_size": 461,
+				"buffer_size": 581,
 				"line_ending": "Unix"
 			}
 		},
@@ -415,25 +415,23 @@
 			"file": "Setting.cs",
 			"settings":
 			{
-				"buffer_size": 1386,
+				"buffer_size": 1658,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"contents": "Searching 20 files for \"deleteData\"\n\nC:\\Users\\moritania\\Desktop\\wavserver\\unity\\Notification\\Assets\\Scripts\\Setting.cs:\n   34  		dialog.Revive();\n   35  		dialog.Text = \"本当に消去してよろしいですか？\";\n   36: 		dialog._yesCallBack = new YesCallBack(deleteData);\n   37  		\n   38  	}\n   39: 	void  deleteData(){\n   40  		PlayerPrefs.DeleteAll();\n   41  		PlayerPrefs.Save();\n\n2 matches in 1 file\n",
+			"file": "Utility/Token.cs",
 			"settings":
 			{
-				"buffer_size": 380,
-				"line_ending": "Windows",
-				"name": "Find Results",
-				"scratch": true
+				"buffer_size": 10438,
+				"line_ending": "Unix"
 			}
 		},
 		{
 			"file": "Main.cs",
 			"settings":
 			{
-				"buffer_size": 4084,
+				"buffer_size": 4226,
 				"line_ending": "Unix"
 			}
 		},
@@ -441,7 +439,31 @@
 			"file": "TodoField.cs",
 			"settings":
 			{
-				"buffer_size": 3390,
+				"buffer_size": 3539,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "LongPress.cs",
+			"settings":
+			{
+				"buffer_size": 1252,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "TodoText.cs",
+			"settings":
+			{
+				"buffer_size": 1697,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Utility/FileIo.cs",
+			"settings":
+			{
+				"buffer_size": 1428,
 				"line_ending": "Unix"
 			}
 		},
@@ -458,14 +480,6 @@
 			"settings":
 			{
 				"buffer_size": 2458,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "Utility/Token.cs",
-			"settings":
-			{
-				"buffer_size": 10438,
 				"line_ending": "Unix"
 			}
 		}
@@ -522,7 +536,11 @@
 	],
 	"file_history":
 	[
+		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/LongPress.cs",
+		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/MyCalendar.cs",
+		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Utility/Token.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Setting.cs",
+		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/TodoText.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/ScrollController.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/TodoField.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/TodoData.cs",
@@ -532,7 +550,6 @@
 		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Body.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/BackGound.cs",
 		"/C/Users/moritania/AppData/Roaming/Sublime Text 3/Packages/User/42-headers.sublime-settings",
-		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Utility/Token.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Utility/TokenMgr.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Utility/TextObj.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Utility/ButtonObj.cs",
@@ -540,8 +557,6 @@
 		"/C/Users/moritania/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 		"/C/Users/moritania/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
 		"/C/Users/moritania/AppData/Roaming/Sublime Text 3/Packages/Default/Default (Windows).sublime-keymap",
-		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/TodoText.cs",
-		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/MyCalendar.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/ComboBox/StyledComboBox.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/ComboBox/Assets/Scripts/TestComboBox.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Utility/FileIo.cs",
@@ -628,6 +643,9 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"Title",
+			"max_id",
+			"TodoDate",
 			"Find",
 			"deleteData",
 			"SetContent",
@@ -710,124 +728,92 @@
 	"groups":
 	[
 		{
-			"selected": 3,
+			"selected": 2,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "MyCalendar.cs",
+					"file": "TodoData.cs",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2967,
+						"buffer_size": 4989,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								671,
-								671
+								4751,
+								4751
 							]
 						],
 						"settings":
 						{
 							"oops":
 							{
-								"1112,1117": "no known errors.",
-								"1446,1457": "'PointedTime' should start with a lower case letter. (Rule 'Parameters')",
-								"1652,1660": "no known errors.",
 								"19,24": "Using directive is not used by code and can be removed safely.",
-								"2146,2150": "'this.' is redundant and can be removed safely.",
-								"2304,2312": "Use 'var' keyword",
-								"2700,2704": "Redundant ToString() call",
-								"2738,2743": "Redundant ToString() call",
-								"346,355": "Convert to constant",
-								"358,359": "Initializing field by default value is redundant",
-								"389,399": "Convert to constant",
-								"402,403": "Initializing field by default value is redundant",
-								"432,439": "Convert to constant",
-								"442,443": "Initializing field by default value is redundant",
+								"1990,1992": "'Dt' should start with a lower case letter. (Rule 'Parameters')",
+								"2027,2029": "Redundant ToString() call",
+								"2287,2298": "Local variable 'create_time' hides field 'TodoData.create_time'",
+								"2523,2532": "no known errors.",
+								"2720,2724": "Use 'var' keyword",
+								"3185,3193": "Use 'var' keyword",
+								"346,348": "Convert to auto property",
+								"3495,3499": "Parameter can be List",
+								"3600,3601": "Access to modified closure",
+								"3737,3738": "Redundant ToString() call",
+								"3753,3755": "Convert to 'return' statement",
+								"3871,3876": "no known errors.",
+								"4031,4039": "Parameter can be List",
+								"4239,4243": "Use 'var' keyword",
 								"45,50": "Using directive is not used by code and can be removed safely.",
-								"479,486": "'FIRST_Y' should start with a lower case letter. (Rule 'Fields')",
-								"489,490": "Initializing field by default value is redundant",
-								"590,600": "'MyDateTime' should start with a lower case letter. (Rule 'Fields')",
-								"634,644": "'TodayColor' should start with a lower case letter. (Rule 'Fields')",
-								"660,670": "'MyDayColor' should start with a lower case letter. (Rule 'Fields')",
-								"694,698": "Initializing field by default value is redundant",
-								"70,75": "Using directive is not used by code and can be removed safely."
+								"480,491": "The private field 'create_time' is never assigned",
+								"4840,4845": "Parameter can be IEnumerable",
+								"511,524": "The private field 'modified_time' is never assigned",
+								"543,560": "The private field 'notification_time' is never assigned",
+								"620,628": "Convert to auto property",
+								"721,726": "Convert to auto property",
+								"792,800": "'IsNotify' should start with a lower case letter. (Rule 'Fields')",
+								"803,808": "Initializing field by default value is redundant",
+								"880,882": "Parameter can be IComparable"
 							},
 							"syntax": "Packages/C#/C#.sublime-syntax",
 							"translate_tabs_to_spaces": false,
 							"wrap_width": 0
 						},
-						"translation.x": 0.0,
-						"translation.y": 304.0,
+						"translation.x": 1.0,
+						"translation.y": 1949.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 11,
+					"stack_index": 7,
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "TodoData.cs",
+					"file": "Dialog.cs",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3351,
+						"buffer_size": 581,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C#/C#.sublime-syntax",
-							"translate_tabs_to_spaces": false,
-							"wrap_width": 0
-						},
-						"translation.x": 0.0,
-						"translation.y": 198.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 10,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "TodoText.cs",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1588,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1519,
-								1519
+								233,
+								233
 							]
 						],
 						"settings":
 						{
 							"oops":
 							{
-								"1043,1045": "Parameter can be IComparable",
-								"1071,1073": "Redundant ToString() call",
-								"1231,1235": "Parameter can be IComparable",
-								"125,131": "The private field '_title' is never assigned",
-								"1514,1517": "Parameter can be IComparable",
+								"0,5": "Using directive is not used by code and can be removed safely.",
+								"187,192": "Method 'Awake' has the same with 'Start'",
 								"19,24": "Using directive is not used by code and can be removed safely.",
-								"279,287": "'todoData' should start with an upper case letter. (Rule 'Properties')",
-								"514,520": "Method 'Update' has the same with 'Start'",
-								"589,591": "'Tf' should start with a lower case letter. (Rule 'Parameters')"
+								"345,351": "Method 'Update' has the same with 'Awake'"
 							},
 							"syntax": "Packages/C#/C#.sublime-syntax",
 							"translate_tabs_to_spaces": false,
@@ -841,137 +827,48 @@
 					"type": "text"
 				},
 				{
-					"buffer": 3,
-					"file": "LongPress.cs",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1121,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								753,
-								753
-							]
-						],
-						"settings":
-						{
-							"oops":
-							{
-								"156,168": "Convert to constant",
-								"19,24": "Using directive is not used by code and can be removed safely.",
-								"203,213": "Convert to constant",
-								"266,273": "The private field 'LpEvent' is never assigned",
-								"305,316": "The private field 'SelectEvent' is never assigned"
-							},
-							"syntax": "Packages/C#/C#.sublime-syntax",
-							"wrap_width": 0
-						},
-						"translation.x": 0.0,
-						"translation.y": 61.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "Dialog.cs",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 461,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								459,
-								461
-							]
-						],
-						"settings":
-						{
-							"oops":
-							{
-								"0,5": "Using directive is not used by code and can be removed safely.",
-								"19,24": "Using directive is not used by code and can be removed safely."
-							},
-							"syntax": "Packages/C#/C#.sublime-syntax",
-							"translate_tabs_to_spaces": false,
-							"wrap_width": 0
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
+					"buffer": 2,
 					"file": "Setting.cs",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1386,
+						"buffer_size": 1658,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								612,
-								612
+								1276,
+								1276
 							]
 						],
 						"settings":
 						{
 							"oops":
 							{
-								"206,212": "Method 'Update' has the same with 'Start'",
-								"391,404": "Method 'OnClickGoMain' can be made static.",
-								"882,895": "Method 'OnClickReload' can be made static."
+								"217,223": "Method 'Update' has the same with 'Start'"
 							},
 							"syntax": "Packages/C#/C#.sublime-syntax",
 							"translate_tabs_to_spaces": false,
 							"wrap_width": 0
 						},
 						"translation.x": 0.0,
-						"translation.y": 218.0,
+						"translation.y": 106.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
-					"buffer": 6,
+					"buffer": 3,
+					"file": "Utility/Token.cs",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 380,
+						"buffer_size": 10438,
 						"regions":
 						{
-							"match":
-							{
-								"flags": 112,
-								"regions":
-								[
-									[
-										235,
-										245
-									],
-									[
-										282,
-										292
-									]
-								],
-								"scope": ""
-							}
 						},
 						"selection":
 						[
@@ -982,135 +879,260 @@
 						],
 						"settings":
 						{
-							"detect_indentation": false,
-							"line_numbers": false,
-							"output_tag": 1,
-							"result_base_dir": "",
-							"result_file_regex": "^([^ 	].*):$",
-							"result_line_regex": "^ +([0-9]+):",
-							"scroll_past_end": true,
-							"syntax": "Packages/Default/Find Results.hidden-tmLanguage",
+							"syntax": "Packages/C#/C#.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true,
 							"wrap_width": 0
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "Main.cs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4226,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1781,
+								1781
+							]
+						],
+						"settings":
+						{
+							"oops":
+							{
+								"1145,1159": "Method 'OnclickTodoAdd' can be made static.",
+								"1334,1350": "Method 'OnClickGoSetting' can be made static.",
+								"1446,1448": "'Dt' should start with a lower case letter. (Rule 'Parameters')",
+								"1487,1495": "Use 'var' keyword",
+								"1806,1809": "no known errors.",
+								"19,24": "Using directive is not used by code and can be removed safely.",
+								"2756,2765": "Use 'var' keyword",
+								"2830,2833": "Redundant ToString() call",
+								"3092,3093": "Redundant lambda signature parentheses",
+								"3093,3095": "Redundant lambda signature parentheses",
+								"3101,3107": "Can be converted to expression",
+								"3196,3197": "Redundant lambda signature parentheses",
+								"3197,3199": "Redundant lambda signature parentheses",
+								"3205,3211": "Can be converted to expression",
+								"3357,3358": "Redundant lambda signature parentheses",
+								"3358,3360": "Redundant lambda signature parentheses",
+								"3366,3372": "Can be converted to expression",
+								"3465,3466": "Redundant lambda signature parentheses",
+								"3466,3468": "Redundant lambda signature parentheses",
+								"3474,3480": "Can be converted to expression",
+								"3765,3768": "no known errors.",
+								"45,50": "Using directive is not used by code and can be removed safely.",
+								"451,452": "Redundant lambda signature parentheses",
+								"452,454": "Redundant lambda signature parentheses",
+								"460,466": "Can be converted to expression"
+							},
+							"syntax": "Packages/C#/C#.sublime-syntax",
+							"translate_tabs_to_spaces": false,
+							"wrap_width": 0
+						},
+						"translation.x": 0.0,
+						"translation.y": 826.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
 					"type": "text"
 				}
 			]
 		},
 		{
-			"selected": 1,
+			"selected": 3,
 			"sheets":
 			[
 				{
-					"buffer": 7,
-					"file": "Main.cs",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4084,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2613,
-								2613
-							],
-							[
-								2624,
-								2624
-							]
-						],
-						"settings":
-						{
-							"oops":
-							{
-								"1217,1231": "Method 'OnclickTodoAdd' can be made static.",
-								"1406,1422": "Method 'OnClickGoSetting' can be made static.",
-								"1518,1520": "'Dt' should start with a lower case letter. (Rule 'Parameters')",
-								"1537,1545": "Use 'var' keyword",
-								"1824,1827": "no known errors.",
-								"19,24": "Using directive is not used by code and can be removed safely.",
-								"2744,2753": "Use 'var' keyword",
-								"2818,2821": "Redundant ToString() call",
-								"3038,3039": "Redundant lambda signature parentheses",
-								"3039,3041": "Redundant lambda signature parentheses",
-								"3047,3053": "Can be converted to expression",
-								"3142,3143": "Redundant lambda signature parentheses",
-								"3143,3145": "Redundant lambda signature parentheses",
-								"3151,3157": "Can be converted to expression",
-								"3303,3304": "Redundant lambda signature parentheses",
-								"3304,3306": "Redundant lambda signature parentheses",
-								"3312,3318": "Can be converted to expression",
-								"3411,3412": "Redundant lambda signature parentheses",
-								"3412,3414": "Redundant lambda signature parentheses",
-								"3420,3426": "Can be converted to expression",
-								"3711,3714": "no known errors.",
-								"45,50": "Using directive is not used by code and can be removed safely.",
-								"466,467": "Redundant lambda signature parentheses",
-								"467,469": "Redundant lambda signature parentheses",
-								"475,481": "Can be converted to expression"
-							},
-							"syntax": "Packages/C#/C#.sublime-syntax",
-							"translate_tabs_to_spaces": false,
-							"wrap_width": 0
-						},
-						"translation.x": 0.0,
-						"translation.y": 1329.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
-					"type": "text"
-				},
-				{
-					"buffer": 8,
+					"buffer": 5,
 					"file": "TodoField.cs",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3390,
+						"buffer_size": 3539,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3083,
-								3083
+								1518,
+								1518
 							]
 						],
 						"settings":
 						{
 							"oops":
 							{
-								"1469,1475": "Method 'Update' has the same with 'Start'",
-								"1522,1524": "'Dt' should start with a lower case letter. (Rule 'Parameters')",
-								"1784,1788": "Parameter can be IComparable",
+								"1471,1477": "Redundant method override",
+								"1552,1558": "Method 'Update' has the same with 'Start'",
+								"1605,1607": "'Dt' should start with a lower case letter. (Rule 'Parameters')",
+								"1867,1871": "Parameter can be IComparable",
 								"19,24": "Using directive is not used by code and can be removed safely.",
-								"2300,2302": "'Dt' should start with a lower case letter. (Rule 'Parameters')",
-								"2506,2508": "'Dt' should start with a lower case letter. (Rule 'Parameters')",
-								"2757,2765": "Lambda expression can be simplified to method group",
-								"2961,2968": "Method 'UnTouch' has the same with 'TouchSelected'",
-								"3280,3284": "'this.' is redundant and can be removed safely.",
+								"2337,2339": "'Dt' should start with a lower case letter. (Rule 'Parameters')",
+								"2543,2545": "'Dt' should start with a lower case letter. (Rule 'Parameters')",
+								"2794,2802": "Lambda expression can be simplified to method group",
+								"3315,3319": "'this.' is redundant and can be removed safely.",
 								"420,426": "Name should have prefix '_'. (Rule 'Fields').",
 								"429,433": "Initializing field by default value is redundant",
 								"481,485": "Name should have prefix '_'. (Rule 'Fields').",
 								"734,738": "Initializing field by default value is redundant",
 								"862,875": "'SelectedColor' should start with a lower case letter. (Rule 'Fields')",
-								"913,914": "Parameter 'x' is never used",
-								"921,922": "Parameter 'y' is never used"
+								"891,902": "'NormalColor' should start with a lower case letter. (Rule 'Fields')",
+								"940,941": "Parameter 'x' is never used",
+								"948,949": "Parameter 'y' is never used"
+							},
+							"syntax": "Packages/C#/C#.sublime-syntax",
+							"translate_tabs_to_spaces": false,
+							"wrap_width": 0
+						},
+						"translation.x": 7.0,
+						"translation.y": 1885.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "LongPress.cs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1252,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								919,
+								919
+							]
+						],
+						"settings":
+						{
+							"oops":
+							{
+								"156,168": "Convert to constant",
+								"19,24": "Using directive is not used by code and can be removed safely.",
+								"203,213": "Convert to constant",
+								"267,274": "The private field 'LpEvent' is never assigned",
+								"307,318": "The private field 'SelectEvent' is never assigned",
+								"351,363": "The private field 'UntouchEvent' is never assigned"
 							},
 							"syntax": "Packages/C#/C#.sublime-syntax",
 							"translate_tabs_to_spaces": false,
 							"wrap_width": 0
 						},
 						"translation.x": 0.0,
-						"translation.y": 1886.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "TodoText.cs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1697,
+						"regions":
+						{
+							"bookmarks":
+							{
+								"flags": 144,
+								"icon": "bookmark",
+								"regions":
+								[
+								],
+								"scope": "bookmarks"
+							}
+						},
+						"selection":
+						[
+							[
+								921,
+								921
+							]
+						],
+						"settings":
+						{
+							"oops":
+							{
+								"1152,1154": "Parameter can be IComparable",
+								"1180,1182": "Redundant ToString() call",
+								"125,131": "The private field '_title' is never assigned",
+								"1340,1344": "Parameter can be IComparable",
+								"1623,1626": "Parameter can be IComparable",
+								"19,24": "Using directive is not used by code and can be removed safely.",
+								"279,287": "'todoData' should start with an upper case letter. (Rule 'Properties')",
+								"514,520": "Method 'Update' has the same with 'Start'",
+								"589,591": "'Tf' should start with a lower case letter. (Rule 'Parameters')"
+							},
+							"syntax": "Packages/C#/C#.sublime-syntax",
+							"translate_tabs_to_spaces": false,
+							"wrap_width": 0
+						},
+						"translation.x": 0.0,
+						"translation.y": 391.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "Utility/FileIo.cs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1428,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								295,
+								295
+							]
+						],
+						"settings":
+						{
+							"oops":
+							{
+								"1128,1139": "'getFileName' should start with an upper case letter. (Rule 'Methods')",
+								"1147,1155": "Parameter can be IComparable",
+								"121,127": "This class is recommended to be defined as static",
+								"1330,1348": "'isRunningOnAndroid' should start with an upper case letter. (Rule 'Methods')",
+								"166,174": "Parameter can be IComparable",
+								"19,24": "Using directive is not used by code and can be removed safely.",
+								"334,342": "Parameter can be IComparable",
+								"351,355": "Parameter can be IComparable",
+								"616,624": "Parameter can be IComparable",
+								"711,719": "Use 'var' keyword",
+								"787,799": "Use 'var' keyword"
+							},
+							"syntax": "Packages/C#/C#.sublime-syntax",
+							"wrap_width": 0
+						},
+						"translation.x": 0.0,
+						"translation.y": 45.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -1140,11 +1162,11 @@
 							"translate_tabs_to_spaces": true,
 							"wrap_width": 0
 						},
-						"translation.x": 31.0,
-						"translation.y": 708.0,
+						"translation.x": 0.0,
+						"translation.y": 68.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 5,
 					"type": "text"
 				},
 				{
@@ -1173,66 +1195,7 @@
 						"translation.y": 460.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 11,
-					"file": "Utility/Token.cs",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 10438,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								10434,
-								10434
-							]
-						],
-						"settings":
-						{
-							"oops":
-							{
-								"10269,10276": "Method 'IsDayEq' can be made static.",
-								"1050,1057": "Use 'var' keyword",
-								"1769,1773": "Initializing field by default value is redundant",
-								"19,24": "Using directive is not used by code and can be removed safely.",
-								"244,248": "'Type' should start with an upper case letter. (Rule 'Type Parameters')",
-								"352,362": "Use 'var' keyword",
-								"4304,4308": "Initializing field by default value is redundant",
-								"442,443": "Using member of null value will cause a NullReferenceException",
-								"4703,4705": "Parameter can be IComparable",
-								"4713,4715": "Parameter can be IComparable",
-								"5957,5958": "Parameter can be IComparable",
-								"5966,5967": "Parameter can be IComparable",
-								"5975,5976": "Parameter can be IComparable",
-								"6209,6210": "Parameter can be IComparable",
-								"632,636": "'Type' should start with an upper case letter. (Rule 'Type Parameters')",
-								"6516,6517": "Initializing field by default value is redundant",
-								"6540,6541": "Initializing field by default value is redundant",
-								"6576,6581": "Parameter can be IComparable",
-								"6589,6595": "Parameter can be IComparable",
-								"6887,6891": "Initializing field by default value is redundant",
-								"7373,7377": "Initializing field by default value is redundant",
-								"747,754": "Use 'var' keyword",
-								"894,898": "'Type' should start with an upper case letter. (Rule 'Type Parameters')",
-								"9238,9246": "Parameter can be IComparable",
-								"9532,9540": "Parameter can be IComparable"
-							},
-							"syntax": "Packages/C#/C#.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true,
-							"wrap_width": 0
-						},
-						"translation.x": 0.0,
-						"translation.y": 7139.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
+					"stack_index": 6,
 					"type": "text"
 				}
 			]
@@ -1266,7 +1229,7 @@
 		"cols":
 		[
 			0.0,
-			0.524879614767,
+			0.530497592295,
 			1.0
 		],
 		"rows":

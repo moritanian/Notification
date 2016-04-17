@@ -6,6 +6,14 @@ public class Setting : Token {
 
 
 	Text outputText;
+	Toggle _debugToggle;
+	Toggle _normalToggle;
+	public InputField _inputField;
+
+	public static int fontsize = 20;
+	public static int FontSize{
+		get {return fontsize;}
+	}
 	// Use this for initialization
 	void Start () {
 	
@@ -13,11 +21,13 @@ public class Setting : Token {
 	
 	// Update is called once per frame
 	void Update () {
-	
+
 	}
 
 	void Awake(){
 		outputText = MyCanvas.Find<Text>("outputText");
+		_debugToggle = transform.FindChild("IsDebugLog").gameObject.GetComponent<Toggle>();
+		_normalToggle = transform.FindChild("NormalToggle").gameObject.GetComponent<Toggle>();
 	}
 
 	// 設定保存
@@ -64,11 +74,27 @@ public class Setting : Token {
 	}
 
 	public void OnClickBGChange(){
+		outputText.text = "";
 		// 背景画像変更
 		int id = MyCanvas.Find<BackGound>("BackGround").BGChange();
 		Util.SaveData(GetDataKey(DataKeys.BGid), id.ToString());
 		GetComponent<Image>().color = new Color(255, 255,255 , 0.5f); 
 		StartCoroutine(ImageR());
+	}
+
+	// 画面デバッグログ出力On/Off
+	public void OnChangeDebugToggle(){
+		DebugLog.IsLogDebug = _debugToggle.isOn;
+	}
+
+	public void OnChangeNormalLog(){
+		DebugLog.NormalLog = _normalToggle.isOn;
+	}
+
+	// fontsize フィールド変更
+	public void OnChangeFontSize(){
+		int font_size = int.Parse(_inputField.text); 
+		if(font_size > 0)fontsize = font_size;
 	}
 
 	IEnumerator ImageR()

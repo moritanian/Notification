@@ -10,3 +10,10 @@ http://befool.co.jp/blog/raharu/localnotification-android/
 
 スワイプ
 http://naichilab.blogspot.jp/2015/02/unity.html
+
+Android ファイル保存
+http://qiita.com/tetsujp84/items/37a44da7d5b9c890fc1d
+
+Log
+http://unity-michi.com/post-305/
+http://www.javadrive.jp/android/step/index3.html

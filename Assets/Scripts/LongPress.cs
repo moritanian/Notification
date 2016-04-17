@@ -15,6 +15,8 @@ public class LongPress : MonoBehaviour {
 	UnityEvent LpEvent;
 		[SerializeField]
 	UnityEvent SelectEvent;
+		[SerializeField]
+	UnityEvent UntouchEvent;
 
 	enum PressStaus{
 		None,
@@ -36,14 +38,14 @@ public class LongPress : MonoBehaviour {
 			if(_pressStatus == PressStaus.Tounch ){
 				// 1フレーム間隔分加算
 				time += Time.deltaTime;
-				if(time > RequiredTime ){
+				if(time > SelectTime ){
 					_pressStatus = PressStaus.Selected;
 					SelectEvent.Invoke();
 				}
 			}
 			if(_pressStatus == PressStaus.Selected){
 				time += Time.deltaTime;
-				if(time > SelectTime){
+				if(time > RequiredTime){
 					_pressStatus = PressStaus.LongPressed;
 					// イベント実行
 					LpEvent.Invoke();
@@ -61,6 +63,7 @@ public class LongPress : MonoBehaviour {
 	public void ClickUp(){
 		time = 0;
 		_pressStatus = PressStaus.None;
+		UntouchEvent.Invoke();
 	}
 
 }

@@ -49,7 +49,9 @@ public class Main : Token {
 		Show(AllContain);
 	}
 
-
+	void Update(){
+		
+	}
 
 	public void OnclickTodoAdd(){
 		//TodoAdd(DateTime.Now);

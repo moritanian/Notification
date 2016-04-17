@@ -44,6 +44,7 @@ public class TodoField : Token {
 	DateTime TodoDate;
 
 	public Color SelectedColor;
+	public Color NormalColor;
 
 	public static TodoField Add(float x,float y,TodoData todoData){
 		//TodoField obj = CreateInstanceEasy<TodoField>("TodoField",x,y);
@@ -144,7 +145,7 @@ public class TodoField : Token {
 	}
 	public void UnTouch(){
 		Image _image = transform.FindChild("image").gameObject.GetComponent<Image>();
-		_image.color = SelectedColor;
+		_image.color = NormalColor;
 	}
 
 	// 消去するかダイアログ表示
