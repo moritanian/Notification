@@ -35,12 +35,12 @@ public class Body : Token {
 					Application.Quit();
 					break;
 				case Screen.Setting:
-					Debug.Log("Back Main");
+					
 					MyCanvas.Find<Setting>("BoardSetting").OnClickGoMain();
 					break;
 				case Screen.Text:
-					Debug.Log("Back Main");
-					MyCanvas.Find<TodoText>("BoardText").OnClickGoBack();
+					TodoText._todoText.GoBack(true);
+					//MyCanvas.Find<TodoText>("BoardText").OnClickGoBack();
 					break;
 				default:
 					break;

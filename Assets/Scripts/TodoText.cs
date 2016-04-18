@@ -13,6 +13,10 @@ public class TodoText : MonoBehaviour {
 		set {_todoField._todoData = value;}
 	}
 	
+	bool _isChanged;
+	public bool IsChanged{
+		get {return _isChanged;}
+	}
 
 	void Awake(){
 		//_title = MyCanvas.Find<>("Titletxt");
@@ -52,11 +56,16 @@ public class TodoText : MonoBehaviour {
 	}
 
 	public void OnClickGoBack(){
-		GoBack();
+		GoBack(false);
 	}
 	
 	public void OnClickSave(){
 		_save();
+	}
+
+	// Fieldを編集した
+	public void TextEdited(){
+		_isChanged = true;
 	}
 
 	// idに対応するファイル削除
@@ -86,10 +95,23 @@ public class TodoText : MonoBehaviour {
 
 	void SetText(string text){
 		_inputField.text = text;
+		// データ編集したときにたてるフラグ
+		_isChanged = false;
 	}
 
-	void GoBack(){
+		// saveするかしないか指定
+	public void GoBack(bool IsSave = true){
 		Body.GoBoardMain();
+		if(IsChanged){
+			if(IsSave){
+				_save();
+				PopUp.PopUpStart("保存しました", 1.5f);
+			
+			}else{
+				PopUp.PopUpStart("保存せず戻ります", 1.5f);
+			}
+		}
+		
 	} 
 
 	// タイトル編集完了
