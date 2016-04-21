@@ -171,8 +171,8 @@ public class CalendarCel : Token {
 	// セルが押された
 	public void OnClickCel(){
 		if(Day!= 0){
-			//MyCanvas.Find<Main>("BoardMain").TodoAdd(_celTime);
-
+			// 時間更新
+			_celTime = _mycalendar.AddTime(_celTime);
 			MyCanvas.Find<MyCalendar>("MyCalendar").ExitCalWithCallBack(_celTime);
 		}
 	}

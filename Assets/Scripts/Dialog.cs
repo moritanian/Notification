@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public delegate void YesCallBack(); 
@@ -18,7 +18,7 @@ public class Dialog : Token {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		
 	}
 	public YesCallBack _yesCallBack;
 

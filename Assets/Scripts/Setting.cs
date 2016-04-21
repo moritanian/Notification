@@ -45,6 +45,8 @@ public class Setting : Token {
 		if(size_str != "")fontsize = int.Parse(size_str);
 		string color_str = Util.LoadData(GetDataKey(DataKeys.Color));
 		if(color_str != "")ChangeColor(int.Parse(color_str));
+		OnChangeDebugToggle();
+		OnChangeNormalLog();
 	}
 	
 	// Update is called once per frame

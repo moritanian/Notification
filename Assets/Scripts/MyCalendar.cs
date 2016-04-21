@@ -26,7 +26,8 @@ public class MyCalendar : Token {
 	  [SerializeField]
 	public float FIRST_Y = 0;
 	readonly public int DAYS_IN_WEEK = 7;
-	readonly public int NUM_OF_ROW = 5;
+		[SerializeField]
+	readonly public int NUM_OF_ROW = 6;
 	// 
 	public DateTime MyDateTime;
 	[SerializeField]
@@ -34,6 +35,8 @@ public class MyCalendar : Token {
 	public Color MyDayColor;
 
 	TextObj _dateText = null;
+
+	public TimeInput _inputTime;
 
 
 	// CalendarCelに参照させるパラメータ 読み取り専用
@@ -129,5 +132,12 @@ public class MyCalendar : Token {
 	public void OnClickNextMonth(){
 		_showDateTime = _showDateTime.AddMonths(1);
 		SetCalendar();
+	}
+
+	// calendarell のceltime にinputboxの時間、分を入れる
+	public DateTime AddTime(DateTime _celTime){
+		int hour = _inputTime.GetHour();
+		int min = _inputTime.GetMin();
+		return new DateTime(_celTime.Year, _celTime.Month, _celTime.Day, hour, min, 0); 
 	}
 }
