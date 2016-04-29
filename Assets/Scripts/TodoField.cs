@@ -21,7 +21,22 @@ public class TodoField : Token {
 	public static TokenMgr<TodoField> parent = null;
 	public InputField _inputField;
 
-	public Text text;
+	// テキスト背景// 期限過ぎた場合は強調するなど
+	
+		[SerializeField]
+	Image textImage;
+		[SerializeField]
+	Color NormalColor;
+		[SerializeField]
+	Color SelectedColor;
+
+		[SerializeField]
+	Image timeTextImage;
+		[SerializeField]
+	Color EnphasizedColor;
+		[SerializeField]
+	Color NormalTimeTextColor;
+	//public Text text;
 	TextObj _timeText;
 
 	//public int id; // todo のid 本文との紐づけにも
@@ -43,9 +58,7 @@ public class TodoField : Token {
 
 	DateTime TodoDate;
 
-	public Color SelectedColor;
-	public Color NormalColor;
-
+	
 	public static TodoField Add(float x,float y,TodoData todoData){
 		//TodoField obj = CreateInstanceEasy<TodoField>("TodoField",x,y);
 		TodoField obj = parent.Add(0,0);
@@ -73,9 +86,12 @@ public class TodoField : Token {
 
 	void Start(){
 
+		
 	}
 
 	void Update(){
+		// 現在時刻過ぎた場合は強調する
+		SetTimeTextColor();
 	}
 	// 作成時の処理
 	public void Create(DateTime Dt){
@@ -86,6 +102,8 @@ public class TodoField : Token {
 		//再利用している場合、値が入っていることがあるため消去
 		Debug.Log("Created!! ");
 		SetText("");
+		Main mainBoard = MyCanvas.Find<Main>("BoardMain");
+		mainBoard.ShowToday();
 	}
 	
 
@@ -110,6 +128,8 @@ public class TodoField : Token {
 	// タイトル編集完了ボタン
 	public void Modified(){
 		_todoData.UpdateTitle(GetText());
+		Main mainBoard = MyCanvas.Find<Main>("BoardMain");
+		mainBoard.ShowToday();
 	}
 
 	public string TimeText{
@@ -121,7 +141,9 @@ public class TodoField : Token {
 		TodoDate = Dt;
 		//TimeText = Dt.Year.ToString() + "\n" + Dt.Month.ToString() + "/" + Dt.Day;
 		TimeText = Dt.ToString("yy/MM/dd") + "\n" + Dt.ToString("  HH:mm");
-
+		// today ボード更新
+		Main mainBoard = MyCanvas.Find<Main>("BoardMain");
+	//	mainBoard.ShowToday();
 	}
 
 	public void SetTime(DateTime Dt){
@@ -133,19 +155,22 @@ public class TodoField : Token {
 	public void OnClickIsNotify(){
 		_todoData.UpdateIsNotify(IsNotify);
 	}
+	public void TimeModified(DateTime Dt){
+		SetTime(Dt);
+		Main mainBoard = MyCanvas.Find<Main>("BoardMain");
+		mainBoard.ShowToday();
+	}
 	// 時間ボタン
 	public void OnClickTime(){
-		MyCanvas.Find<MyCalendar>("MyCalendar").GoCal(TodoDate,_celTime => SetTime(_celTime));
+		MyCanvas.Find<MyCalendar>("MyCalendar").GoCal(TodoDate,_celTime => TimeModified(_celTime));
 	}
 
 	// 長押し選択
 	public void TouchSelected(){
-		Image _image = transform.FindChild("image").gameObject.GetComponent<Image>();
-		_image.color = SelectedColor;
+		textImage.color = SelectedColor;
 	}
 	public void UnTouch(){
-		Image _image = transform.FindChild("image").gameObject.GetComponent<Image>();
-		_image.color = NormalColor;
+		textImage.color = NormalColor;
 	}
 
 	// 消去するかダイアログ表示
@@ -158,11 +183,20 @@ public class TodoField : Token {
 
 	// 自分を消去(データごと)
 	public void Delete(){
+		Main mainBoard = MyCanvas.Find<Main>("BoardMain");
 		// Todo Mainがもってるデータ消去、保存データ消去
-		MyCanvas.Find<Main>("BoardMain").DeleteDataById(_todoData.Id);
+		mainBoard.DeleteDataById(_todoData.Id);
 		// ファイル削除
 		TodoText.DeleteFile(_todoData.Id);
 		Vanish();
+		mainBoard.ShowToday();
+	}
+
+	// テキスト背景色変更 /
+	void SetTimeTextColor(){
+		
+		if(_todoData.TodoTime.CompareTo(DateTime.Now) < 0)timeTextImage.color = EnphasizedColor;
+		else timeTextImage.color = NormalTimeTextColor;
 	}
 	
 }

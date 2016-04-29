@@ -10,7 +10,7 @@ public class Main : Token {
 	DateTime crt_time;
 	TextObj _title ;
 	List<TodoData> Todos;
-
+	
 	Dropdown _dpDown; 
 	// コンボボックス用選択肢列挙
 	enum  SelectOpt{
@@ -33,10 +33,11 @@ public class Main : Token {
 	void Awake(){
 		_title = MyCanvas.Find<TextObj>("MainTitle");
 		TodoField.parent = new TokenMgr<TodoField>("TodoField",40);
+		TodayField.parent = new TokenMgr<TodayField>("TodayField", 10);
 		_dpDown = MyCanvas.Find<Dropdown>("Dropdown");
 		today_scl = MyCanvas.Find<ScrollController>("TodayContent");
 		todo_scl = MyCanvas.Find<ScrollController>("TodoContent");
-		
+		 
 	}
 
 	void Start () {	
@@ -50,7 +51,7 @@ public class Main : Token {
 	}
 
 	void Update(){
-		
+
 	}
 
 	public void OnclickTodoAdd(){
@@ -91,7 +92,7 @@ public class Main : Token {
 			_todoField.IsNotify = Todos[i].IsNotify;
 			_todoField.SetTimeText(Todos[i].TodoTime);
 		}	
-		ShowToday(GetEq(SelectOpt.Today));
+		ShowToday();
 	}
 
 
@@ -152,20 +153,50 @@ public class Main : Token {
 	}
 
 	// 上のボード、今日のtodo表示
-	void ShowToday(IsContain _eq){
+	public void ShowToday(){
+		ShowUpperBoard(SelectOpt.Today);
+	}
+
+	void ShowUpperBoard(SelectOpt option){
+		// 破棄する前に場所をcanvas 直下に移動
+		TodayField.parent.ForEachExists(t => t.transform.SetParent(MyCanvas.GetCanvas().transform,false));
+		// 生存しているフィールドをすべて破棄
+		TodayField.parent.Vanish();
+
+		IsContain _eq = GetEq(option);
 		for(int i=0; i<Todos.Count; i++){
 			if(!_eq(Todos[i]))continue;
-			TodoField _todoField = TodoField.Add(0,0,Todos[i]);
+			TodayField _todayField = TodayField.Add(0,0,Todos[i]);
 			//_todoField.transform.SetParent(this.transform,false);
-			today_scl.SetContent(_todoField.transform);
-			_todoField.SetText(Todos[i].Title);
-			_todoField.IsNotify = Todos[i].IsNotify;
-			_todoField.SetTimeText(Todos[i].TodoTime);
+			today_scl.SetContent(_todayField.transform);
+			_todayField.SetText(Todos[i].Title);
+			_todayField.SetTimeText(Todos[i].TodoTime);
 		}	
 	}
 
 	public bool DeleteDataById(int id){
 		return TodoData.DeleteDataById(Todos,id);
+	}
+
+	// 該当月のそれぞれの日の持つtodoの数をそれぞれ計算
+	public List<int> CalcTodoNumbers(DateTime dt){
+		int days_in_month = _days_in_month(dt);
+		Debug.Log("days_in_month" + days_in_month);
+		List<int> numbers = new List<int>();
+		for(int i=0;i<days_in_month; i++){
+			numbers.Add(0);
+		}
+		for(int i=0;i<Todos.Count;i++){
+			if(IsSameMonth(dt,Todos[i].TodoTime))numbers[Todos[i].TodoTime.Day - 1]++;
+		}
+		return numbers;
+	}
+
+	int _days_in_month(DateTime dt){
+		return DateTime.DaysInMonth(dt.Year, dt.Month);
+	}
+	bool IsSameMonth(DateTime dt1, DateTime dt2){
+		return (dt1.Year == dt2.Year && dt1.Month == dt2.Month);
 	}
 
 

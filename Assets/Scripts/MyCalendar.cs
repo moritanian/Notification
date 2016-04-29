@@ -70,7 +70,7 @@ public class MyCalendar : Token {
 		_dateText = MyCanvas.Find<TextObj>("Date");
 
 		InitCalendar();
-		SetCalendar();
+		//SetCalendar();
 	
 	}
 	
@@ -109,7 +109,7 @@ public class MyCalendar : Token {
 	}
 	void SetCalendar(){
 		// 表示する月の日数
-		int days_in_month = DateTime.DaysInMonth(_showDateTime.Year, _showDateTime.Month);
+		int days_in_month = _days_in_month(_showDateTime);
 		DateTime first_day = new DateTime(_showDateTime.Year, _showDateTime.Month,1);
 		int first_week = (int)first_day.DayOfWeek; // １日の曜日
 
@@ -124,6 +124,10 @@ public class MyCalendar : Token {
 		_dateText.Label = _showDateTime.Year.ToString() + "年" + _showDateTime.Month.ToString() + "月";
 
 	}
+	int _days_in_month(DateTime dt){
+		return DateTime.DaysInMonth(dt.Year, dt.Month);
+	}
+	
 
 	public void OnClickPreMonth(){
 		_showDateTime = _showDateTime.AddMonths(-1);

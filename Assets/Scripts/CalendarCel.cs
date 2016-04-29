@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System.Reflection;
+using System.Collections.Generic;
 using System;
 
 // カレンダーのセルに割り当てる
@@ -9,11 +11,26 @@ public class CalendarCel : Token {
 	static MyCalendar _mycalendar = null;
 	 /// uGUI Button
   	Button _button = null;
-  	Text _text = null;
+  		[SerializeField]
+  	Text _text;
+  		[SerializeField]
+  	Image numImage;
+  		[SerializeField]
+  	Text numText;
+  	
   	public string Label
   	{
   		get { return _text.text; }
-  		set { _text.text = value; }
+  	}
+  	void SetLabel(string txt){
+  		_text.text = txt;
+  		if(col == 0){
+  			_text.color = Color.red;
+  		}else if(col == 6){
+  			_text.color = Color.blue;
+  		}else{
+  			_text.color = Color.black;
+  		}
   	}
 
   	Image CelImage; 
@@ -68,10 +85,11 @@ public class CalendarCel : Token {
 		set {
 			if(value > 0){
 				status(Status.Normal);
+				Debug.Log("day "+ _celTime.ToString());
 				_celTime = new DateTime(_celTime.Year,_celTime.Month, value);
-				Label = value.ToString();
+				SetLabel(value.ToString());
 			}else{
-				Label = "";
+				SetLabel("");
 				status(Status.OutOfRange);
 			}
 			
@@ -105,20 +123,12 @@ public class CalendarCel : Token {
 		if(_mycalendar == null)_mycalendar = MyCanvas.Find<MyCalendar>("MyCalendar");
 		 _button = GetComponent<Button>();
 		CelImage = GetComponent<Image>();
-    	// 下の階層にあるTextを取得する
-    	foreach(Transform child in transform) {
-    		if(child.name.Contains("Text")) {
-        // 対象のオブジェクトが見つかった
-    			_text = child.GetComponent<Text>();
-    			break;
-    		}
-    	}
     	status(Status.OutOfRange);
     	_celTime = DateTime.Now;
 
     }
 
-    void Start(){
+    void Start(){	
     	UpdateCel();
     } 
 /*
@@ -129,21 +139,22 @@ public class CalendarCel : Token {
 		}
 	}
 */
+
 	// 全てのセルを更新する
 	public static void AllUpdate(){
-		parent.ForEachExists(cel => cel.UpdateCel());
+		DateTime Time = new DateTime(_mycalendar.ShowDateTime.Year, _mycalendar.ShowDateTime.Month,1);
+		List<int> numbers = MyCanvas.Find<Main>("BoardMain").CalcTodoNumbers(Time);	
+		parent.ForEachExists(cel => cel.UpdateCelWithNum(numbers));
 	}
-
 	public void UpdateCel(){
 		_celTime = new DateTime(_mycalendar.ShowDateTime.Year, _mycalendar.ShowDateTime.Month,1);
-			
 		// 割り当ての日にち取得
 		int new_day = GetMyDay();
 		if(new_day>0){
-			Label = new_day.ToString();
+			SetLabel(new_day.ToString());
 			Day = new_day;
 		}else{
-			Label = "";
+			SetLabel("");
 			Day = 0;
 		}
 		// 範囲外の時はここで処理終了 
@@ -155,8 +166,19 @@ public class CalendarCel : Token {
 		if(IsDayEq(_mycalendar.MyDateTime, _celTime)){
 			status(Status.Pointed);
 		}
-
 	}
+
+	public void UpdateCelWithNum(List<int> numbers){
+		UpdateCel();
+		if(_status != Status.OutOfRange){
+			Debug.Log("number " + (_celTime.Day -1).ToString());
+			if(numbers[_celTime.Day -1 ]>0)numText.text = numbers[_celTime.Day -1].ToString();
+			else numText.text = "";
+		}else{
+			numText.text = "";
+		}
+	}
+
 
 	int GetMyDay(){
 		//　1日より左側だった
