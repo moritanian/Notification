@@ -1,23 +1,23 @@
-Android ŠJ”­ÒŒü‚¯ƒ\ƒtƒgƒEƒFƒAŠJ”­ƒLƒbƒg
+Android é–‹ç™ºè€…å‘ã‘ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢é–‹ç™ºã‚­ãƒƒãƒˆ
 http://spf.fmworld.net/oss/appkit/
 
-’Ê’m
+é€šçŸ¥
 http://qiita.com/ToshikiImagawa/items/8f150a0645da8e5ba9d6
 http://klabgames.tech.blog.jp.klab.com/archives/1046446808.html
 http://qiita.com/relzx/items/a35f7ab6dbacb48f7e26
 http://nirasan.hatenablog.com/entry/2014/06/23/090440
 http://befool.co.jp/blog/raharu/localnotification-android/
 
-ƒXƒƒCƒv
+ã‚¹ãƒ¯ã‚¤ãƒ—
 http://naichilab.blogspot.jp/2015/02/unity.html
 
-Android ƒtƒ@ƒCƒ‹•Û‘¶
+Android ãƒ•ã‚¡ã‚¤ãƒ«ä¿å­˜
 http://qiita.com/tetsujp84/items/37a44da7d5b9c890fc1d
 
 Log
 http://unity-michi.com/post-305/
 http://www.javadrive.jp/android/step/index3.html
 
-’Ê’m—pEclipse‘€ì
+é€šçŸ¥ç”¨Eclipseæ“ä½œ
 http://qiita.com/relzx/items/a35f7ab6dbacb48f7e26
 http://qiita.com/ToshikiImagawa/items/8f150a0645da8e5ba9d6

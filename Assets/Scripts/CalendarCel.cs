@@ -14,7 +14,7 @@ public class CalendarCel : Token {
   		[SerializeField]
   	Text _text;
   		[SerializeField]
-  	Image numImage;
+  	ImageObj numImage;
   		[SerializeField]
   	Text numText;
   	
@@ -85,7 +85,7 @@ public class CalendarCel : Token {
 		set {
 			if(value > 0){
 				status(Status.Normal);
-				Debug.Log("day "+ _celTime.ToString());
+			//	Debug.Log("day "+ _celTime.ToString());
 				_celTime = new DateTime(_celTime.Year,_celTime.Month, value);
 				SetLabel(value.ToString());
 			}else{
@@ -145,7 +145,9 @@ public class CalendarCel : Token {
 		DateTime Time = new DateTime(_mycalendar.ShowDateTime.Year, _mycalendar.ShowDateTime.Month,1);
 		List<int> numbers = MyCanvas.Find<Main>("BoardMain").CalcTodoNumbers(Time);	
 		parent.ForEachExists(cel => cel.UpdateCelWithNum(numbers));
+		//parent.ForEachExists(cel => cel.UpdateCel());
 	}
+
 	public void UpdateCel(){
 		_celTime = new DateTime(_mycalendar.ShowDateTime.Year, _mycalendar.ShowDateTime.Month,1);
 		// 割り当ての日にち取得
@@ -167,15 +169,15 @@ public class CalendarCel : Token {
 			status(Status.Pointed);
 		}
 	}
-
+	// セル表示+ その日のTodoの数
 	public void UpdateCelWithNum(List<int> numbers){
 		UpdateCel();
 		if(_status != Status.OutOfRange){
-			Debug.Log("number " + (_celTime.Day -1).ToString());
-			if(numbers[_celTime.Day -1 ]>0)numText.text = numbers[_celTime.Day -1].ToString();
-			else numText.text = "";
+			//Debug.Log("number " + (_celTime.Day -1).ToString());
+			SetPoint(numbers[_celTime.Day -1 ]);
 		}else{
-			numText.text = "";
+			// todo数ないので非表示
+			SetPoint(0);
 		}
 	}
 
@@ -196,6 +198,18 @@ public class CalendarCel : Token {
 			// 時間更新
 			_celTime = _mycalendar.AddTime(_celTime);
 			MyCanvas.Find<MyCalendar>("MyCalendar").ExitCalWithCallBack(_celTime);
+		}
+	}
+
+	// todo 数表示
+	void SetPoint(int num){
+		if(num>0){
+			numText.enabled = true;
+			numText.text = num.ToString();
+			numImage.Visible = true;
+		}else{ 					// 非表示 
+			numText.enabled = false;
+			numImage.Visible = false;
 		}
 	}
 }

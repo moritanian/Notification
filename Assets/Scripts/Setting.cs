@@ -45,8 +45,8 @@ public class Setting : Token {
 		if(size_str != "")fontsize = int.Parse(size_str);
 		string color_str = Util.LoadData(GetDataKey(DataKeys.Color));
 		if(color_str != "")ChangeColor(int.Parse(color_str));
-		OnChangeDebugToggle();
-		OnChangeNormalLog();
+		OnChangeDebugToggle(true);
+		OnChangeNormalLog(true);
 	}
 	
 	// Update is called once per frame
@@ -66,7 +66,9 @@ public class Setting : Token {
 	public enum DataKeys{
 		BGid,
 		FontSize,
-		Color
+		Color,
+		IsDebugLog,
+		IsNormalLog
 	}
 
 	public static string GetDataKey(DataKeys key){
@@ -115,12 +117,36 @@ public class Setting : Token {
 	}
 
 	// 画面デバッグログ出力On/Off
-	public void OnChangeDebugToggle(){
+	// 表示するかどうかboolを保存する
+	public void OnChangeDebugToggle(bool is_init = false){
+		if(is_init){
+			string bool_str = Util.LoadData(GetDataKey(DataKeys.IsDebugLog));
+			if(bool_str != ""){
+				Debug.Log(bool_str);
+				bool isLog = bool.Parse(bool_str);
+				DebugLog.IsLogDebug = isLog;
+				_debugToggle.isOn = isLog;
+				return ;
+			}
+		}
 		DebugLog.IsLogDebug = _debugToggle.isOn;
+		Util.SaveData(GetDataKey(DataKeys.IsDebugLog), _debugToggle.isOn.ToString());
+		
 	}
 
-	public void OnChangeNormalLog(){
+	public void OnChangeNormalLog(bool is_init = false){
+		if(is_init){
+			string bool_str = Util.LoadData(GetDataKey(DataKeys.IsNormalLog));
+			if(bool_str != ""){
+				bool isLog = bool.Parse(bool_str);
+				DebugLog.NormalLog = isLog;
+				_normalToggle.isOn = isLog;
+				return ;
+			}
+		} 
 		DebugLog.NormalLog = _normalToggle.isOn;
+		Util.SaveData(GetDataKey(DataKeys.IsNormalLog), _normalToggle.isOn.ToString());
+		
 	}
 
 	// fontsize フィールド変更

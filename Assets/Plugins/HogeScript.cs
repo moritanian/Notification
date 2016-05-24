@@ -23,6 +23,7 @@ public class HogeScript: MonoBehaviour {
 	public static void CallFuncA(string str)
 	{
 #if UNITY_ANDROID && !UNITY_EDITOR
+		Debug.Log("CallFuncA Android only");
 		if (m_plugin != null){
 			m_plugin.Call("FuncA", str);
 		}

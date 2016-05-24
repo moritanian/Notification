@@ -181,7 +181,7 @@ public class Main : Token {
 	// 該当月のそれぞれの日の持つtodoの数をそれぞれ計算
 	public List<int> CalcTodoNumbers(DateTime dt){
 		int days_in_month = _days_in_month(dt);
-		Debug.Log("days_in_month" + days_in_month);
+		//Debug.Log("days_in_month" + days_in_month);
 		List<int> numbers = new List<int>();
 		for(int i=0;i<days_in_month; i++){
 			numbers.Add(0);
