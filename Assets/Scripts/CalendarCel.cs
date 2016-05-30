@@ -22,9 +22,12 @@ public class CalendarCel : Token {
   	{
   		get { return _text.text; }
   	}
+
+  	//日にちと休日の色分け
   	void SetLabel(string txt){
   		_text.text = txt;
-  		if(col == 0){
+  		if(Holiday.GetHoliday(_celTime) != "")Debug.Log(Holiday.GetHoliday(_celTime));
+  		if(col == 0 || Holiday.GetHoliday(_celTime) != ""){
   			_text.color = Color.red;
   		}else if(col == 6){
   			_text.color = Color.blue;

@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Plugins\HogeScript.cs" />
+     <None Include="Assets\AppData\TodoText_id5.txt" />
      <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
      <None Include="Assets\SimpleNotificationForAndroid\README.txt" />
      <None Include="Assets\SimpleNotificationForAndroid\Plugins\Android\AndroidManifest.xml" />

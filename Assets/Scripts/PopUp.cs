@@ -39,15 +39,15 @@ public class PopUp : MonoBehaviour {
 
 	void OnGUI(){
 		if(_popupstat == PopUpStat.Start){
-			float width = 100f;
-			float height = 40f;
+			float width = 300f;
+			float height = 60f;
 			Rect drawArea = new Rect(60,200, width, height);
 			GUI.Box(drawArea,"");
 			GUILayout.BeginArea(drawArea);
 			{
 				GUIStyle style = new GUIStyle();
 				style.wordWrap = true;
-				style.fontSize = 12;
+				style.fontSize = 30;
 				GUILayout.Label(_title, style);
 			}
 			GUILayout.EndArea();

@@ -20,6 +20,9 @@ public class Main : Token {
 		Previous,
 		Future
 	}
+
+	readonly string[] japanese_week = {"日", "月", "火", "水", "木", "金", "土"};
+
 	// 一覧表示するtodoにふくまれるかどうか判定するラムダ式を入れる型
 	delegate bool IsContain(TodoData td);
 	readonly IsContain AllContain = (td) => {return true;};  
@@ -42,8 +45,10 @@ public class Main : Token {
 
 	void Start () {	
 
+		// 祝日初期化
+		Holiday.init();
 		crt_time = DateTime.Now;
-		_title.Label = crt_time.Month + "月" + crt_time.Day +"日" + "今日のTodo"; 	
+		_title.Label = crt_time.Month + "月" + crt_time.Day +"日 (" + japanese_week[(int)(crt_time.DayOfWeek)] + ") 今日のTodo"; 	
 		Todos = TodoData.LoadAll();
 		TodoData.SortByDate(Todos);
 		// 全て表示

@@ -43,14 +43,14 @@ public class TimeInput : MonoBehaviour {
 		int _min = _getMin();
 		// 時間が不正
 		if(_hour == -1){
-			DpHour1.value = hour/10;
-			DpHour2.value = hour%10;
+			DpHour1.value = hour / 10;
+			DpHour2.value = hour % 10;
 			return ;
 		}
 		// 分が不正
 		if(_min == -1){
-			DpMin1.value = min/10;
-			DpMin2.value = min%10;
+			DpMin1.value = min / 10;
+			DpMin2.value = min % 10;
 			return ;
 		}
 		// 正確だった場合は値更新
