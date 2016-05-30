@@ -4,6 +4,134 @@
 		"selected_items":
 		[
 			[
+				"De",
+				"DebugReset(int id = 0)	void"
+			],
+			[
+				"Loacl",
+				"LocalCallReset(int id)	bool"
+			],
+			[
+				"localca",
+				"LocalCallSet(int id, DateTime call_time, string name, string title, string label, string type = \"\")	void"
+			],
+			[
+				"Se",
+				"SetNotify(int id = 0)	void"
+			],
+			[
+				"Get",
+				"GetComponent(string type)	Component"
+			],
+			[
+				"Loca",
+				"LocalCallReset(int id)	bool"
+			],
+			[
+				"Is",
+				"IsNotify	bool { get; set; }"
+			],
+			[
+				"To",
+				"ToString()	string"
+			],
+			[
+				"f",
+				"flg	bool"
+			],
+			[
+				"Day",
+				"DayOfWeek	DayOfWeek { get; }"
+			],
+			[
+				"ho",
+				"holidays	List<Holiday>"
+			],
+			[
+				"M",
+				"month	int"
+			],
+			[
+				"ce",
+				"_celTime	DateTime"
+			],
+			[
+				"ReadO",
+				"readonly	readonly"
+			],
+			[
+				"I",
+				"init()	void"
+			],
+			[
+				"week",
+				"week_row	int"
+			],
+			[
+				"Da",
+				"DayOfWeek	DayOfWeek { get; }"
+			],
+			[
+				"da",
+				"Day	int { get; }"
+			],
+			[
+				"holi",
+				"Holiday	Holiday"
+			],
+			[
+				"Ho",
+				"Holiday(DateTime _date, string name, int start_y = 1970)	Holiday(DateTime _date, string name, int start_y = 1970)"
+			],
+			[
+				"start",
+				"start_y	int"
+			],
+			[
+				"co",
+				"count	int"
+			],
+			[
+				"Todo",
+				"_todoData	TodoData"
+			],
+			[
+				"Up",
+				"UpdateIsNotify(bool _IsNotify)	bool"
+			],
+			[
+				"_",
+				"_IsNotify	bool"
+			],
+			[
+				"too",
+				"todo_time	DateTime"
+			],
+			[
+				"todo",
+				"_todoData	TodoData"
+			],
+			[
+				"td",
+				"td	TodoData"
+			],
+			[
+				"is",
+				"isLog	bool"
+			],
+			[
+				"bool",
+				"bool_str	string"
+			],
+			[
+				"boo",
+				"bool_str	string"
+			],
+			[
+				"Debug",
+				"DebugLog	DebugLog"
+			],
+			[
 				"Ca",
 				"CallFuncC(string str)	void"
 			],
@@ -16,20 +144,12 @@
 				"UpdateCel()	void"
 			],
 			[
-				"To",
-				"ToString()	string"
-			],
-			[
 				"log",
 				"Log(object message)	void"
 			],
 			[
 				"new",
 				"new_day	int"
-			],
-			[
-				"da",
-				"days_in_month	int"
 			],
 			[
 				"sho",
@@ -108,16 +228,8 @@
 				"OnChangeNormalLog()	void"
 			],
 			[
-				"Is",
-				"IsSave	bool"
-			],
-			[
 				"GUILa",
 				"GUILayout	GUILayout"
-			],
-			[
-				"_",
-				"_title	string"
 			],
 			[
 				"GUIla",
@@ -152,10 +264,6 @@
 				"fontSize	int { get; set; }"
 			],
 			[
-				"Se",
-				"SetTextColor(Color color)	void"
-			],
-			[
 				"color",
 				"color_str	string"
 			],
@@ -180,10 +288,6 @@
 				"_writeWin(string filename, string text)	void"
 			],
 			[
-				"is",
-				"isRunningOnAndroid()	bool"
-			],
-			[
 				"Is_",
 				"Is_Button_True()	IEnumerator"
 			],
@@ -196,10 +300,6 @@
 				"IEnumerator	IEnumerator"
 			],
 			[
-				"De",
-				"Debug	Debug"
-			],
-			[
 				"In",
 				"InputField	InputField"
 			],
@@ -210,10 +310,6 @@
 			[
 				"GUI",
 				"GUILayout	GUILayout"
-			],
-			[
-				"f",
-				"font	Font { get; set; }"
 			],
 			[
 				"Find",
@@ -232,10 +328,6 @@
 				"Screen	Enum { }"
 			],
 			[
-				"Todo",
-				"TodoText	TodoText"
-			],
-			[
 				"out",
 				"outputText	Text"
 			],
@@ -250,10 +342,6 @@
 			[
 				"dele",
 				"deletekeys	List<DataKeys>"
-			],
-			[
-				"todo",
-				"Todos	List<TodoData>"
 			],
 			[
 				"UnityE",
@@ -316,10 +404,6 @@
 				"_inputTitle	InputField"
 			],
 			[
-				"Up",
-				"UpdateTodoTime(DateTime Dt)	void"
-			],
-			[
 				"_to",
 				"_todoData	TodoData"
 			],
@@ -344,10 +428,6 @@
 				"color	Color { get; set; }"
 			],
 			[
-				"co",
-				"color	Color { get; set; }"
-			],
-			[
 				"toa",
 				"today	DateTime"
 			],
@@ -360,20 +440,8 @@
 				"isOn	bool { get; set; }"
 			],
 			[
-				"Get",
-				"GetComponent(string type)	Component"
-			],
-			[
 				"null",
 				"null	null"
-			],
-			[
-				"bool",
-				"bool	bool"
-			],
-			[
-				"Day",
-				"Day	int { get; }"
 			],
 			[
 				"IEnumera",
@@ -428,10 +496,6 @@
 				"AddMonths(int months)	DateTime"
 			],
 			[
-				"M",
-				"Month	int { get; }"
-			],
-			[
 				"float",
 				"float	float"
 			],
@@ -450,171 +514,16 @@
 			[
 				"Toekn",
 				"TokenMgr<	TokenMgr<"
-			],
-			[
-				"D",
-				"DayOfWeek	DayOfWeek { get; }"
-			],
-			[
-				"Da",
-				"DateTime	DateTime"
-			],
-			[
-				"TO",
-				"TODOFIELD_DIST"
-			],
-			[
-				"TODO",
-				"TODOFIELD_INIT_POS_Y"
-			],
-			[
-				"T",
-				"TodoTime"
-			],
-			[
-				"N",
-				"NotificationTime"
-			],
-			[
-				"Todo_",
-				"Todo_ModifiedTime_id"
-			],
-			[
-				"C",
-				"CreateTime"
-			],
-			[
-				"Dta",
-				"DataKeys"
-			],
-			[
-				"No",
-				"notification_time"
-			],
-			[
-				"TODOFIELD_",
-				"TODOFIELD_POS_X"
-			],
-			[
-				"Text",
-				"TextSave"
-			],
-			[
-				"string",
-				"string	string"
-			],
-			[
-				"Sol",
-				"SoldierTypes	List"
-			],
-			[
-				"Has",
-				"Hashtable()	Hashtable()"
-			],
-			[
-				"hash",
-				"Hashtable	Hashtable"
 			]
 		]
 	},
 	"buffers":
 	[
 		{
-			"file": "Main.cs",
-			"settings":
-			{
-				"buffer_size": 5144,
-				"line_ending": "Unix"
-			}
-		},
-		{
 			"file": "AndroidSamp.cs",
 			"settings":
 			{
-				"buffer_size": 332,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "TodoField.cs",
-			"settings":
-			{
-				"buffer_size": 4294,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/SimpleNotificationForAndroid/Plugins/Android/AndroidManifest.xml",
-			"settings":
-			{
-				"buffer_size": 1372,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Plugins/HogeScript.cs",
-			"settings":
-			{
-				"buffer_size": 1398,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "Android 開発者向けソフトウェア開発キット\nhttp://spf.fmworld.net/oss/appkit/\n\n通知\nhttp://qiita.com/ToshikiImagawa/items/8f150a0645da8e5ba9d6\nhttp://klabgames.tech.blog.jp.klab.com/archives/1046446808.html\nhttp://qiita.com/relzx/items/a35f7ab6dbacb48f7e26\nhttp://nirasan.hatenablog.com/entry/2014/06/23/090440\nhttp://befool.co.jp/blog/raharu/localnotification-android/\n\nスワイプ\nhttp://naichilab.blogspot.jp/2015/02/unity.html\n\nAndroid ファイル保存\nhttp://qiita.com/tetsujp84/items/37a44da7d5b9c890fc1d\n\nLog\nhttp://unity-michi.com/post-305/\nhttp://www.javadrive.jp/android/step/index3.html\n\n通知用Eclipse操作\nhttp://qiita.com/relzx/items/a35f7ab6dbacb48f7e26\nhttp://qiita.com/ToshikiImagawa/items/8f150a0645da8e5ba9d6\n\n\n\nSDK 場所　C:\\Users\\moritania\\AppData\\Local\\Android\n証明書　file settings playerSettings から　publishingSetiings key Alias の　切り替えでデバッグ or 証明書つき",
-			"file": "/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/参考.txt",
-			"file_size": 771,
-			"file_write_time": 131080095814284945,
-			"settings":
-			{
-				"buffer_size": 820,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Plugins/Android/AndroidManifest.xml",
-			"settings":
-			{
-				"buffer_size": 460,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/C/Users/moritania/Desktop/wavserver/パソコン改善計画.txt",
-			"settings":
-			{
-				"buffer_size": 915,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/C/Users/moritania/Desktop/wavserver/unity/account.txt",
-			"settings":
-			{
-				"buffer_size": 36,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/SimpleNotificationForAndroid/README.txt",
-			"settings":
-			{
-				"buffer_size": 879,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "CalendarCel.cs",
-			"settings":
-			{
-				"buffer_size": 4490,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "Utility/Token.cs",
-			"settings":
-			{
-				"buffer_size": 10438,
+				"buffer_size": 4374,
 				"line_ending": "Unix"
 			}
 		},
@@ -627,21 +536,107 @@
 			}
 		},
 		{
-			"contents": "Searching 25 files for \"MyDatetime\"\n\nC:\\Users\\moritania\\Desktop\\wavserver\\unity\\Notification\\Assets\\Scripts\\CalendarCel.cs:\n  160  		DateTime today = DateTime.Now;\n  161  		if(IsDayEq(today, _celTime))status(Status.Today);\n  162: 		if(IsDayEq(_mycalendar.MyDateTime, _celTime)){\n  163  			status(Status.Pointed);\n  164  		}\n\nC:\\Users\\moritania\\Desktop\\wavserver\\unity\\Notification\\Assets\\Scripts\\MyCalendar.cs:\n   30  	readonly public int NUM_OF_ROW = 6;\n   31  	// \n   32: 	public DateTime MyDateTime;\n   33  	[SerializeField]\n   34  	public Color TodayColor;\n   ..\n   83  		_panelSlider.SlideIn();\n   84  		_callBack = callBack;\n   85: 		MyDateTime = PointedTime;\n   86  		_showDateTime = PointedTime;\n   87  		SetCalendar();\n\n3 matches across 2 files\n\n\nSearching 25 files for \"showdate\"\n\nC:\\Users\\moritania\\Desktop\\wavserver\\unity\\Notification\\Assets\\Scripts\\CalendarCel.cs:\n  143  \n  144  	public void UpdateCel(){\n  145: 		_celTime = new DateTime(_mycalendar.ShowDateTime.Year, _mycalendar.ShowDateTime.Month,1);\n  146  			\n  147  		// 割り当ての日にち取得\n\nC:\\Users\\moritania\\Desktop\\wavserver\\unity\\Notification\\Assets\\Scripts\\MyCalendar.cs:\n   14  	PanelSlider _panelSlider;\n   15  	//表示する月と年指定用\n   16: 	DateTime _showDateTime;\n   17: 	public DateTime ShowDateTime{\n   18: 		get {return _showDateTime;}\n   19  	}\n   20  	  [SerializeField]\n   ..\n   67  	void Start () {\n   68  		_panelSlider = GetComponent<PanelSlider>();\n   69: 		_showDateTime = DateTime.Now;\n   70  		_dateText = MyCanvas.Find<TextObj>(\"Date\");\n   71  \n   ..\n   84  		_callBack = callBack;\n   85  		MyDateTime = PointedTime;\n   86: 		_showDateTime = PointedTime;\n   87  		SetCalendar();\n   88  	}\n   ..\n  110  	void SetCalendar(){\n  111  		// 表示する月の日数\n  112: 		int days_in_month = DateTime.DaysInMonth(_showDateTime.Year, _showDateTime.Month);\n  113: 		DateTime first_day = new DateTime(_showDateTime.Year, _showDateTime.Month,1);\n  114  		int first_week = (int)first_day.DayOfWeek; // １日の曜日\n  115  \n  ...\n  122  		CalendarCel.AllUpdate();\n  123  		// 年月表示更新\n  124: 		_dateText.Label = _showDateTime.Year.ToString() + \"年\" + _showDateTime.Month.ToString() + \"月\";\n  125  \n  126  	}\n  127  \n  128  	public void OnClickPreMonth(){\n  129: 		_showDateTime = _showDateTime.AddMonths(-1);\n  130  		SetCalendar();\n  131  	}\n  132  	public void OnClickNextMonth(){\n  133: 		_showDateTime = _showDateTime.AddMonths(1);\n  134  		SetCalendar();\n  135  	}\n\n17 matches across 2 files\n\n\nSearching 24 files for \"AllUpdate\"\n\nC:\\Users\\moritania\\Desktop\\wavserver\\unity\\Notification\\Assets\\Scripts\\CalendarCel.cs:\n  141  \n  142  	// 全てのセルを更新する\n  143: 	public static void AllUpdate(){\n  144  		DateTime Time = new DateTime(_mycalendar.ShowDateTime.Year, _mycalendar.ShowDateTime.Month,1);\n  145  		List<int> numbers = MyCanvas.Find<Main>(\"BoardMain\").CalcTodoNumbers(Time);	\n\nC:\\Users\\moritania\\Desktop\\wavserver\\unity\\Notification\\Assets\\Scripts\\MyCalendar.cs:\n  120  		last_day = days_in_month;\n  121  \n  122: 		CalendarCel.AllUpdate();\n  123  		// 年月表示更新\n  124  		_dateText.Label = _showDateTime.Year.ToString() + \"年\" + _showDateTime.Month.ToString() + \"月\";\n\n2 matches across 2 files\n",
+			"file": "CalendarCel.cs",
 			"settings":
 			{
-				"buffer_size": 3134,
+				"buffer_size": 4628,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/C/Users/moritania/Desktop/EclipsePro/NotifyAsset/src/com/zeljkosassets/notifications/Notifier.java",
+			"settings":
+			{
+				"buffer_size": 2137,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "TodoField.cs",
+			"settings":
+			{
+				"buffer_size": 5426,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Setting.cs",
+			"settings":
+			{
+				"buffer_size": 4769,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "Searching 33 files for \"SetTimeTextColor\"\n\nC:\\Users\\moritania\\Desktop\\wavserver\\unity\\Notification\\Assets\\Scripts\\TodoField.cs:\n   91  	void Update(){\n   92  		// 現在時刻過ぎた場合は強調する\n   93: 		SetTimeTextColor();\n   94  	}\n   95  	// 作成時の処理\n   ..\n  231  \n  232  	// テキスト背景色変更 /\n  233: 	void SetTimeTextColor(){\n  234  		\n  235  		if(_todoData.TodoTime.CompareTo(DateTime.Now) < 0)timeTextImage.color = EnphasizedColor;\n\n2 matches in 1 file\n",
+			"settings":
+			{
+				"buffer_size": 434,
 				"line_ending": "Windows",
 				"name": "Find Results",
 				"scratch": true
 			}
 		},
 		{
-			"file": "TodayField.cs",
+			"file": "TodoData.cs",
 			"settings":
 			{
-				"buffer_size": 2272,
+				"buffer_size": 5206,
 				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "package com.zeljkosassets.notifications;\n\nimport java.util.Calendar;\n\nimport android.app.Activity;\nimport android.app.AlarmManager;\nimport android.app.Notification;\nimport android.app.NotificationManager;\nimport android.app.PendingIntent;\nimport android.content.BroadcastReceiver;\nimport android.content.Context;\nimport android.content.Intent;\nimport com.unity3d.player.UnityPlayer;\nimport com.unity3d.player.UnityPlayerNativeActivity;\n\npublic class Notifier extends BroadcastReceiver {\n\n	//Unity calls this static method\n	public static void sendNotification(String name, String title, String label, int secondsFromNow)\n	{\n		// Schedule the alarm!	\n		Calendar c = Calendar.getInstance();\n        c.add(Calendar.SECOND, secondsFromNow);\n        Activity act = UnityPlayer.currentActivity;\n        AlarmManager am = (AlarmManager)act.getSystemService(Context.ALARM_SERVICE);\n        Intent ii = new Intent(act, Notifier.class);\n        ii.putExtra(\"name\", name);\n        ii.putExtra(\"title\", title);\n        ii.putExtra(\"label\", label);\n        am.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), PendingIntent.getBroadcast(act, 0, ii, 0));\n	}\n\n	@Override\n	public void onReceive(Context context, Intent intent) {\n		// TODO Auto-generated method stub\n		NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);\n        Notification notification = new Notification(R.drawable.ic_launcher, intent.getStringExtra(\"title\"), System.currentTimeMillis());        \n        Intent notificationIntent = new Intent(context, UnityPlayerNativeActivity.class); \n        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);\n        PendingIntent Pintent = PendingIntent.getActivity(context, 0, notificationIntent, 0);\n        notification.setLatestEventInfo(context, intent.getStringExtra(\"name\"), intent.getStringExtra(\"label\"), Pintent);\n        notification.flags |= Notification.FLAG_AUTO_CANCEL;\n        notification.defaults = Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE;\n        notificationManager.notify(0, notification);\n	}\n	\n}\n",
+			"file": "/C/Users/moritania/AppData/Local/Temp/Temp4_source-com.zeljkosassets.notifications.zip/com.zeljkosassets.notifications/src/com/zeljkosassets/notifications/Notifier.java",
+			"file_size": 2184,
+			"file_write_time": 130615701420000000,
+			"settings":
+			{
+				"buffer_size": 2137,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "LocalNotification.cs",
+			"settings":
+			{
+				"buffer_size": 1966,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "package com.zeljkosassets.notifications;\n\nimport java.util.Calendar;\n\nimport android.app.Activity;\nimport android.app.AlarmManager;\nimport android.app.Notification;\nimport android.app.NotificationManager;\nimport android.app.PendingIntent;\nimport android.content.BroadcastReceiver;\nimport android.content.Context;\nimport android.content.Intent;\nimport com.unity3d.player.UnityPlayer;\nimport com.unity3d.player.UnityPlayerNativeActivity;\n\npublic class Notifier extends BroadcastReceiver {\n\n	//Unity calls this static method\n	public static void sendNotification(String name, String title, String label, int secondsFromNow)\n	{\n		// Schedule the alarm!	\n		Calendar c = Calendar.getInstance();\n        c.add(Calendar.SECOND, secondsFromNow);\n        Activity act = UnityPlayer.currentActivity;\n        AlarmManager am = (AlarmManager)act.getSystemService(Context.ALARM_SERVICE);\n        Intent ii = new Intent(act, Notifier.class);\n        ii.putExtra(\"name\", name);\n        ii.putExtra(\"title\", title);\n        ii.putExtra(\"label\", label);\n        am.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), PendingIntent.getBroadcast(act, 0, ii, 0));\n	}\n\n	@Override\n	public void onReceive(Context context, Intent intent) {\n		// TODO Auto-generated method stub\n		NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);\n        Notification notification = new Notification(R.drawable.ic_launcher, intent.getStringExtra(\"title\"), System.currentTimeMillis());        \n        Intent notificationIntent = new Intent(context, UnityPlayerNativeActivity.class); \n        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);\n        PendingIntent Pintent = PendingIntent.getActivity(context, 0, notificationIntent, 0);\n        notification.setLatestEventInfo(context, intent.getStringExtra(\"name\"), intent.getStringExtra(\"label\"), Pintent);\n        notification.flags |= Notification.FLAG_AUTO_CANCEL;\n        notification.defaults = Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE;\n        notificationManager.notify(0, notification);\n	}\n	\n}\n",
+			"file": "/C/Users/moritania/AppData/Local/Temp/Temp2_source-com.zeljkosassets.notifications.zip/com.zeljkosassets.notifications/src/com/zeljkosassets/notifications/Notifier.java",
+			"file_size": 2184,
+			"file_write_time": 130615701420000000,
+			"settings":
+			{
+				"buffer_size": 2137,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/参考.txt",
+			"settings":
+			{
+				"buffer_size": 1551,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "Utility/Holiday.cs",
+			"settings":
+			{
+				"buffer_size": 4643,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Plugins/Android/AndroidManifest.xml",
+			"settings":
+			{
+				"buffer_size": 1168,
+				"line_ending": "Windows"
 			}
 		}
 	],
@@ -697,40 +692,53 @@
 	],
 	"file_history":
 	[
+		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/DebugLog.cs",
+		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Setting.cs",
+		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/TimeInput.cs",
+		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Main.cs",
+		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/LongPress.cs",
+		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/CalendarCel.cs",
+		"/C/Users/moritania/AppData/Local/Temp/Temp3_source-com.zeljkosassets.notifications.zip/com.zeljkosassets.notifications/src/com/zeljkosassets/notifications/Notifier.java",
+		"/C/Users/moritania/AppData/Local/Temp/Temp1_source-com.zeljkosassets.notifications.zip/com.zeljkosassets.notifications/src/com/zeljkosassets/notifications/Notifier.java",
+		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/SimpleNotificationForAndroid/README.txt",
+		"/C/Users/moritania/Desktop/EclipsePro/NotifyAsset/gen/com/zeljkosassets/notifications/BuildConfig.java",
+		"/C/Users/moritania/Desktop/EclipsePro/NotifyAsset/gen/com/zeljkosassets/notifications/R.java",
+		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/TodoData.cs",
+		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Utility/MyCanvas.cs",
+		"/C/Users/moritania/Desktop/wavserver/unity/LocalNotifySample/Assets/SimpleNotificationForAndroid/SimpleNotification/Scripts/TestGUI.cs",
+		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Plugins/HogeScript.cs",
+		"/C/Users/moritania/Desktop/wavserver/unity/LocalNotifySample/Assets/SimpleNotificationForAndroid/README.txt",
+		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/SimpleNotificationForAndroid/Plugins/Android/AndroidManifest.xml",
+		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/TodayField.cs",
+		"/C/Users/moritania/Desktop/wavserver/パソコン改善計画.txt",
+		"/C/Users/moritania/Desktop/wavserver/unity/account.txt",
+		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/BackGound.cs",
+		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/TodoField.cs",
+		"/C/Users/moritania/AppData/Local/Android/sdk/sources/android-23/android/content/BroadcastReceiver.java",
+		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/MyCalendar.cs",
+		"/C/Users/moritania/AppData/Local/Temp/Temp1_source-com.zeljkosassets.notifications.zip/com.zeljkosassets.notifications/bin/classes/com/zeljkosassets/notifications/BuildConfig.class",
 		"/C/Users/moritania/Desktop/wavserver/unity/CSharpTest_Win/Assets/Scripts/TreasureBox.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Utility/TextObj.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Utility/ImageObj.cs",
-		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/TimeInput.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Plugins/Android/AndroidManifest.xml",
-		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/TodoData.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/TodoText.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/CSharpTest_Win/Assets/Scripts/Stone.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/CSharpTest_Win/Assets/Scripts/Token3D.cs",
-		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/MyCalendar.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Dialog.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/CSharpTest_Win/Assets/Tresure_box/TreasureBox.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Notification.sublime-project",
 		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/PopUp.cs",
-		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Utility/MyCanvas.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Body.cs",
-		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/CalendarCel.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/Notification/.gitignore",
-		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/DebugLog.cs",
-		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Plugins/HogeScript.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/CSharpTest_Win/Assets/Scripts/FaceDetectScript.cs",
-		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Setting.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Utility/Util.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Utility/FileIo.cs",
-		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/BackGound.cs",
-		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/TodoField.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Utility/Token.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Utility/TokenMgr.cs",
-		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/LongPress.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/ScrollController.cs",
 		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Utility/PanelSlider.cs",
 		"/C/Users/moritania/AppData/Roaming/Sublime Text 3/Packages/User/42-headers.sublime-settings",
 		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Utility/ButtonObj.cs",
-		"/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Scripts/Main.cs",
 		"/C/Users/moritania/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 		"/C/Users/moritania/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
 		"/C/Users/moritania/AppData/Roaming/Sublime Text 3/Packages/Default/Default (Windows).sublime-keymap",
@@ -816,6 +824,13 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"SetTimeTextColor",
+			"localCallRe",
+			"cel_time",
+			"SetLabel",
+			"setcall",
+			"updateIs",
+			"DataKeys",
 			"SetCa",
 			"AllUpdate",
 			"showdate",
@@ -922,456 +937,62 @@
 	"groups":
 	[
 		{
-			"selected": 3,
+			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "Main.cs",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5144,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								4662,
-								4662
-							]
-						],
-						"settings":
-						{
-							"oops":
-							{
-								"1232,1246": "Method 'OnclickTodoAdd' can be made static.",
-								"1421,1437": "Method 'OnClickGoSetting' can be made static.",
-								"1533,1535": "'Dt' should start with a lower case letter. (Rule 'Parameters')",
-								"1574,1582": "Use 'var' keyword",
-								"1893,1896": "no known errors.",
-								"19,24": "Using directive is not used by code and can be removed safely.",
-								"2821,2830": "Use 'var' keyword",
-								"2895,2898": "Redundant ToString() call",
-								"3157,3158": "Redundant lambda signature parentheses",
-								"3158,3160": "Redundant lambda signature parentheses",
-								"3166,3172": "Can be converted to expression",
-								"3261,3262": "Redundant lambda signature parentheses",
-								"3262,3264": "Redundant lambda signature parentheses",
-								"3270,3276": "Can be converted to expression",
-								"3422,3423": "Redundant lambda signature parentheses",
-								"3423,3425": "Redundant lambda signature parentheses",
-								"3431,3437": "Can be converted to expression",
-								"3530,3531": "Redundant lambda signature parentheses",
-								"3531,3533": "Redundant lambda signature parentheses",
-								"3539,3545": "Can be converted to expression",
-								"45,50": "Using directive is not used by code and can be removed safely.",
-								"452,453": "Redundant lambda signature parentheses",
-								"453,455": "Redundant lambda signature parentheses",
-								"461,467": "Can be converted to expression",
-								"4708,4712": "Use 'var' keyword"
-							},
-							"syntax": "Packages/C#/C#.sublime-syntax",
-							"translate_tabs_to_spaces": false,
-							"wrap_width": 0
-						},
-						"translation.x": 0.0,
-						"translation.y": 2475.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
 					"file": "AndroidSamp.cs",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 332,
+						"buffer_size": 4374,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								166,
-								166
+								966,
+								966
 							]
 						],
 						"settings":
 						{
 							"oops":
 							{
-								"19,24": "Using directive is not used by code and can be removed safely."
-							},
-							"syntax": "Packages/C#/C#.sublime-syntax",
-							"wrap_width": 0
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "TodoField.cs",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4294,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2126,
-								2126
-							]
-						],
-						"settings":
-						{
-							"oops":
-							{
-								"1015,1019": "Initializing field by default value is redundant",
-								"1166,1167": "Parameter 'x' is never used",
-								"1174,1175": "Parameter 'y' is never used",
-								"1697,1703": "Redundant method override",
-								"1876,1878": "'Dt' should start with a lower case letter. (Rule 'Parameters')",
+								"1258,1266": "Method 'DebugSet' can be made static.",
+								"1342,1344": "Redundant ToString() call",
+								"1372,1374": "Redundant ToString() call",
+								"1402,1404": "Redundant ToString() call",
+								"1435,1445": "Method 'DebugReset' can be made static.",
+								"1526,1532": "Method 'Update' has the same with 'Start'",
+								"1557,1567": "Method 'SampleCall' can be made static.",
 								"19,24": "Using directive is not used by code and can be removed safely.",
-								"2216,2220": "Parameter can be IComparable",
-								"2764,2766": "'Dt' should start with a lower case letter. (Rule 'Parameters')",
-								"2969,2970": "Assignment is redundant",
-								"3066,3068": "'Dt' should start with a lower case letter. (Rule 'Parameters')",
-								"3257,3259": "'Dt' should start with a lower case letter. (Rule 'Parameters')",
-								"3453,3461": "Lambda expression can be simplified to method group",
-								"3825,3829": "'this.' is redundant and can be removed safely.",
-								"4148,4150": "Convert to '?:' expression",
-								"420,426": "Name should have prefix '_'. (Rule 'Fields').",
-								"429,433": "Initializing field by default value is redundant",
-								"524,533": "The private field 'textImage' is never assigned",
-								"642,655": "The private field 'timeTextImage' is never assigned"
-							},
-							"syntax": "Packages/C#/C#.sublime-syntax",
-							"translate_tabs_to_spaces": false,
-							"wrap_width": 0
-						},
-						"translation.x": 0.0,
-						"translation.y": 2526.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 10,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/SimpleNotificationForAndroid/Plugins/Android/AndroidManifest.xml",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1372,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/XML/XML.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true,
-							"wrap_width": 0
-						},
-						"translation.x": 0.0,
-						"translation.y": 123.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				}
-			]
-		},
-		{
-			"selected": 4,
-			"sheets":
-			[
-				{
-					"buffer": 4,
-					"file": "/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Plugins/HogeScript.cs",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1398,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								726,
-								726
-							]
-						],
-						"settings":
-						{
-							"oops":
-							{
-								"1112,1121": "Method 'CallFuncC' has the same with 'CallFuncA'",
-								"1129,1132": "Parameter 'str' is never used",
-								"127,131": "Initializing field by default value is redundant",
-								"1319,1329": "Method 'onCallBack' can be made static.",
-								"1337,1340": "Parameter can be IComparable",
-								"19,24": "Using directive is not used by code and can be removed safely.",
-								"645,648": "Parameter 'str' is never used",
-								"871,874": "Parameter 'str' is never used"
+								"216,217": "Initializing field by default value is redundant",
+								"2195,2199": "Parameter 'name' is never used",
+								"2208,2213": "Parameter 'title' is never used",
+								"2222,2227": "Parameter can be IComparable",
+								"2236,2240": "Parameter 'type' is never used",
+								"232,233": "Initializing field by default value is redundant",
+								"2411,2413": "Redundant ToString() call",
+								"2452,2468": "Redundant ToString() call",
+								"2983,2985": "Parameter can be IComparable",
+								"3020,3022": "Redundant ToString() call",
+								"3495,3501": "Code is unreachable"
 							},
 							"syntax": "Packages/C#/C#.sublime-syntax",
 							"wrap_width": 0
 						},
 						"translation.x": 0.0,
-						"translation.y": 99.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/参考.txt",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 820,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								820,
-								820
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Text/Plain text.tmLanguage",
-							"wrap_width": 0
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Plugins/Android/AndroidManifest.xml",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 460,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								425,
-								425
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/XML/XML.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true,
-							"wrap_width": 0
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"file": "/C/Users/moritania/Desktop/wavserver/パソコン改善計画.txt",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 915,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 666.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 1,
 					"type": "text"
 				},
 				{
-					"buffer": 8,
-					"file": "/C/Users/moritania/Desktop/wavserver/unity/account.txt",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 36,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"file": "/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/SimpleNotificationForAndroid/README.txt",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 879,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								879,
-								879
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Text/Plain text.tmLanguage",
-							"wrap_width": 0
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 10,
-					"file": "CalendarCel.cs",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4490,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1914,
-								1914
-							]
-						],
-						"settings":
-						{
-							"oops":
-							{
-								"1218,1222": "Redundant case label",
-								"1407,1409": "Convert to 'return' statement",
-								"19,24": "Using directive is not used by code and can be removed safely.",
-								"1966,1969": "Parameter can be IComparable",
-								"1974,1977": "Parameter can be IComparable",
-								"228,232": "Initializing field by default value is redundant",
-								"2717,2725": "Use 'var' keyword",
-								"272,276": "Initializing field by default value is redundant",
-								"307,312": "The private field '_text' is never assigned",
-								"347,355": "The private field 'numImage' is never assigned",
-								"3607,3614": "Parameter can be IList",
-								"386,393": "The private field 'numText' is never assigned",
-								"4005,4007": "Convert to 'return' statement",
-								"487,490": "Parameter can be IComparable",
-								"67,72": "Using directive is not used by code and can be removed safely.",
-								"743,749": "Name should have prefix '_'. (Rule 'Fields').",
-								"752,756": "Initializing field by default value is redundant"
-							},
-							"syntax": "Packages/C#/C#.sublime-syntax",
-							"translate_tabs_to_spaces": false,
-							"wrap_width": 0
-						},
-						"translation.x": 0.0,
-						"translation.y": 1353.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 9,
-					"type": "text"
-				},
-				{
-					"buffer": 11,
-					"file": "Utility/Token.cs",
-					"semi_transient": true,
-					"settings":
-					{
-						"buffer_size": 10438,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C#/C#.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true,
-							"wrap_width": 0
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 11,
-					"type": "text"
-				},
-				{
-					"buffer": 12,
+					"buffer": 1,
 					"file": "MyCalendar.cs",
 					"semi_transient": false,
 					"settings":
@@ -1383,238 +1004,42 @@
 						"selection":
 						[
 							[
-								1388,
-								1388
+								0,
+								0
 							]
 						],
 						"settings":
 						{
-							"oops":
-							{
-								"1162,1167": "no known errors.",
-								"1498,1509": "'PointedTime' should start with a lower case letter. (Rule 'Parameters')",
-								"1704,1712": "no known errors.",
-								"19,24": "Using directive is not used by code and can be removed safely.",
-								"2198,2202": "'this.' is redundant and can be removed safely.",
-								"2324,2332": "Use 'var' keyword",
-								"2720,2724": "Redundant ToString() call",
-								"2758,2763": "Redundant ToString() call",
-								"3153,3161": "no known errors.",
-								"346,355": "Convert to constant",
-								"358,359": "Initializing field by default value is redundant",
-								"389,399": "Convert to constant",
-								"402,403": "Initializing field by default value is redundant",
-								"432,439": "Convert to constant",
-								"442,443": "Initializing field by default value is redundant",
-								"45,50": "Using directive is not used by code and can be removed safely.",
-								"479,486": "'FIRST_Y' should start with a lower case letter. (Rule 'Fields')",
-								"489,490": "Initializing field by default value is redundant",
-								"609,619": "'MyDateTime' should start with a lower case letter. (Rule 'Fields')",
-								"653,663": "'TodayColor' should start with a lower case letter. (Rule 'Fields')",
-								"679,689": "'MyDayColor' should start with a lower case letter. (Rule 'Fields')",
-								"70,75": "Using directive is not used by code and can be removed safely.",
-								"713,717": "Initializing field by default value is redundant"
-							},
 							"syntax": "Packages/C#/C#.sublime-syntax",
 							"translate_tabs_to_spaces": false,
 							"wrap_width": 0
 						},
 						"translation.x": 0.0,
-						"translation.y": 1642.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 12,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
-					"buffer": 13,
+					"buffer": 2,
+					"file": "CalendarCel.cs",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3134,
-						"regions":
-						{
-							"match":
-							{
-								"flags": 112,
-								"regions":
-								[
-									[
-										255,
-										265
-									],
-									[
-										491,
-										501
-									],
-									[
-										640,
-										650
-									],
-									[
-										964,
-										972
-									],
-									[
-										995,
-										1003
-									],
-									[
-										1212,
-										1220
-									],
-									[
-										1250,
-										1258
-									],
-									[
-										1286,
-										1294
-									],
-									[
-										1431,
-										1439
-									],
-									[
-										1603,
-										1611
-									],
-									[
-										1771,
-										1779
-									],
-									[
-										1791,
-										1799
-									],
-									[
-										1856,
-										1864
-									],
-									[
-										1876,
-										1884
-									],
-									[
-										2055,
-										2063
-									],
-									[
-										2093,
-										2101
-									],
-									[
-										2205,
-										2213
-									],
-									[
-										2221,
-										2229
-									],
-									[
-										2333,
-										2341
-									],
-									[
-										2349,
-										2357
-									],
-									[
-										2619,
-										2628
-									],
-									[
-										2973,
-										2982
-									]
-								],
-								"scope": ""
-							}
-						},
-						"selection":
-						[
-							[
-								2439,
-								2439
-							]
-						],
-						"settings":
-						{
-							"detect_indentation": false,
-							"line_numbers": false,
-							"output_tag": 3,
-							"result_base_dir": "",
-							"result_file_regex": "^([^ 	].*):$",
-							"result_line_regex": "^ +([0-9]+):",
-							"scroll_past_end": true,
-							"syntax": "Packages/Default/Find Results.hidden-tmLanguage",
-							"wrap_width": 0
-						},
-						"translation.x": 0.0,
-						"translation.y": 1284.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 13,
-					"type": "text"
-				},
-				{
-					"buffer": 14,
-					"file": "TodayField.cs",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2272,
+						"buffer_size": 4628,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1502,
-								1502
+								0,
+								0
 							]
 						],
 						"settings":
 						{
-							"oops":
-							{
-								"1068,1077": "'transform' is not a known identifier",
-								"1078,1087": "'?' does not contain a definition for 'FindChild'",
-								"108,113": "'Token' is not a known identifier",
-								"1104,1105": "'?' does not contain a definition for 'FindChild'",
-								"1105,1115": "'?' does not contain a definition for 'gameObject'",
-								"1129,1136": "'TextObj' is not a known identifier",
-								"1137,1138": "'?' does not contain a definition for 'GetComponent'",
-								"1139,1140": "Cannot convert from ? to [UnknownType TextObj]",
-								"1153,1158": "'TextObj' does not contain a definition for 'Label'",
-								"1163,1164": "Cannot convert from System.String to ?",
-								"1208,1214": "'Object' does not contain a definition for 'Revive'",
-								"1216,1217": "'Object' does not contain a definition for 'Revive'",
-								"1521,1526": "'TextObj' does not contain a definition for 'Label'",
-								"1529,1534": "Cannot convert from System.String to ?",
-								"1561,1566": "Cannot convert from ? to System.String",
-								"163,164": "'TokenMgr' is not a known identifier",
-								"1815,1819": "'Main' is not a known identifier",
-								"1832,1840": "'MyCanvas' is not a known identifier",
-								"1846,1850": "'Main' is not a known identifier",
-								"1851,1852": "'?' does not contain a definition for 'Find'",
-								"1864,1865": "'?' does not contain a definition for 'Find'",
-								"1944,1958": "'TodoData' does not contain a definition for 'UpdateTodoTime'",
-								"1962,1963": "'TodoData' does not contain a definition for 'UpdateTodoTime'",
-								"2039,2047": "'MyCanvas' is not a known identifier",
-								"2053,2063": "'MyCalendar' is not a known identifier",
-								"2064,2065": "'?' does not contain a definition for 'Find'",
-								"2078,2079": "'?' does not contain a definition for 'Find'",
-								"2079,2084": "'?' does not contain a definition for 'GoCal'",
-								"2114,2122": "Cannot convert from ? to System.DateTime",
-								"2123,2124": "Cannot convert from System.Void to ?",
-								"2124,2125": "'?' does not contain a definition for 'GoCal'",
-								"428,435": "'TextObj' is not a known identifier",
-								"524,532": "'TodoData' is not a known identifier",
-								"724,732": "'TodoData' is not a known identifier",
-								"838,841": "'TokenMgr' does not contain a definition for 'Add'",
-								"846,847": "Cannot convert from ? to TodayField"
-							},
 							"syntax": "Packages/C#/C#.sublime-syntax",
 							"translate_tabs_to_spaces": false,
 							"wrap_width": 0
@@ -1623,7 +1048,424 @@
 						"translation.y": 900.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 14,
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/C/Users/moritania/Desktop/EclipsePro/NotifyAsset/src/com/zeljkosassets/notifications/Notifier.java",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2137,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.sublime-syntax",
+							"tab_size": 8,
+							"translate_tabs_to_spaces": true,
+							"wrap_width": 0
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "TodoField.cs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5426,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4439,
+								4493
+							]
+						],
+						"settings":
+						{
+							"oops":
+							{
+								"1015,1019": "Initializing field by default value is redundant",
+								"1165,1166": "Parameter 'x' is never used",
+								"1173,1174": "Parameter 'y' is never used",
+								"1696,1702": "Redundant method override",
+								"1875,1877": "'Dt' should start with a lower case letter. (Rule 'Parameters')",
+								"19,24": "Using directive is not used by code and can be removed safely.",
+								"2215,2219": "Parameter can be IComparable",
+								"2812,2814": "'Dt' should start with a lower case letter. (Rule 'Parameters')",
+								"3156,3157": "Assignment is redundant",
+								"3253,3255": "'Dt' should start with a lower case letter. (Rule 'Parameters')",
+								"3603,3604": "Comparison with 'false' is redundant",
+								"3624,3625": "Comparison with 'true' is redundant",
+								"3700,3702": "'Dt' should start with a lower case letter. (Rule 'Parameters')",
+								"4107,4115": "Lambda expression can be simplified to method group",
+								"420,426": "Name should have prefix '_'. (Rule 'Fields').",
+								"429,433": "Initializing field by default value is redundant",
+								"4479,4483": "'this.' is redundant and can be removed safely.",
+								"4911,4913": "Convert to '?:' expression",
+								"524,533": "The private field 'textImage' is never assigned",
+								"5273,5275": "Redundant ToString() call",
+								"642,655": "The private field 'timeTextImage' is never assigned"
+							},
+							"syntax": "Packages/C#/C#.sublime-syntax",
+							"translate_tabs_to_spaces": false,
+							"wrap_width": 0
+						},
+						"translation.x": 0.0,
+						"translation.y": 3139.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "Setting.cs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4769,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4755,
+								4755
+							]
+						],
+						"settings":
+						{
+							"oops":
+							{
+								"217,227": "Name should have prefix '_'. (Rule 'Fields').",
+								"2968,2975": "Parameter can be IComparable",
+								"3409,3416": "Parameter can be IComparable",
+								"464,465": "Initializing field by default value is redundant"
+							},
+							"syntax": "Packages/C#/C#.sublime-syntax",
+							"translate_tabs_to_spaces": false,
+							"wrap_width": 0
+						},
+						"translation.x": 0.0,
+						"translation.y": 2430.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 434,
+						"regions":
+						{
+							"match":
+							{
+								"flags": 112,
+								"regions":
+								[
+									[
+										187,
+										203
+									],
+									[
+										285,
+										301
+									]
+								],
+								"scope": ""
+							}
+						},
+						"selection":
+						[
+							[
+								76,
+								76
+							]
+						],
+						"settings":
+						{
+							"detect_indentation": false,
+							"line_numbers": false,
+							"output_tag": 1,
+							"result_base_dir": "",
+							"result_file_regex": "^([^ 	].*):$",
+							"result_line_regex": "^ +([0-9]+):",
+							"scroll_past_end": true,
+							"syntax": "Packages/Default/Find Results.hidden-tmLanguage",
+							"wrap_width": 0
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "TodoData.cs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5206,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2849,
+								2849
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C#/C#.sublime-syntax",
+							"translate_tabs_to_spaces": false,
+							"wrap_width": 0
+						},
+						"translation.x": 0.0,
+						"translation.y": 1125.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "/C/Users/moritania/AppData/Local/Temp/Temp4_source-com.zeljkosassets.notifications.zip/com.zeljkosassets.notifications/src/com/zeljkosassets/notifications/Notifier.java",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2137,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								459,
+								484
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.sublime-syntax",
+							"tab_size": 8,
+							"translate_tabs_to_spaces": true,
+							"wrap_width": 0
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "LocalNotification.cs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1966,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								689,
+								689
+							]
+						],
+						"settings":
+						{
+							"oops":
+							{
+								"1164,1181": "Method 'ClearNotification' has the same with 'SetNotification'",
+								"118,123": "Using directive is not used by code and can be removed safely.",
+								"19,24": "Using directive is not used by code and can be removed safely.",
+								"227,231": "Initializing field by default value is redundant",
+								"45,50": "Using directive is not used by code and can be removed safely.",
+								"70,75": "Using directive is not used by code and can be removed safely."
+							},
+							"syntax": "Packages/C#/C#.sublime-syntax",
+							"wrap_width": 0
+						},
+						"translation.x": 0.0,
+						"translation.y": 1095.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 10,
+					"file": "/C/Users/moritania/AppData/Local/Temp/Temp2_source-com.zeljkosassets.notifications.zip/com.zeljkosassets.notifications/src/com/zeljkosassets/notifications/Notifier.java",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2137,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								960,
+								960
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.sublime-syntax",
+							"tab_size": 8,
+							"translate_tabs_to_spaces": true,
+							"wrap_width": 0
+						},
+						"translation.x": 0.0,
+						"translation.y": 225.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 13,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/参考.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1551,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1545,
+								1545
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"wrap_width": 0
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "Utility/Holiday.cs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4643,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2727,
+								2727
+							]
+						],
+						"settings":
+						{
+							"oops":
+							{
+								"0,5": "Using directive is not used by code and can be removed safely.",
+								"1331,1343": "Parameter can be IComparable",
+								"1602,1606": "Redundant 'else' keyword",
+								"19,24": "Using directive is not used by code and can be removed safely.",
+								"3312,3313": "Argument value is redundant",
+								"3538,3544": "no known errors.",
+								"3550,3554": "no known errors.",
+								"3575,3580": "no known errors.",
+								"3634,3639": "no known errors.",
+								"3869,3874": "Convert to constant",
+								"3935,3937": "Convert to '?:' expression",
+								"4026,4028": "Convert to '?:' expression",
+								"4213,4218": "Convert to constant",
+								"4374,4376": "Convert to '?:' expression",
+								"45,50": "Using directive is not used by code and can be removed safely.",
+								"502,506": "'init' should start with an upper case letter. (Rule 'Methods')"
+							},
+							"syntax": "Packages/C#/C#.sublime-syntax",
+							"wrap_width": 0
+						},
+						"translation.x": 0.0,
+						"translation.y": 2250.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 12,
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"file": "/C/Users/moritania/Desktop/wavserver/unity/Notification/Assets/Plugins/Android/AndroidManifest.xml",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1168,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								106,
+								106
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/XML/XML.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true,
+							"wrap_width": 0
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
 					"type": "text"
 				}
 			]
@@ -1657,7 +1499,7 @@
 		"cols":
 		[
 			0.0,
-			0.528089887641,
+			0.28424383824,
 			1.0
 		],
 		"rows":
@@ -1721,7 +1563,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 120.0,
+	"side_bar_width": 187.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

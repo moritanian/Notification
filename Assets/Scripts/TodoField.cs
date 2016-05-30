@@ -57,7 +57,6 @@ public class TodoField : Token {
 	}
 
 	DateTime TodoDate;
-
 	
 	public static TodoField Add(float x,float y,TodoData todoData){
 		//TodoField obj = CreateInstanceEasy<TodoField>("TodoField",x,y);
@@ -130,6 +129,10 @@ public class TodoField : Token {
 		_todoData.UpdateTitle(GetText());
 		Main mainBoard = MyCanvas.Find<Main>("BoardMain");
 		mainBoard.ShowToday();
+		if(IsNotify){
+			// ローカル通知変更
+			setCall();
+		}
 	}
 
 	public string TimeText{
@@ -140,7 +143,12 @@ public class TodoField : Token {
 	public void SetTimeText(DateTime Dt){
 		TodoDate = Dt;
 		//TimeText = Dt.Year.ToString() + "\n" + Dt.Month.ToString() + "/" + Dt.Day;
-		TimeText = Dt.ToString("yy/MM/dd") + "\n" + Dt.ToString("  HH:mm");
+		// 今年の分は年表示しない
+		if(Dt.Year == DateTime.Now.Year){
+			TimeText = Dt.ToString("  MM/dd") + "\n" + Dt.ToString("  HH:mm");
+		} else {
+			TimeText = Dt.ToString("yy/MM/dd") + "\n" + Dt.ToString("  HH:mm");
+		}
 		// today ボード更新
 		Main mainBoard = MyCanvas.Find<Main>("BoardMain");
 	//	mainBoard.ShowToday();
@@ -153,12 +161,35 @@ public class TodoField : Token {
 	}
 	// 通知On/Off
 	public void OnClickIsNotify(){
-		_todoData.UpdateIsNotify(IsNotify);
+		bool result = _todoData.UpdateIsNotify(IsNotify);
+		// ローカル通知セット or リセット　する
+		if(result){
+			if(IsNotify)setCall();
+			else{
+				if(deleteCall())
+					Debug.Log("Successfully delete call");
+			}
+		}
+		// 過去であるため通知onにできない
+		if(result == false && IsNotify == true ){
+			IsNotify = false;
+		}
 	}
+	
 	public void TimeModified(DateTime Dt){
 		SetTime(Dt);
 		Main mainBoard = MyCanvas.Find<Main>("BoardMain");
 		mainBoard.ShowToday();
+		if(IsNotify){
+			if(_todoData.TodoTime.CompareTo(DateTime.Now) > 0){
+				// ローカル通知設定変更
+				setCall();
+				}else{
+					// 時間変更で過去になった場合、falseに
+					deleteCall();
+					_todoData.UpdateIsNotify(false);
+				}
+		}
 	}
 	// 時間ボタン
 	public void OnClickTime(){
@@ -184,12 +215,18 @@ public class TodoField : Token {
 	// 自分を消去(データごと)
 	public void Delete(){
 		Main mainBoard = MyCanvas.Find<Main>("BoardMain");
+		// ローカル通知あれば削除
+		if(IsNotify){
+			if(deleteCall())
+				Debug.Log("Successfully delete Local Call");
+		}
 		// Todo Mainがもってるデータ消去、保存データ消去
 		mainBoard.DeleteDataById(_todoData.Id);
 		// ファイル削除
 		TodoText.DeleteFile(_todoData.Id);
-		Vanish();
 		mainBoard.ShowToday();
+		Vanish();
+		
 	}
 
 	// テキスト背景色変更 /
@@ -197,6 +234,22 @@ public class TodoField : Token {
 		
 		if(_todoData.TodoTime.CompareTo(DateTime.Now) < 0)timeTextImage.color = EnphasizedColor;
 		else timeTextImage.color = NormalTimeTextColor;
+	}
+
+	// ローカル通知を登録
+	bool setCall(){
+		// 過去の場合
+		if(_todoData.TodoTime.CompareTo(DateTime.Now) < 0){
+			IsNotify = false;
+			return false;
+		}
+		AndroidSamp.LocalCallSet(_todoData.Id, _todoData.TodoTime, "Notify"+ _todoData.Id.ToString(), "title", _todoData.Title);
+		return true;
+	}
+
+	// ローカル通知を削除
+	bool deleteCall(){
+		return AndroidSamp.LocalCallReset(_todoData.Id);
 	}
 	
 }

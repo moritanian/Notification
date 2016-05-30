@@ -103,9 +103,19 @@ public class TodoData {
 		if(MaxId()<id)Util.SaveData(_get_data_key(DataKeys.MaxId),id.ToString());
 	}
 	// Isnotify 更新
-	public void UpdateIsNotify(bool _IsNotify){
+	// 更新結果を返す (過去を指定している場合、falseが返る) 更新できなければfalse
+	public bool UpdateIsNotify(bool _IsNotify){
+		if(_IsNotify){
+			if(todo_time.CompareTo(DateTime.Now) < 0){
+				return false;
+			}
+		} else if(IsNotify == _IsNotify){
+			//更新不要
+			return false;
+		}
 		IsNotify = _IsNotify;
 		Util.SaveData(_get_data_key(DataKeys.IsNotify, id),IsNotify.ToString());
+		return true;
 	}
 
 

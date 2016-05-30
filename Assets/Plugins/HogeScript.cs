@@ -49,7 +49,9 @@ public class HogeScript: MonoBehaviour {
 	{
 #if UNITY_ANDROID && !UNITY_EDITOR
 		if (m_plugin != null){
-			m_plugin.Call("FuncC", str);
+			Debug.Log("CallFuncC");
+			// 2つめの引数はscene内のオブジェクト(コールバックされる関数がかかれているクラスがアタッチされている)
+			m_plugin.Call("FuncC","Android", str);
 		}
 #endif
 	}

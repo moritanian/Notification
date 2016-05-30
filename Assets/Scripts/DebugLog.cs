@@ -69,7 +69,7 @@ public class DebugLog: MonoBehaviour {
         float width = 300f;
         float height = 400f;
         if(Util.isRunningOnAndroid()){
-            width = 1000f;
+            width = 800f;
             height = 1600f;
         }
        

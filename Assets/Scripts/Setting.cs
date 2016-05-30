@@ -10,8 +10,9 @@ public class Setting : Token {
 	Toggle _debugToggle;
 	Toggle _normalToggle;
 	public InputField _inputField;
-
+	public AndroidSamp androidObj;
 	Text _fontColorChgText;
+	Dropdown _dp_notify_id;
 
 	static int fontsize = 20;
 	public static int FontSize{
@@ -56,10 +57,10 @@ public class Setting : Token {
 
 	void Awake(){
 		outputText = MyCanvas.Find<Text>("outputText");
-		_debugToggle = transform.FindChild("IsDebugLog").gameObject.GetComponent<Toggle>();
+		_debugToggle = MyCanvas.Find<Toggle>("IsDebugLog");
 		_normalToggle = transform.FindChild("NormalToggle").gameObject.GetComponent<Toggle>();
 		_fontColorChgText = transform.FindChild("TextColor").gameObject.GetComponent<Text>();
-
+		_dp_notify_id = MyCanvas.Find<Dropdown>("DropdownId");
 	}
 
 	// 設定保存
@@ -176,5 +177,16 @@ public class Setting : Token {
 
     	Util.SaveData(GetDataKey(DataKeys.Color),color_id.ToString());
     	
+    }
+
+    // 通知デバッグon
+    public void OnClickNotifySet(){
+    	int id = _dp_notify_id.value;
+    	androidObj.DebugSet(id);
+    }
+    // 通知デバッグoff
+    public void OnClickNotifyReset(){
+    	int id = _dp_notify_id.value;
+    	androidObj.DebugReset(id);
     }
 }
