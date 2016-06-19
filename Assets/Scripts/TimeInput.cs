@@ -30,7 +30,8 @@ public class TimeInput : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
+		//初期値取得
+		OnChangeDpDown(0);
 	}
 	
 	// Update is called once per frame

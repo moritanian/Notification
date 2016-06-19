@@ -90,7 +90,7 @@ public class TodayField : Token {
 		//mainBoard.ShowToday();
 	}
 
-	public void SetTime(DateTime Dt){
+	public void SetTime(DateTime Dt, bool IsSet){
 		_todoData.UpdateTodoTime(Dt);
 		// 表示の更新
 		SetTimeText(Dt);
@@ -98,7 +98,7 @@ public class TodayField : Token {
 	
 	// 時間ボタン
 	public void OnClickTime(){
-		MyCanvas.Find<MyCalendar>("MyCalendar").GoCal(TodoDate,_celTime => SetTime(_celTime));
+		MyCanvas.Find<MyCalendar>("MyCalendar").GoCal(TodoDate,(DateTime _celTime, bool IsSet) => SetTime(_celTime,IsSet));
 	}
 
 	// 長押し選択

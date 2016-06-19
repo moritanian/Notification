@@ -23,11 +23,28 @@ public class CalendarCel : Token {
   		get { return _text.text; }
   	}
 
+  	// 祝日など
+  	string event_text;
+  	public string EventText{
+  		get {return event_text;}
+  	}
+
+  	void SetEventText(){
+  		MyCanvas.Find<Text>("EventText").text = event_text;
+  	}
+
   	//日にちと休日の色分け
   	void SetLabel(string txt){
   		_text.text = txt;
-  		if(Holiday.GetHoliday(_celTime) != "")Debug.Log(Holiday.GetHoliday(_celTime));
-  		if(col == 0 || Holiday.GetHoliday(_celTime) != ""){
+  		string holiday_txt = Holiday.GetHoliday(_celTime);
+  		//if(holiday_txt!= "")Debug.Log(Holiday.GetHoliday(_celTime));
+  		if(holiday_txt != ""){
+  			event_text = holiday_txt;
+  		} else{
+  			event_text = "";
+  		}
+
+  		if(col == 0 || holiday_txt!= ""){
   			_text.color = Color.red;
   		}else if(col == 6){
   			_text.color = Color.blue;
@@ -166,12 +183,18 @@ public class CalendarCel : Token {
 		if(_status == Status.OutOfRange)return ;
 		
 		//　今日のセル、指定されたセル　の場合、status 更新
+		UpDateStatus();
+	}
+
+	// status とcolor 変更
+	void UpDateStatus(){
 		DateTime today = DateTime.Now;
 		if(IsDayEq(today, _celTime))status(Status.Today);
 		if(IsDayEq(_mycalendar.MyDateTime, _celTime)){
 			status(Status.Pointed);
 		}
 	}
+
 	// セル表示+ その日のTodoの数
 	public void UpdateCelWithNum(List<int> numbers){
 		UpdateCel();
@@ -199,8 +222,14 @@ public class CalendarCel : Token {
 	public void OnClickCel(){
 		if(Day!= 0){
 			// 時間更新
-			_celTime = _mycalendar.AddTime(_celTime);
-			MyCanvas.Find<MyCalendar>("MyCalendar").ExitCalWithCallBack(_celTime);
+			//_celTime = _mycalendar.AddTime(_celTime);
+			_mycalendar.MyDateTime = _celTime;
+			//UpDateStatus();
+			AllUpdate();
+			_mycalendar.OnClickCel();
+			//MyCanvas.Find<MyCalendar>("MyCalendar").ExitCalWithCallBack(_celTime);
+			// イベントtext 表示
+			SetEventText();
 		}
 	}
 

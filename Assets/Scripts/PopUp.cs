@@ -39,15 +39,21 @@ public class PopUp : MonoBehaviour {
 
 	void OnGUI(){
 		if(_popupstat == PopUpStat.Start){
-			float width = 300f;
-			float height = 60f;
-			Rect drawArea = new Rect(60,200, width, height);
+			int font_size;
+			Rect drawArea;
+			if(Util.isRunningOnAndroid()){
+				drawArea = new Rect(100,500, 500f, 200f);
+				font_size = 40;
+			} else {
+ 				drawArea = new Rect(60,100, 100f, 50f);
+				font_size = 15;
+			} 
 			GUI.Box(drawArea,"");
 			GUILayout.BeginArea(drawArea);
 			{
 				GUIStyle style = new GUIStyle();
 				style.wordWrap = true;
-				style.fontSize = 30;
+				style.fontSize = font_size;
 				GUILayout.Label(_title, style);
 			}
 			GUILayout.EndArea();

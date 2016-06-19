@@ -3,6 +3,7 @@ using System.Collections;
 using System.Reflection;
 using System.Collections.Generic;
 using System;
+using UnityEngine.UI;
 
 /*
 DayOfWeek 列挙体
@@ -17,6 +18,18 @@ public class MyCalendar : Token {
 	public DateTime ShowDateTime{
 		get {return _showDateTime;}
 	}
+	//指定された日時 
+	public DateTime _myDateTime;
+	public DateTime MyDateTime {
+		get {return _myDateTime;}
+		set {_myDateTime = value;}
+	}
+	
+	Image BattenButton;
+	Image CheckButton;
+	Token EditDateTime;
+	TextObj DispDateTimeText;
+
 	  [SerializeField]
 	float CEL_WIDTH = 0; 
 	  [SerializeField]
@@ -28,13 +41,10 @@ public class MyCalendar : Token {
 	readonly public int DAYS_IN_WEEK = 7;
 		[SerializeField]
 	readonly public int NUM_OF_ROW = 6;
-	// 
-	public DateTime MyDateTime;
+	
 	[SerializeField]
 	public Color TodayColor;
 	public Color MyDayColor;
-
-	TextObj _dateText = null;
 
 	public TimeInput _inputTime;
 
@@ -58,17 +68,25 @@ public class MyCalendar : Token {
 		get {return last_day;}
 	}
 	
-
+	public enum CalState{
+		Disp,
+		SetDate
+	};
+	CalState _calState;
 	// カレンダーの日にちを決定したときに処理される内容
-	public delegate void CallBack(DateTime _time);
+	public delegate void CallBack(DateTime _time, bool IsSet = true);
 	CallBack _callBack;
 
+	void Awake(){
+		BattenButton = MyCanvas.Find<Image>("BattenButton");
+		CheckButton = MyCanvas.Find<Image>("CheckButton");
+		EditDateTime = MyCanvas.Find<Token>("EditDateTime");
+		DispDateTimeText = MyCanvas.Find<TextObj>("DispDateTimeText");
+	}
 	// Use this for initialization
 	void Start () {
 		_panelSlider = GetComponent<PanelSlider>();
 		_showDateTime = DateTime.Now;
-		_dateText = MyCanvas.Find<TextObj>("Date");
-
 		InitCalendar();
 		//SetCalendar();
 	
@@ -80,19 +98,51 @@ public class MyCalendar : Token {
 	}
 
 	public void GoCal(DateTime PointedTime ,CallBack callBack){
-		_panelSlider.SlideIn();
+		//_panelSlider.SlideIn();
+		_calState = CalState.SetDate;
 		_callBack = callBack;
 		MyDateTime = PointedTime;
 		_showDateTime = PointedTime;
 		SetCalendar();
+		SetCalImg(true);
+	}
+
+	// カレンダーをdisplayモードで表示
+	public void DispCal(DateTime PointedTime, CallBack callBack){
+		_calState = CalState.Disp;
+		_callBack = callBack;
+		SetCalImg(false);
+		MyDateTime = PointedTime;
+		_showDateTime = PointedTime;
+		SetCalendar();
+	}
+
+	// 日にち確定button
+	public void OnClickCheck(){
+		MyDateTime = SetTime(MyDateTime);
+		ExitCalWithCallBack(MyDateTime);
 	}
 	
-	public void ExitCalWithCallBack(DateTime _celTime){
-		_panelSlider.SlideOut();
-		_callBack(_celTime);
+	public void ExitCalWithCallBack(DateTime _celTime, bool IsSet = true){
+		//_panelSlider.SlideOut();
+		_callBack(_celTime, IsSet);
+		SetCalImg(false);
 	}
-	public void ExitCal(){
-		_panelSlider.SlideOut();
+
+	public void OnClickExitCal(){
+		ExitCalWithCallBack(DateTime.Now, false);
+	}
+
+	void SetCalImg(bool IsSet){
+		CheckButton.enabled = IsSet;
+		BattenButton.enabled = IsSet;
+		if(IsSet){ // editmode
+			EditDateTime.Revive();
+			DispDateTimeText.Vanish();
+		}else{ // dispmode
+			EditDateTime.Vanish();
+			DispDateTimeText.Revive();
+		}
 	}
 
 
@@ -121,9 +171,27 @@ public class MyCalendar : Token {
 
 		CalendarCel.AllUpdate();
 		// 年月表示更新
-		_dateText.Label = _showDateTime.Year.ToString() + "年" + _showDateTime.Month.ToString() + "月";
+		if(_calState==CalState.Disp)DispDateTimeText.Label = _showDateTime.Year.ToString() + "年" + _showDateTime.Month.ToString() + "月";
+		if(_calState == CalState.SetDate) SetEditDateTimeText();
+	}
+
+	// セルが押された際の処理 (テキスト変更, dispモードの場合、コールバック実行)
+	public void OnClickCel(){
+		if(_calState==CalState.Disp){
+			DispDateTimeText.Label = _showDateTime.Year.ToString() + "年" + _showDateTime.Month.ToString() + "月";
+			_callBack(MyDateTime);
+		}else{
+			_showDateTime = MyDateTime;
+			SetEditDateTimeText();
+
+		}
 
 	}
+
+	void SetEditDateTimeText(){
+		EditDateTime.GetComponent<Text>().text =  _showDateTime.Year.ToString() + "/" + _showDateTime.Month.ToString() + "/" + _showDateTime.Day.ToString();
+	}
+
 	int _days_in_month(DateTime dt){
 		return DateTime.DaysInMonth(dt.Year, dt.Month);
 	}
@@ -131,15 +199,17 @@ public class MyCalendar : Token {
 
 	public void OnClickPreMonth(){
 		_showDateTime = _showDateTime.AddMonths(-1);
+		_showDateTime = _showDateTime.AddDays(- _showDateTime.Day + 1);
 		SetCalendar();
 	}
 	public void OnClickNextMonth(){
 		_showDateTime = _showDateTime.AddMonths(1);
+		_showDateTime = _showDateTime.AddDays(- _showDateTime.Day + 1);
 		SetCalendar();
 	}
 
 	// calendarell のceltime にinputboxの時間、分を入れる
-	public DateTime AddTime(DateTime _celTime){
+	public DateTime SetTime(DateTime _celTime){
 		int hour = _inputTime.GetHour();
 		int min = _inputTime.GetMin();
 		return new DateTime(_celTime.Year, _celTime.Month, _celTime.Day, hour, min, 0); 

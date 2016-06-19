@@ -9,14 +9,11 @@ public class TodoText : MonoBehaviour {
 	public static TodoText _todoText;
 	public InputField _inputTitle;
 	public TodoField _todoField;
+	public Text _changed_sign;
 	public TodoData todoData{
 		set {_todoField._todoData = value;}
 	}
-	
-	bool _isChanged;
-	public bool IsChanged{
-		get {return _isChanged;}
-	}
+	string origi_text;
 
 	void Awake(){
 		//_title = MyCanvas.Find<>("Titletxt");
@@ -53,6 +50,7 @@ public class TodoText : MonoBehaviour {
 		TitleSet(Tf._todoData.Title);
 		// ファイルから本文のテキストを読み込んで表示
 		_todoText.SetText(_todoText._load());
+		
 	}
 
 	public void OnClickGoBack(){
@@ -65,7 +63,11 @@ public class TodoText : MonoBehaviour {
 
 	// Fieldを編集した
 	public void TextEdited(){
-		_isChanged = true;
+		if(IsChanged()){
+			_changed_sign.enabled = true;
+		} else {
+			_changed_sign.enabled = false;
+		}
 	}
 
 	// idに対応するファイル削除
@@ -75,6 +77,9 @@ public class TodoText : MonoBehaviour {
 
 	void _save(){
 		FileIo.Write(_get_filename(_todoField._todoData.Id),_get_text());
+		origi_text = _get_text();
+		// 変更印オフ
+		_changed_sign.enabled = false;
 	}
 
 	string _load(){
@@ -95,14 +100,22 @@ public class TodoText : MonoBehaviour {
 
 	void SetText(string text){
 		_inputField.text = text;
-		// データ編集したときにたてるフラグ
-		_isChanged = false;
+		//編集したか比較するために持っておく
+		origi_text = text;
+		// 編集印をオフに
+		_changed_sign.enabled = false;
 	}
+
+	bool IsChanged(){
+		//return (origi_text.CompareTo(_get_text()) == 0)? true : false;
+		return (origi_text.CompareTo(_get_text()) == 0) ? false: true;
+		
+	} 
 
 		// saveするかしないか指定
 	public void GoBack(bool IsSave = true){
 		Body.GoBoardMain();
-		if(IsChanged){
+		if(IsChanged()){
 			if(IsSave){
 				_save();
 				PopUp.PopUpStart("保存しました", 1.5f);

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 /// uGUI Text操作モジュール
 /// ※速度パラメータを使用するにはRigidbody2Dのアタッチが必要
 /// </summary>
-public class TextObj : MonoBehaviour {
+public class TextObj : Token {
 
     
   /// RectTransform

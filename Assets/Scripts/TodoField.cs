@@ -102,7 +102,7 @@ public class TodoField : Token {
 		Debug.Log("Created!! ");
 		SetText("");
 		Main mainBoard = MyCanvas.Find<Main>("BoardMain");
-		mainBoard.ShowToday();
+		//mainBoard.ShowToday();
 	}
 	
 
@@ -128,7 +128,7 @@ public class TodoField : Token {
 	public void Modified(){
 		_todoData.UpdateTitle(GetText());
 		Main mainBoard = MyCanvas.Find<Main>("BoardMain");
-		mainBoard.ShowToday();
+		//mainBoard.ShowToday();
 		if(IsNotify){
 			// ローカル通知変更
 			setCall();
@@ -176,10 +176,11 @@ public class TodoField : Token {
 		}
 	}
 	
-	public void TimeModified(DateTime Dt){
+	public void TimeModified(DateTime Dt, bool IsSet = true){
+		if(!IsSet)return ;
 		SetTime(Dt);
 		Main mainBoard = MyCanvas.Find<Main>("BoardMain");
-		mainBoard.ShowToday();
+		//mainBoard.ShowToday();
 		if(IsNotify){
 			if(_todoData.TodoTime.CompareTo(DateTime.Now) > 0){
 				// ローカル通知設定変更
@@ -193,7 +194,7 @@ public class TodoField : Token {
 	}
 	// 時間ボタン
 	public void OnClickTime(){
-		MyCanvas.Find<MyCalendar>("MyCalendar").GoCal(TodoDate,_celTime => TimeModified(_celTime));
+		MyCanvas.Find<MyCalendar>("MyCalendar").GoCal(TodoDate, (DateTime _celTime, bool IsSet) => TimeModified(_celTime, IsSet));
 	}
 
 	// 長押し選択
@@ -224,8 +225,9 @@ public class TodoField : Token {
 		mainBoard.DeleteDataById(_todoData.Id);
 		// ファイル削除
 		TodoText.DeleteFile(_todoData.Id);
-		mainBoard.ShowToday();
+		//mainBoard.ShowToday();
 		Vanish();
+		mainBoard.Reload();
 		
 	}
 

@@ -30,16 +30,18 @@ public class Main : Token {
 	// スクロ＾ルcontent
 	ScrollController today_scl;
 	ScrollController todo_scl;
+	Image todoadd_button;
 
 	// Use this for initialization
 	// コンポーネント取得はStartの前に処理する
 	void Awake(){
 		_title = MyCanvas.Find<TextObj>("MainTitle");
 		TodoField.parent = new TokenMgr<TodoField>("TodoField",40);
-		TodayField.parent = new TokenMgr<TodayField>("TodayField", 10);
+		//TodayField.parent = new TokenMgr<TodayField>("TodayField", 10);
 		_dpDown = MyCanvas.Find<Dropdown>("Dropdown");
 		today_scl = MyCanvas.Find<ScrollController>("TodayContent");
 		todo_scl = MyCanvas.Find<ScrollController>("TodoContent");
+		todoadd_button = MyCanvas.Find<Image>("TodoAdd");
 		 
 	}
 
@@ -53,6 +55,7 @@ public class Main : Token {
 		TodoData.SortByDate(Todos);
 		// 全て表示
 		Show(AllContain);
+		MyCanvas.Find<MyCalendar>("MyCalendar").DispCal(DateTime.Now, (DateTime dt, bool IsSet) => MyCanvas.Find<Main>("BoardMain").ShowMyDay(dt));
 	}
 
 	void Update(){
@@ -61,7 +64,8 @@ public class Main : Token {
 
 	public void OnclickTodoAdd(){
 		//TodoAdd(DateTime.Now);
-		MyCanvas.Find<MyCalendar>("MyCalendar").GoCal(DateTime.Now, _celTime => MyCanvas.Find<Main>("BoardMain").TodoAdd(_celTime));
+		SetTodoAddImg(false);
+		MyCanvas.Find<MyCalendar>("MyCalendar").GoCal(DateTime.Now, (DateTime _celTime, bool IsSet) => MyCanvas.Find<Main>("BoardMain").TodoAdd(_celTime,IsSet));
 	}
 
 	public void OnClickGoSetting(){
@@ -69,8 +73,12 @@ public class Main : Token {
 	}
 
 	
-	// 追加モードのカレンダーで日にちを押したさいに呼ばれる
-	public void TodoAdd(DateTime Dt){
+	// 追加モードのカレンダーで日にち確定した際に呼ばれる
+	public void TodoAdd(DateTime Dt, bool IsSet = true){
+		SetTodoAddImg(true);
+		// Dispモード指定
+		MyCanvas.Find<MyCalendar>("MyCalendar").DispCal(DateTime.Now, (DateTime dt, bool _IsSet) => MyCanvas.Find<Main>("BoardMain").ShowMyDay(dt));
+		if(!IsSet)return ;
 		int id = TodoData.NewId(Todos);
 		TodoData new_todo = new TodoData(id);
 		//new_todo.UpdateCreate();
@@ -80,6 +88,13 @@ public class Main : Token {
 		_todoField.Create(Dt);	//新規に作成時の処理
 		// ドロップダウンのセレクト表示をAllにしておく
 		_dpDown.value = (int)SelectOpt.All;
+		// Dispモード指定
+		MyCanvas.Find<MyCalendar>("MyCalendar").DispCal(DateTime.Now, (DateTime dt, bool _IsSet) => MyCanvas.Find<Main>("BoardMain").ShowMyDay(dt));
+	}
+
+	public void SetTodoAddImg(bool IsEnabled){
+		todoadd_button.enabled = IsEnabled;
+
 	}
 
 	void Show (IsContain _eq){	
@@ -97,10 +112,12 @@ public class Main : Token {
 			_todoField.IsNotify = Todos[i].IsNotify;
 			_todoField.SetTimeText(Todos[i].TodoTime);
 		}	
-		ShowToday();
+		//ShowToday();
 	}
 
-
+	public void ShowMyDay(DateTime dt){
+		Show(GetEq(dt));
+	}
 	// 再読み込みして表示
 	public void Reload(){
 		// 読み込む前にセーブ対象をすべてセーブ
@@ -111,7 +128,9 @@ public class Main : Token {
 		TodoData.LogAll(Todos);
 		// 全て表示
 		Show(AllContain);
-		_dpDown.value = (int)SelectOpt.All;//
+		_dpDown.value = (int)SelectOpt.All;
+		// カレンダーreload
+		MyCanvas.Find<MyCalendar>("MyCalendar").DispCal(DateTime.Now, (DateTime dt, bool _IsSet) => MyCanvas.Find<Main>("BoardMain").ShowMyDay(dt));
 	}
 
 	// コンボボックスが変更された
@@ -151,17 +170,25 @@ public class Main : Token {
 		return _eq;
 	}
 
+	// 同じ日を検索するラムダ式取得
+	IsContain GetEq(DateTime eq_date){
+		IsContain _eq = (td) => {return (IsDayEq(td.TodoTime, eq_date));};
+		return _eq;
+	}
+
 	// コンボボックスの値を取得
 	int GetSelectOpt(){
 		_dpDown = MyCanvas.Find<Dropdown>("Dropdown");
 		return _dpDown.value;
 	}
 
+	/*
 	// 上のボード、今日のtodo表示
 	public void ShowToday(){
 		ShowUpperBoard(SelectOpt.Today);
 	}
-
+	*/
+/*
 	void ShowUpperBoard(SelectOpt option){
 		// 破棄する前に場所をcanvas 直下に移動
 		TodayField.parent.ForEachExists(t => t.transform.SetParent(MyCanvas.GetCanvas().transform,false));
@@ -178,7 +205,7 @@ public class Main : Token {
 			_todayField.SetTimeText(Todos[i].TodoTime);
 		}	
 	}
-
+*/
 	public bool DeleteDataById(int id){
 		return TodoData.DeleteDataById(Todos,id);
 	}
