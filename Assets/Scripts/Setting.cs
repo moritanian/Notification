@@ -14,7 +14,7 @@ public class Setting : Token {
 	Text _fontColorChgText;
 	Dropdown _dp_notify_id;
 
-	static int fontsize = 20;
+	static int fontsize = 11;
 	public static int FontSize{
 		get {return fontsize;}
 		set {

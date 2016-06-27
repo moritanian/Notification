@@ -89,7 +89,7 @@ public class Main : Token {
 		// ドロップダウンのセレクト表示をAllにしておく
 		_dpDown.value = (int)SelectOpt.All;
 		// Dispモード指定
-		MyCanvas.Find<MyCalendar>("MyCalendar").DispCal(DateTime.Now, (DateTime dt, bool _IsSet) => MyCanvas.Find<Main>("BoardMain").ShowMyDay(dt));
+		MyCanvas.Find<MyCalendar>("MyCalendar").DispCal(DateTime.Now, (DateTime dt, bool _IsSet) => ShowMyDay(dt));
 	}
 
 	public void SetTodoAddImg(bool IsEnabled){
