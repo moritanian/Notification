@@ -19,7 +19,7 @@ public class MyCalendar : Token {
 		get {return _showDateTime;}
 	}
 	//指定された日時 
-	public DateTime _myDateTime;
+	DateTime _myDateTime;
 	public DateTime MyDateTime {
 		get {return _myDateTime;}
 		set {_myDateTime = value;}
@@ -27,6 +27,7 @@ public class MyCalendar : Token {
 	
 	Image BattenButton;
 	Image CheckButton;
+	ImageObj MemoButton;
 	Token EditDateTime;
 	TextObj DispDateTimeText;
 
@@ -42,9 +43,9 @@ public class MyCalendar : Token {
 		[SerializeField]
 	readonly public int NUM_OF_ROW = 6;
 	
-	[SerializeField]
 	public Color TodayColor;
 	public Color MyDayColor;
+	public Color TodayMyColor;
 
 	public TimeInput _inputTime;
 
@@ -80,6 +81,7 @@ public class MyCalendar : Token {
 	void Awake(){
 		BattenButton = MyCanvas.Find<Image>("BattenButton");
 		CheckButton = MyCanvas.Find<Image>("CheckButton");
+		MemoButton = MyCanvas.Find<ImageObj>("MemoButton");
 		EditDateTime = MyCanvas.Find<Token>("EditDateTime");
 		DispDateTimeText = MyCanvas.Find<TextObj>("DispDateTimeText");
 	}
@@ -99,6 +101,8 @@ public class MyCalendar : Token {
 
 	public void GoCal(DateTime PointedTime ,CallBack callBack){
 		//_panelSlider.SlideIn();
+		// textFirldに反映
+		_inputTime.SetTime(PointedTime);
 		_calState = CalState.SetDate;
 		_callBack = callBack;
 		MyDateTime = PointedTime;
@@ -122,26 +126,34 @@ public class MyCalendar : Token {
 		MyDateTime = SetTime(MyDateTime);
 		ExitCalWithCallBack(MyDateTime);
 	}
+
+	// メモ追加ボタン
+	public void OnClickMemo(){
+		ExitCalWithCallBack(MyDateTime);
+	}
 	
 	public void ExitCalWithCallBack(DateTime _celTime, bool IsSet = true){
 		//_panelSlider.SlideOut();
 		_callBack(_celTime, IsSet);
 		SetCalImg(false);
 	}
-
+	// ×ボタン
 	public void OnClickExitCal(){
-		ExitCalWithCallBack(DateTime.Now, false);
+		ExitCalWithCallBack(MyDateTime, false);
 	}
 
 	void SetCalImg(bool IsSet){
 		CheckButton.enabled = IsSet;
 		BattenButton.enabled = IsSet;
+		MemoButton.enabled = IsSet;
 		if(IsSet){ // editmode
 			EditDateTime.Revive();
 			DispDateTimeText.Vanish();
+			MemoButton.Revive();
 		}else{ // dispmode
 			EditDateTime.Vanish();
 			DispDateTimeText.Revive();
+			MemoButton.Vanish();
 		}
 	}
 
@@ -214,4 +226,6 @@ public class MyCalendar : Token {
 		int min = _inputTime.GetMin();
 		return new DateTime(_celTime.Year, _celTime.Month, _celTime.Day, hour, min, 0); 
 	}
+
 }
+

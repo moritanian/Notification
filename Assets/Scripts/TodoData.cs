@@ -13,7 +13,8 @@ using System.Linq;
 		NotificationTime,
 		TodoTime,
 		MaxId,
-		IsNotify
+		IsNotify,
+		IsMemo
 	}
 //Todoの情報をもつ/ Todoの管理
 public class TodoData {
@@ -48,6 +49,8 @@ public class TodoData {
 
 	public bool IsNotify = false;
 
+	// メモ、todo時間が無効
+	public bool IsMemo;
 
 // 保存するデータのキー
 	public static string _get_data_key(DataKeys key, int id = 0){
@@ -65,7 +68,9 @@ public class TodoData {
 			case DataKeys.MaxId:
 				return "Todo_MaxId";
 			case DataKeys.IsNotify:
-				return "Todo_IsNotify" + id;	
+				return "Todo_IsNotify" + id;
+			case DataKeys.IsMemo:
+				return "Todo_IsMemo" + id;	
 		}
 		return "";
 	}
@@ -95,7 +100,7 @@ public class TodoData {
 		Util.SaveData(_get_data_key(DataKeys.TodoTime, id),Dt.ToString());
 		Util.SaveData(_get_data_key(DataKeys.ModifiedTime,id),DateTime.Now.ToString());
 	}
-	// 新規追加を保存
+	// 新規追加をunityで保存
 	public void UpdateCreate(){
 		//int id = NewId();
 		string create_time = DateTime.Now.ToString();
@@ -130,10 +135,12 @@ public class TodoData {
 				string todo_time = Util.LoadData(_get_data_key(DataKeys.TodoTime,id));
 				string title = Util.LoadData(_get_data_key(DataKeys.Title,id));
 				string isNotifyStr = Util.LoadData(_get_data_key(DataKeys.IsNotify,id));
+				string isMemostr = Util.LoadData(_get_data_key(DataKeys.IsMemo, 0));
 				TodoData todo = new TodoData(id);
 				if(todo_time != "")todo.TodoTime = DateTime.Parse(todo_time);
 				todo.Title = title;
 				todo.IsNotify = (isNotifyStr == "True"); 
+				todo.IsMemo = (isMemostr == "True");
 				_todos.Add(todo);
 			}
 		}

@@ -37,18 +37,20 @@ public class CalendarCel : Token {
   	void SetLabel(string txt){
   		_text.text = txt;
   		string holiday_txt = Holiday.GetHoliday(_celTime);
-  		//if(holiday_txt!= "")Debug.Log(Holiday.GetHoliday(_celTime));
+  		
+  		// event 表示
   		if(holiday_txt != ""){
   			event_text = holiday_txt;
   		} else{
   			event_text = "";
   		}
 
-  		if(col == 0 || holiday_txt!= ""){
+  		// 文字色変更
+  		if(col == 0 || holiday_txt!= ""){	// 日曜祝日
   			_text.color = Color.red;
-  		}else if(col == 6){
+  		}else if(col == 6){					// 土曜
   			_text.color = Color.blue;
-  		}else{
+  		}else{								// 平日
   			_text.color = Color.black;
   		}
   	}
@@ -67,11 +69,13 @@ public class CalendarCel : Token {
 		set;
 	}
 
+	// そのセルの状態　範囲外/ 通常 / 今日　/ 該当 / 今日であり、指し示されている
 	enum Status{
 		OutOfRange,
 		Normal,
 		Today,
-		Pointed
+		Pointed,
+		TodayPointed
 	}
 	Status _status;
 	void status(Status stat){
@@ -85,6 +89,9 @@ public class CalendarCel : Token {
 				break;
 			case Status.Pointed:
 				CelImage.color = _mycalendar.MyDayColor;
+				break;
+			case Status.TodayPointed:
+				CelImage.color = _mycalendar.TodayMyColor;
 				break;
 			case Status.Normal:
 			default:
@@ -165,7 +172,6 @@ public class CalendarCel : Token {
 		DateTime Time = new DateTime(_mycalendar.ShowDateTime.Year, _mycalendar.ShowDateTime.Month,1);
 		List<int> numbers = MyCanvas.Find<Main>("BoardMain").CalcTodoNumbers(Time);	
 		parent.ForEachExists(cel => cel.UpdateCelWithNum(numbers));
-		//parent.ForEachExists(cel => cel.UpdateCel());
 	}
 
 	public void UpdateCel(){
@@ -189,8 +195,10 @@ public class CalendarCel : Token {
 	// status とcolor 変更
 	void UpDateStatus(){
 		DateTime today = DateTime.Now;
-		if(IsDayEq(today, _celTime))status(Status.Today);
-		if(IsDayEq(_mycalendar.MyDateTime, _celTime)){
+		if(IsDayEq(today, _celTime)){
+			if(IsDayEq(_mycalendar.MyDateTime, _celTime))status(Status.TodayPointed);
+			else status(Status.Today);
+		}else if(IsDayEq(_mycalendar.MyDateTime, _celTime)){
 			status(Status.Pointed);
 		}
 	}

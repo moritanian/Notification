@@ -27,6 +27,7 @@ public class LongPress : MonoBehaviour {
 	}
 	PressStaus _pressStatus;
 
+	static bool cancel;
 	// Use this for initialization
 	void Start () {
 		time = 0.0f;
@@ -35,23 +36,30 @@ public class LongPress : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-			if(_pressStatus == PressStaus.Tounch ){
-				// 1フレーム間隔分加算
-				time += Time.deltaTime;
-				if(time > SelectTime ){
-					_pressStatus = PressStaus.Selected;
-					SelectEvent.Invoke();
-				}
+
+		// イベントキャンセル
+		if(_pressStatus != PressStaus.None && cancel){
+			_pressStatus = PressStaus.None;
+			cancel = false;
+		}
+			
+		if(_pressStatus == PressStaus.Tounch ){
+			// 1フレーム間隔分加算
+			time += Time.deltaTime;
+			if(time > SelectTime ){
+				_pressStatus = PressStaus.Selected;
+				SelectEvent.Invoke();
 			}
-			if(_pressStatus == PressStaus.Selected){
-				time += Time.deltaTime;
-				if(time > RequiredTime){
-					_pressStatus = PressStaus.LongPressed;
-					// イベント実行
-					LpEvent.Invoke();
-					time = 0.0f;
-				}
+		}
+		if(_pressStatus == PressStaus.Selected){
+			time += Time.deltaTime;
+			if(time > RequiredTime){
+				_pressStatus = PressStaus.LongPressed;
+				// イベント実行
+				LpEvent.Invoke();
+				time = 0.0f;
 			}
+		}
 	}
 
 	public void ClickDown(){
@@ -65,5 +73,8 @@ public class LongPress : MonoBehaviour {
 		_pressStatus = PressStaus.None;
 		UntouchEvent.Invoke();
 	}
-
+	// 他のイベントが実行されるときに長押しをキャンセルする
+	public static void PressInit(){
+		cancel = true;
+	}
 }

@@ -99,10 +99,7 @@ public class TodoField : Token {
 		_todoData.UpdateCreate();
 		status = Status.Active;
 		//再利用している場合、値が入っていることがあるため消去
-		Debug.Log("Created!! ");
 		SetText("");
-		Main mainBoard = MyCanvas.Find<Main>("BoardMain");
-		//mainBoard.ShowToday();
 	}
 	
 
@@ -158,6 +155,9 @@ public class TodoField : Token {
 		_todoData.UpdateTodoTime(Dt);
 		// 表示の更新
 		SetTimeText(Dt);
+
+		// Dispモード再指定(カレンダーの表示更新)
+		//MyCanvas.Find<Main>("BoardMain").SetDispCal();
 	}
 	// 通知On/Off
 	public void OnClickIsNotify(){
@@ -177,9 +177,14 @@ public class TodoField : Token {
 	}
 	
 	public void TimeModified(DateTime Dt, bool IsSet = true){
-		if(!IsSet)return ;
-		SetTime(Dt);
+
 		Main mainBoard = MyCanvas.Find<Main>("BoardMain");
+		if(!IsSet){
+			// カレンダー設定
+			mainBoard.SetDispCal(Dt);
+			return ;
+		}
+		SetTime(Dt);
 		//mainBoard.ShowToday();
 		if(IsNotify){
 			if(_todoData.TodoTime.CompareTo(DateTime.Now) > 0){
@@ -191,6 +196,7 @@ public class TodoField : Token {
 					_todoData.UpdateIsNotify(false);
 				}
 		}
+		mainBoard.SetDispCal(Dt);
 	}
 	// 時間ボタン
 	public void OnClickTime(){

@@ -11,19 +11,8 @@ using System;
 */
 public class TimeInput : MonoBehaviour {
 
-	// ドロップダウン
-	public Dropdown DpHour1;
-	public Dropdown DpHour2;
-	public Dropdown DpMin1;
-	public Dropdown DpMin2;
-
-	// ドロップダウン変化メソッド呼び出し時の識別用
-	enum DropId{
-		Hour1,
-		Hour2,
-		Min1,
-		Min2
-	}
+	public InputField HourField;
+	public InputField MinField;
 
 	int hour = 0;
 	int min = 0;
@@ -31,7 +20,7 @@ public class TimeInput : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		//初期値取得
-		OnChangeDpDown(0);
+		OnChangeTimeField();
 	}
 	
 	// Update is called once per frame
@@ -39,24 +28,28 @@ public class TimeInput : MonoBehaviour {
 	
 	}
 
-	public void OnChangeDpDown(int DpId){
+	public void SetTime(DateTime Dt){
+		SetTime(Dt.Hour, Dt.Minute);
+	} 
+
+	public void SetTime(int _hour, int _min){
+		hour =  hour;
+		min = _min;
+		HourField.text = formTimeFormat(_hour);
+		MinField.text = formTimeFormat(_min);
+	}
+
+	public void OnChangeTimeField(){
 		int _hour = _getHour();
 		int _min = _getMin();
 		// 時間が不正
-		if(_hour == -1){
-			DpHour1.value = hour / 10;
-			DpHour2.value = hour % 10;
-			return ;
+		if(_hour == -1 || _hour < 10){
+			HourField.text = formTimeFormat(hour);
 		}
 		// 分が不正
-		if(_min == -1){
-			DpMin1.value = min / 10;
-			DpMin2.value = min % 10;
-			return ;
+		if(_min == -1 || _min < 10){
+			MinField.text = formTimeFormat(min);
 		}
-		// 正確だった場合は値更新
-		hour = _hour;
-		min = _min;
 	}
 
 	public int GetHour(){
@@ -67,14 +60,28 @@ public class TimeInput : MonoBehaviour {
 	}
 
 	int _getHour(){
-		int _hour = DpHour1.value*10 + DpHour2.value;
-		if(0<= _hour && _hour < 24)return _hour;
+		int _hour = int.Parse(HourField.text);
+		if(0<= _hour && _hour < 24){
+			hour = _hour;
+			return _hour;
+		}
 		return -1;
 	}
 
 	int _getMin(){
-		int _min = DpMin1.value*10 + DpMin2.value;
-		if(0<= _min && _min <60)return _min;
+		int _min = int.Parse(MinField.text);
+		if(0<= _min && _min < 60){
+			min = _min;
+			return _min;
+		}
 		return -1;
+	}
+
+	string formTimeFormat(int time){
+		string time_str = time.ToString();
+		if(time < 10){
+			time_str = "0" + time_str;
+		}
+		return time_str;
 	}
 }

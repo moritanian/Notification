@@ -123,7 +123,6 @@ public class Setting : Token {
 		if(is_init){
 			string bool_str = Util.LoadData(GetDataKey(DataKeys.IsDebugLog));
 			if(bool_str != ""){
-				Debug.Log(bool_str);
 				bool isLog = bool.Parse(bool_str);
 				DebugLog.IsLogDebug = isLog;
 				_debugToggle.isOn = isLog;

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 /// uGUI Image操作モジュール
 
 /// </summary>
-public class ImageObj : MonoBehaviour{
+public class ImageObj : Token{
 	
 	
 	/// RectTransform
