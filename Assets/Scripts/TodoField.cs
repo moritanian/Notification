@@ -92,11 +92,10 @@ public class TodoField : Token {
 		// 現在時刻過ぎた場合は強調する
 		SetTimeTextColor();
 	}
-	// 作成時の処理
+	// 新規todo作成時のtodofield設定処理
 	public void Create(DateTime Dt){
-		//再利用している場合、値が入っているこ
 		SetTime(Dt);
-		_todoData.UpdateCreate();
+		//_todoData.UpdateCreate();
 		status = Status.Active;
 		//再利用している場合、値が入っていることがあるため消去
 		SetText("");
@@ -139,25 +138,22 @@ public class TodoField : Token {
 	// DateTime型からset
 	public void SetTimeText(DateTime Dt){
 		TodoDate = Dt;
-		//TimeText = Dt.Year.ToString() + "\n" + Dt.Month.ToString() + "/" + Dt.Day;
+		if(_todoData.IsMemo){
+			TimeText = " Memo";
+			return ;
+		}
 		// 今年の分は年表示しない
 		if(Dt.Year == DateTime.Now.Year){
 			TimeText = Dt.ToString("  MM/dd") + "\n" + Dt.ToString("  HH:mm");
 		} else {
 			TimeText = Dt.ToString("yy/MM/dd") + "\n" + Dt.ToString("  HH:mm");
 		}
-		// today ボード更新
-		Main mainBoard = MyCanvas.Find<Main>("BoardMain");
-	//	mainBoard.ShowToday();
 	}
 
 	public void SetTime(DateTime Dt){
 		_todoData.UpdateTodoTime(Dt);
 		// 表示の更新
 		SetTimeText(Dt);
-
-		// Dispモード再指定(カレンダーの表示更新)
-		//MyCanvas.Find<Main>("BoardMain").SetDispCal();
 	}
 	// 通知On/Off
 	public void OnClickIsNotify(){
@@ -179,6 +175,7 @@ public class TodoField : Token {
 	public void TimeModified(DateTime Dt, bool IsSet = true){
 
 		Main mainBoard = MyCanvas.Find<Main>("BoardMain");
+		mainBoard.SetTodoAddImg(true);
 		if(!IsSet){
 			// カレンダー設定
 			mainBoard.SetDispCal(Dt);
@@ -200,7 +197,8 @@ public class TodoField : Token {
 	}
 	// 時間ボタン
 	public void OnClickTime(){
-		MyCanvas.Find<MyCalendar>("MyCalendar").GoCal(TodoDate, (DateTime _celTime, bool IsSet) => TimeModified(_celTime, IsSet));
+		MyCanvas.Find<Main>("BoardMain").SetTodoAddImg(false);
+		MyCanvas.Find<MyCalendar>("MyCalendar").GoCal(TodoDate, (DateTime _celTime, bool IsSet, bool IsMemo) => TimeModified(_celTime, IsSet));
 	}
 
 	// 長押し選択
@@ -240,7 +238,7 @@ public class TodoField : Token {
 	// テキスト背景色変更 /
 	void SetTimeTextColor(){
 		
-		if(_todoData.TodoTime.CompareTo(DateTime.Now) < 0)timeTextImage.color = EnphasizedColor;
+		if(_todoData.TodoTime.CompareTo(DateTime.Now) < 0 && !_todoData.IsMemo)timeTextImage.color = EnphasizedColor;
 		else timeTextImage.color = NormalTimeTextColor;
 	}
 

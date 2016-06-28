@@ -62,7 +62,7 @@ public class Main : Token {
 		TodoData.SortByDate(Todos);
 		// 全て表示
 		Show(AllContain);
-		_mycalendar.DispCal(DateTime.Now, (DateTime dt, bool IsSet) => MyCanvas.Find<Main>("BoardMain").ShowMyDay(dt));
+		_mycalendar.DispCal(DateTime.Now, (DateTime dt, bool IsSet, bool IsMemo) => MyCanvas.Find<Main>("BoardMain").ShowMyDay(dt));
 	}
 
 	void Update(){
@@ -74,21 +74,21 @@ public class Main : Token {
 		SetDispCal(DateTime.Now);
 	}
 	public void SetDispCal(DateTime pt){
-		_mycalendar.DispCal(pt, (DateTime dt, bool IsSet) => ShowMyDay(dt));
+		_mycalendar.DispCal(pt, (DateTime dt, bool IsSet, bool IsMemo) => ShowMyDay(dt));
 	}
 
 	// カレンダーを時間設定モードで反映
-	public void SetGoCal(){
-		SetGoCal(DateTime.Now);
+	public void SetGoCal(bool IsDispMemoButton = false){
+		SetGoCal(DateTime.Now, IsDispMemoButton);
 	}
-	public void SetGoCal(DateTime pt){
-		_mycalendar.GoCal(pt, (DateTime _celTime, bool IsSet) => TodoAdd(_celTime,IsSet));
+	public void SetGoCal(DateTime pt, bool IsDispMemoButton = false){
+		_mycalendar.GoCal(pt, (DateTime _celTime, bool IsSet, bool IsMemo) => TodoAdd(_celTime,IsSet, IsMemo), IsDispMemoButton);
 	}
 	
 	public void OnclickTodoAdd(){
 		SetTodoAddImg(false);
 
-		SetGoCal(getDefaultTime(_mycalendar.MyDateTime));	
+		SetGoCal(getDefaultTime(_mycalendar.MyDateTime), true);	
 	}
 
 	public void OnClickGoSetting(){
@@ -97,27 +97,34 @@ public class Main : Token {
 
 	
 	// 追加モードのカレンダーで日にち確定した際に呼ばれる
-	public void TodoAdd(DateTime Dt, bool IsSet = true){
+	public void TodoAdd(DateTime Dt, bool IsSet = true, bool IsMemo = false){
 		SetTodoAddImg(true);
 		if(!IsSet){
 			// Dispモード指定
-			_mycalendar.DispCal(_mycalendar.MyDateTime, (DateTime dt, bool _IsSet) => ShowMyDay(dt));
+			SetDispCal(_mycalendar.MyDateTime);
 			return ;
 		}
 		int id = TodoData.NewId(Todos);
 		TodoData new_todo = new TodoData(id);
-		//new_todo.UpdateCreate();
-		// Todo 配列に追加
-		Todos.Add(new_todo);
+		new_todo.IsMemo = IsMemo; //
+		
+		Todos.Add(new_todo);// Todo 配列に追加
+
 		// todoField を生成
 		TodoField _todoField = TodoField.Add(0,0,new_todo);
+		
 		// TododField をスクロールビューの子要素にする
 		todo_scl.SetContent(_todoField.transform);
+		
 		_todoField.Create(Dt);	//新規に作成時の処理
-		// ドロップダウンのセレクト表示をPointedDayにしておく
-		_dpDown.value = (int)SelectOpt.PointedDay;
+
+		// unity に保存する手続き
+		new_todo.UpdateCreate();
+
+		if(IsMemo) _dpDown.value = (int)SelectOpt.Memo;
+		else _dpDown.value = (int)SelectOpt.PointedDay;// ドロップダウンのセレクト表示をPointedDayにしておく
 		// Dispモード指定
-		_mycalendar.DispCal(Dt, (DateTime dt, bool _IsSet) => ShowMyDay(dt));
+		SetDispCal(Dt);
 	}
 
 	// todo 追加ボタンの表示、非表示
@@ -135,7 +142,6 @@ public class Main : Token {
 		for(int i=0; i<Todos.Count; i++){
 			if(!_eq(Todos[i]))continue;
 			TodoField _todoField = TodoField.Add(0,0,Todos[i]);
-			//_todoField.transform.SetParent(this.transform,false);
 			todo_scl.SetContent(_todoField.transform);
 			_todoField.SetText(Todos[i].Title);
 			_todoField.IsNotify = Todos[i].IsNotify;
@@ -162,7 +168,7 @@ public class Main : Token {
 		Show(AllContain);
 		_dpDown.value = (int)SelectOpt.All;
 		// カレンダーreload
-		_mycalendar.DispCal(DateTime.Now, (DateTime dt, bool _IsSet) => MyCanvas.Find<Main>("BoardMain").ShowMyDay(dt));
+		SetDispCal(_mycalendar.MyDateTime);
 	}
 
 	// コンボボックスが変更された
@@ -184,16 +190,17 @@ public class Main : Token {
 				break;
 			case SelectOpt.ThisMonth:
 				_eq = (td) => {return (td.TodoTime.Year == DateTime.Now.Year 
-									&& td.TodoTime.Month == DateTime.Now.Month);};
+									&& td.TodoTime.Month == DateTime.Now.Month
+									&& !td.IsMemo);};
 				break;
 			case SelectOpt.Previous:
-				_eq = (td) => {return (td.TodoTime.CompareTo(DateTime.Now) < 0);};
+				_eq = (td) => {return (td.TodoTime.CompareTo(DateTime.Now) < 0) && !td.IsMemo;};
 				break;
 			case SelectOpt.Future:
-				_eq = (td) => {return (td.TodoTime.CompareTo(DateTime.Now) > 0);};
+				_eq = (td) => {return (td.TodoTime.CompareTo(DateTime.Now) > 0 && !td.IsMemo);};
 				break;
 			case SelectOpt.PointedDay:
-				_eq = (td) => {return (IsSameDay(td.TodoTime, _mycalendar.MyDateTime));};
+				_eq = (td) => {return (IsSameDay(td.TodoTime, _mycalendar.MyDateTime) && !td.IsMemo);};
 				break;
 			case SelectOpt.Memo:
 				_eq = (td) => {return (td.IsMemo);};
@@ -207,7 +214,7 @@ public class Main : Token {
 
 	// 同じ日を検索するラムダ式取得
 	IsContain GetEq(DateTime eq_date){
-		IsContain _eq = (td) => {return (IsDayEq(td.TodoTime, eq_date));};
+		IsContain _eq = (td) => {return (IsDayEq(td.TodoTime, eq_date)) && !td.IsMemo;};
 		return _eq;
 	}
 
@@ -253,6 +260,7 @@ public class Main : Token {
 			numbers.Add(0);
 		}
 		for(int i=0;i<Todos.Count;i++){
+			if(Todos[i].IsMemo)continue;
 			if(IsSameMonth(dt,Todos[i].TodoTime))numbers[Todos[i].TodoTime.Day - 1]++;
 		}
 		return numbers;

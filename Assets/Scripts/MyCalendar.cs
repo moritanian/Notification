@@ -49,6 +49,7 @@ public class MyCalendar : Token {
 
 	public TimeInput _inputTime;
 
+	bool isDispMemoButton;
 
 	// CalendarCelに参照させるパラメータ 読み取り専用
 	// これらは　
@@ -75,7 +76,7 @@ public class MyCalendar : Token {
 	};
 	CalState _calState;
 	// カレンダーの日にちを決定したときに処理される内容
-	public delegate void CallBack(DateTime _time, bool IsSet = true);
+	public delegate void CallBack(DateTime _time, bool IsSet = true, bool IsMemo = false);
 	CallBack _callBack;
 
 	void Awake(){
@@ -99,8 +100,8 @@ public class MyCalendar : Token {
 	
 	}
 
-	public void GoCal(DateTime PointedTime ,CallBack callBack){
-		//_panelSlider.SlideIn();
+	public void GoCal(DateTime PointedTime ,CallBack callBack, bool IsDispMemoButton = false){
+		isDispMemoButton = IsDispMemoButton;
 		// textFirldに反映
 		_inputTime.SetTime(PointedTime);
 		_calState = CalState.SetDate;
@@ -109,6 +110,7 @@ public class MyCalendar : Token {
 		_showDateTime = PointedTime;
 		SetCalendar();
 		SetCalImg(true);
+
 	}
 
 	// カレンダーをdisplayモードで表示
@@ -129,12 +131,12 @@ public class MyCalendar : Token {
 
 	// メモ追加ボタン
 	public void OnClickMemo(){
-		ExitCalWithCallBack(MyDateTime);
+		ExitCalWithCallBack(MyDateTime, true, true);
 	}
 	
-	public void ExitCalWithCallBack(DateTime _celTime, bool IsSet = true){
+	public void ExitCalWithCallBack(DateTime _celTime, bool IsSet = true, bool IsMemo = false){
 		//_panelSlider.SlideOut();
-		_callBack(_celTime, IsSet);
+		_callBack(_celTime, IsSet, IsMemo);
 		SetCalImg(false);
 	}
 	// ×ボタン
@@ -145,15 +147,14 @@ public class MyCalendar : Token {
 	void SetCalImg(bool IsSet){
 		CheckButton.enabled = IsSet;
 		BattenButton.enabled = IsSet;
-		MemoButton.enabled = IsSet;
 		if(IsSet){ // editmode
 			EditDateTime.Revive();
 			DispDateTimeText.Vanish();
-			MemoButton.Revive();
+			if(isDispMemoButton)MemoButton.Revive();
 		}else{ // dispmode
 			EditDateTime.Vanish();
 			DispDateTimeText.Revive();
-			MemoButton.Vanish();
+			if(MemoButton.Exists)MemoButton.Vanish();
 		}
 	}
 

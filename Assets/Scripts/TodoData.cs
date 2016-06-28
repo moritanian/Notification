@@ -105,6 +105,7 @@ public class TodoData {
 		//int id = NewId();
 		string create_time = DateTime.Now.ToString();
 		Util.SaveData(_get_data_key(DataKeys.CreateTime,id), create_time);
+		Util.SaveData(_get_data_key(DataKeys.IsMemo, id), IsMemo.ToString());
 		if(MaxId()<id)Util.SaveData(_get_data_key(DataKeys.MaxId),id.ToString());
 	}
 	// Isnotify 更新
@@ -114,6 +115,8 @@ public class TodoData {
 			if(todo_time.CompareTo(DateTime.Now) < 0){
 				return false;
 			}
+			// memoに時間設定機能はない
+			if(IsMemo)return false;
 		} else if(IsNotify == _IsNotify){
 			//更新不要
 			return false;
@@ -135,7 +138,7 @@ public class TodoData {
 				string todo_time = Util.LoadData(_get_data_key(DataKeys.TodoTime,id));
 				string title = Util.LoadData(_get_data_key(DataKeys.Title,id));
 				string isNotifyStr = Util.LoadData(_get_data_key(DataKeys.IsNotify,id));
-				string isMemostr = Util.LoadData(_get_data_key(DataKeys.IsMemo, 0));
+				string isMemostr = Util.LoadData(_get_data_key(DataKeys.IsMemo, id));
 				TodoData todo = new TodoData(id);
 				if(todo_time != "")todo.TodoTime = DateTime.Parse(todo_time);
 				todo.Title = title;
@@ -197,9 +200,9 @@ public class TodoData {
 		return true;
 	}
 	public static void LogAll(List<TodoData> todos){
-		string str = "id   title\n";
+		string str = "id   title   IsMemo\n";
 		foreach (TodoData todo in todos){
-			str += todo.Id + "   " + todo.Title + "\n";
+			str += todo.Id + "   " + todo.Title + "  " + todo.IsMemo + "\n";
 		}
 		Debug.Log(str);
 	}
