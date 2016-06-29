@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using System;
+using System.Text.RegularExpressions;
 
 public class Main : Token {
 
@@ -13,13 +14,15 @@ public class Main : Token {
 	
 	Dropdown _dpDown; 
 	// コンボボックス用選択肢列挙
+	// コンボボックスの表示の順番に合わせる必要あり
 	enum  SelectOpt{
 		All,
 		PointedDay,
 		ThisMonth,
 		Previous,
 		Future,
-		Memo
+		Memo,
+		Word
 	}
 
 	readonly string[] japanese_week = {"日", "月", "火", "水", "木", "金", "土"};
@@ -35,6 +38,8 @@ public class Main : Token {
 
 	MyCalendar _mycalendar;
 
+	InputField _searchField;
+
 	// 追加モードで表示される時間
 	int def_hour = 8;
 	int def_min = 0;
@@ -49,7 +54,8 @@ public class Main : Token {
 		today_scl = MyCanvas.Find<ScrollController>("TodayContent");
 		todo_scl = MyCanvas.Find<ScrollController>("TodoContent");
 		todoadd_button = MyCanvas.Find<Image>("TodoAdd");
-		 _mycalendar = MyCanvas.Find<MyCalendar>("MyCalendar");
+		_mycalendar = MyCanvas.Find<MyCalendar>("MyCalendar");
+		_searchField = MyCanvas.Find<InputField>("SearchField");
 	}
 
 	void Start () {	
@@ -63,6 +69,8 @@ public class Main : Token {
 		// 全て表示
 		Show(AllContain);
 		_mycalendar.DispCal(DateTime.Now, (DateTime dt, bool IsSet, bool IsMemo) => MyCanvas.Find<Main>("BoardMain").ShowMyDay(dt));
+		
+		_searchField.GetComponent<Token>().Vanish();
 	}
 
 	void Update(){
@@ -175,7 +183,16 @@ public class Main : Token {
 	// todo一覧内容更新する
 	public void OnChangeSelectOpt(){
 		SelectOpt opt = (SelectOpt)GetSelectOpt();
-		Debug.Log("OnChangeSelect" + opt.ToString());
+		showBySelectOpt(opt);
+		Token searchToken = _searchField.GetComponent<Token>();
+		if(opt == SelectOpt.Word && searchToken.enabled){
+			searchToken.Revive();
+		} else if(opt != SelectOpt.Word && searchToken.enabled){
+			searchToken.Vanish();
+		}
+	}
+
+	void showBySelectOpt(SelectOpt opt){
 		IsContain _eq = GetEq(opt);
 		Show(_eq);
 	}
@@ -204,6 +221,9 @@ public class Main : Token {
 				break;
 			case SelectOpt.Memo:
 				_eq = (td) => {return (td.IsMemo);};
+				break;
+			case SelectOpt.Word:
+				_eq = (td) => {return (searchWord(td.Title));};
 				break;
 			default:
 				_eq = AllContain;
@@ -249,6 +269,28 @@ public class Main : Token {
 */
 	public bool DeleteDataById(int id){
 		return TodoData.DeleteDataById(Todos,id);
+	}
+
+	// サーチフィールド編集後に呼ばれる
+	public void OnChangeSearchField(){
+		string search_text = _searchField.text;
+		if(search_text == "")return;
+		if(_dpDown.value == (int)SelectOpt.Word){ // もともとwordになっている場合、手動で選択表示関数呼び出し必要
+			showBySelectOpt(SelectOpt.Word);
+		}else{										// コンボボックス変更で自動的に選択表示してくれる
+			_dpDown.value = (int)SelectOpt.Word;
+		}
+	}
+	
+	// ワード検索 
+	bool searchWord(string title){
+		string search_text = _searchField.text;
+		// 正規表現使いたい
+		//string pattern = "/" +title + "\\?/";
+		//return Regex.IsMatch(search_text, title);
+		Debug.Log("search" + title + ":" + search_text);
+
+		return title.Contains(search_text);
 	}
 
 	// 該当月のそれぞれの日の持つtodoの数をそれぞれ計算

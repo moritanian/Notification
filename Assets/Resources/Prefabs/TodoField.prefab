@@ -293,6 +293,7 @@ MonoBehaviour:
   textImage: {fileID: 11436726}
   NormalColor: {r: 0.947, g: 0.947, b: 0.506, a: 0.991}
   SelectedColor: {r: 0.984, g: 0.816, b: 0.516, a: 0.991}
+  MemoColor: {r: 0.29141435, g: 0.8088235, b: 0.74459344, a: 0.991}
   timeTextImage: {fileID: 11419144}
   EnphasizedColor: {r: 1, g: 0.31790662, b: 0.8118362, a: 1}
   NormalTimeTextColor: {r: 0.7, g: 0.62, b: 0.253, a: 0.934}

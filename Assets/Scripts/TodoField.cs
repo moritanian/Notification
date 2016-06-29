@@ -29,6 +29,8 @@ public class TodoField : Token {
 	Color NormalColor;
 		[SerializeField]
 	Color SelectedColor;
+		[SerializeField]
+	Color MemoColor;
 
 		[SerializeField]
 	Image timeTextImage;
@@ -197,6 +199,9 @@ public class TodoField : Token {
 	}
 	// 時間ボタン
 	public void OnClickTime(){
+		// Memoの場合は設定できない
+		if(_todoData.IsMemo) return ;
+
 		MyCanvas.Find<Main>("BoardMain").SetTodoAddImg(false);
 		MyCanvas.Find<MyCalendar>("MyCalendar").GoCal(TodoDate, (DateTime _celTime, bool IsSet, bool IsMemo) => TimeModified(_celTime, IsSet));
 	}
@@ -237,7 +242,10 @@ public class TodoField : Token {
 
 	// テキスト背景色変更 /
 	void SetTimeTextColor(){
-		
+		if(_todoData.IsMemo){
+			timeTextImage.color = MemoColor;
+			return ;
+		}
 		if(_todoData.TodoTime.CompareTo(DateTime.Now) < 0 && !_todoData.IsMemo)timeTextImage.color = EnphasizedColor;
 		else timeTextImage.color = NormalTimeTextColor;
 	}
