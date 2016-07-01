@@ -29,9 +29,7 @@ public class CalendarCel : Token {
   		get {return event_text;}
   	}
 
-  	void SetEventText(){
-  		MyCanvas.Find<Text>("EventText").text = event_text;
-  	}
+  	
 
   	//日にちと休日の色分け
   	void SetLabel(string txt){
@@ -237,7 +235,7 @@ public class CalendarCel : Token {
 			_mycalendar.OnClickCel();
 			//MyCanvas.Find<MyCalendar>("MyCalendar").ExitCalWithCallBack(_celTime);
 			// イベントtext 表示
-			SetEventText();
+		 	_mycalendar.SetEventText(event_text);
 		}
 	}
 

@@ -30,6 +30,7 @@ public class MyCalendar : Token {
 	ImageObj MemoButton;
 	Token EditDateTime;
 	TextObj DispDateTimeText;
+	TextObj EventText; 
 
 	  [SerializeField]
 	float CEL_WIDTH = 0; 
@@ -85,6 +86,7 @@ public class MyCalendar : Token {
 		MemoButton = MyCanvas.Find<ImageObj>("MemoButton");
 		EditDateTime = MyCanvas.Find<Token>("EditDateTime");
 		DispDateTimeText = MyCanvas.Find<TextObj>("DispDateTimeText");
+		EventText = MyCanvas.Find<TextObj>("EventText");
 	}
 	// Use this for initialization
 	void Start () {
@@ -147,13 +149,13 @@ public class MyCalendar : Token {
 	void SetCalImg(bool IsSet){
 		CheckButton.enabled = IsSet;
 		BattenButton.enabled = IsSet;
+		EventText.Visible = !IsSet;
+		DispDateTimeText.Visible = !IsSet;
 		if(IsSet){ // editmode
 			EditDateTime.Revive();
-			DispDateTimeText.Vanish();
 			if(isDispMemoButton)MemoButton.Revive();
 		}else{ // dispmode
 			EditDateTime.Vanish();
-			DispDateTimeText.Revive();
 			if(MemoButton.Exists)MemoButton.Vanish();
 		}
 	}
@@ -214,11 +216,13 @@ public class MyCalendar : Token {
 		_showDateTime = _showDateTime.AddMonths(-1);
 		_showDateTime = _showDateTime.AddDays(- _showDateTime.Day + 1);
 		SetCalendar();
+		MyCanvas.Find<Main>("BoardMain").ApplySelectOpt();
 	}
 	public void OnClickNextMonth(){
 		_showDateTime = _showDateTime.AddMonths(1);
 		_showDateTime = _showDateTime.AddDays(- _showDateTime.Day + 1);
 		SetCalendar();
+		MyCanvas.Find<Main>("BoardMain").ApplySelectOpt();
 	}
 
 	// calendarell のceltime にinputboxの時間、分を入れる
@@ -227,6 +231,11 @@ public class MyCalendar : Token {
 		int min = _inputTime.GetMin();
 		return new DateTime(_celTime.Year, _celTime.Month, _celTime.Day, hour, min, 0); 
 	}
+
+	// イベントテキスト値挿入
+	public void SetEventText(string event_text){
+  		MyCanvas.Find<Text>("EventText").text = event_text;
+  	}
 
 }
 

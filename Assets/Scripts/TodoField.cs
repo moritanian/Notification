@@ -174,6 +174,7 @@ public class TodoField : Token {
 		}
 	}
 	
+	// 時間変更確定したときに呼ばれる
 	public void TimeModified(DateTime Dt, bool IsSet = true){
 
 		Main mainBoard = MyCanvas.Find<Main>("BoardMain");
@@ -195,7 +196,7 @@ public class TodoField : Token {
 					_todoData.UpdateIsNotify(false);
 				}
 		}
-		mainBoard.SetDispCal(Dt);
+		mainBoard.Restart();
 	}
 	// 時間ボタン
 	public void OnClickTime(){
@@ -236,7 +237,7 @@ public class TodoField : Token {
 		TodoText.DeleteFile(_todoData.Id);
 		//mainBoard.ShowToday();
 		Vanish();
-		mainBoard.Reload();
+		mainBoard.Restart();
 		
 	}
 

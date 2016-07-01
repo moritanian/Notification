@@ -9,7 +9,6 @@ using System.Text.RegularExpressions;
 public class Main : Token {
 
 	DateTime crt_time;
-	TextObj _title ;
 	List<TodoData> Todos;
 	
 	Dropdown _dpDown; 
@@ -47,7 +46,6 @@ public class Main : Token {
 	// Use this for initialization
 	// コンポーネント取得はStartの前に処理する
 	void Awake(){
-		_title = MyCanvas.Find<TextObj>("MainTitle");
 		TodoField.parent = new TokenMgr<TodoField>("TodoField",40);
 		//TodayField.parent = new TokenMgr<TodayField>("TodayField", 10);
 		_dpDown = MyCanvas.Find<Dropdown>("Dropdown");
@@ -63,14 +61,13 @@ public class Main : Token {
 		// 祝日初期化
 		Holiday.init();
 		crt_time = DateTime.Now;
-		_title.Label = crt_time.Month + "月" + crt_time.Day +"日 (" + japanese_week[(int)(crt_time.DayOfWeek)] + ") 今日のTodo"; 	
 		Todos = TodoData.LoadAll();
 		TodoData.SortByDate(Todos);
 		// 全て表示
 		Show(AllContain);
 		_mycalendar.DispCal(DateTime.Now, (DateTime dt, bool IsSet, bool IsMemo) => MyCanvas.Find<Main>("BoardMain").ShowMyDay(dt));
 		
-		_searchField.GetComponent<Token>().Vanish();
+		//_searchField.GetComponent<Token>().Vanish();
 	}
 
 	void Update(){
@@ -122,7 +119,7 @@ public class Main : Token {
 		TodoField _todoField = TodoField.Add(0,0,new_todo);
 		
 		// TododField をスクロールビューの子要素にする
-		todo_scl.SetContent(_todoField.transform);
+		todo_scl.SetContentFirst(_todoField.transform);
 		
 		_todoField.Create(Dt);	//新規に作成時の処理
 
@@ -132,7 +129,8 @@ public class Main : Token {
 		if(IsMemo) _dpDown.value = (int)SelectOpt.Memo;
 		else _dpDown.value = (int)SelectOpt.PointedDay;// ドロップダウンのセレクト表示をPointedDayにしておく
 		// Dispモード指定
-		SetDispCal(Dt);
+		//Restart();
+		SetDispCal(_mycalendar.MyDateTime);
 	}
 
 	// todo 追加ボタンの表示、非表示
@@ -149,6 +147,7 @@ public class Main : Token {
 		TodoField.parent.Vanish();
 		for(int i=0; i<Todos.Count; i++){
 			if(!_eq(Todos[i]))continue;
+			if(!searchWord(Todos[i].Title))continue;// サーチワードある場合はそれにひっかからなかったものも除外
 			TodoField _todoField = TodoField.Add(0,0,Todos[i]);
 			todo_scl.SetContent(_todoField.transform);
 			_todoField.SetText(Todos[i].Title);
@@ -179,17 +178,28 @@ public class Main : Token {
 		SetDispCal(_mycalendar.MyDateTime);
 	}
 
+	// Todo時間などを変更した際に反映してTodoField表示
+	public void Restart(){
+		TodoData.SortByDate(Todos);
+		ApplySelectOpt();
+		SetDispCal(_mycalendar.MyDateTime);
+	}
+
 	// コンボボックスが変更された
 	// todo一覧内容更新する
 	public void OnChangeSelectOpt(){
+		ApplySelectOpt();
+	}
+
+	public void ApplySelectOpt(){
 		SelectOpt opt = (SelectOpt)GetSelectOpt();
 		showBySelectOpt(opt);
-		Token searchToken = _searchField.GetComponent<Token>();
-		if(opt == SelectOpt.Word && searchToken.enabled){
-			searchToken.Revive();
-		} else if(opt != SelectOpt.Word && searchToken.enabled){
-			searchToken.Vanish();
-		}
+		//Token searchToken = _searchField.GetComponent<Token>();
+		//if(opt == SelectOpt.Word && searchToken.enabled){
+		//	searchToken.Revive();
+		//} else if(opt != SelectOpt.Word && searchToken.enabled){
+		//	searchToken.Vanish();
+		//}
 	}
 
 	void showBySelectOpt(SelectOpt opt){
@@ -206,8 +216,7 @@ public class Main : Token {
 				_eq = AllContain;
 				break;
 			case SelectOpt.ThisMonth:
-				_eq = (td) => {return (td.TodoTime.Year == DateTime.Now.Year 
-									&& td.TodoTime.Month == DateTime.Now.Month
+				_eq = (td) => {return (IsSameMonth(td.TodoTime, _mycalendar.ShowDateTime)
 									&& !td.IsMemo);};
 				break;
 			case SelectOpt.Previous:
@@ -274,12 +283,7 @@ public class Main : Token {
 	// サーチフィールド編集後に呼ばれる
 	public void OnChangeSearchField(){
 		string search_text = _searchField.text;
-		if(search_text == "")return;
-		if(_dpDown.value == (int)SelectOpt.Word){ // もともとwordになっている場合、手動で選択表示関数呼び出し必要
-			showBySelectOpt(SelectOpt.Word);
-		}else{										// コンボボックス変更で自動的に選択表示してくれる
-			_dpDown.value = (int)SelectOpt.Word;
-		}
+		showBySelectOpt(SelectOpt.Word);
 	}
 	
 	// ワード検索 

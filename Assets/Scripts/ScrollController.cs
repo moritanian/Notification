@@ -23,6 +23,13 @@ public class ScrollController : MonoBehaviour {
 		tf.SetParent(scroll.transform,false);
 	}
 
+	// 同じ子要素の中で最も最初にする
+	public void SetContentFirst(Transform tf){
+		SetContent(tf);
+		Debug.Log("first");
+		tf.transform.SetAsFirstSibling();
+	}
+
 	// 強制的にスクロールする
 	public void Scroll(Vector2 scl_vec){
 		if(!IsHorizontalMove)scl_vec.x = 0;
