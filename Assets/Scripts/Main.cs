@@ -292,7 +292,7 @@ public class Main : Token {
 		// 正規表現使いたい
 		//string pattern = "/" +title + "\\?/";
 		//return Regex.IsMatch(search_text, title);
-		Debug.Log("search" + title + ":" + search_text);
+		//Debug.Log("search" + title + ":" + search_text);
 
 		return title.Contains(search_text);
 	}

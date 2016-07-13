@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.Events;
 
-public class Swipe : MonoBehaviour {
+public class Swipe : Token {
 
 
 	Vector2 startPosition;
@@ -19,8 +19,10 @@ public class Swipe : MonoBehaviour {
 
 	[SerializeField]
 	SwipeEvent SyncSwipeEvent;
+	[SerializeField]
+	ImageObj TouchSpace;
 
-	float margin_distance = 60f;
+	float margin_distance = 40f;
 	float margin_delta = 3f;
 
 	enum State {
@@ -37,19 +39,18 @@ public class Swipe : MonoBehaviour {
 	void Start () {
 		//Application.OpenURL("https://github.com/moritanian/Notification");
 		state = State.Idle;
-		Vector3 center = transform.position;
-		//float width = GetComponent<SpriteRenderer>().bounds.size.x;
-		//float heught = GetComponent<SpriteRenderer>().bounds.size.y;
 		Vector2 sd = GetComponent<RectTransform>().sizeDelta;
 
-		ObjPos1.x = center.x - sd.x/2.0f;
-		ObjPos1.y = center.y - sd.y/2.0f;
-		ObjPos2.x = center.x + sd.x/2.0f;
-		ObjPos2.y = center.y + sd.y/2.0f;
+		ObjPos1.x = local_X - sd.x/2.0f;
+		ObjPos1.y = local_Y - sd.y/2.0f;
+		ObjPos2.x = local_X + sd.x/2.0f;
+		ObjPos2.y = local_Y + sd.y/2.0f;
 		LogObjPos();
+		//ApplyTouchSpace();
 	}
 
 	public void LogObjPos(){
+		Debug.Log(name + "center: " +  local_X + ":" + local_Y);
 		Debug.Log("Objpos1 = " + ObjPos1.x + ": " + ObjPos1.y);
 		Debug.Log("Objpos2 = " + ObjPos2.x + ": " + ObjPos2.y);
 	}
@@ -64,21 +65,18 @@ public class Swipe : MonoBehaviour {
 	}
 
 	void GetPos(){
-
 		if (Input.GetMouseButtonDown (0) && state == State.Idle) {
-			startPosition = new Vector2(Input.mousePosition.x,Input.mousePosition.y);
-			Debug.Log("Swipe Start" + startPosition.x + " : " + startPosition.y);
+			startPosition = GetMousePos();
 			if(!IsIn(startPosition))return;
 			state = State.Down;
 			CrtPos = startPosition;
 		}
 		if (Input.GetMouseButtonUp (0) && state == State.Down) {
 			state = State.Idle;
-			endPosition = new Vector2(Input.mousePosition.x,Input.mousePosition.y);
+			endPosition = GetMousePos();
 			if(!IsIn(endPosition))return ;
 			float distanceX = endPosition.x - startPosition.x;
 			float distanceY = endPosition.y - startPosition.y;
-			Debug.Log("swipe X" + distanceX.ToString());
 			if(margin_distance < distanceX){
 				SwipeEventRight.Invoke();
 			}else if( -margin_distance > distanceX){
@@ -92,10 +90,15 @@ public class Swipe : MonoBehaviour {
 			
 		}
 	}
+	// マウスのcanvas内での位置
+	Vector2 GetMousePos(){
+		Vector2 pos = new Vector2(Input.mousePosition.x,Input.mousePosition.y);
+		return MyCanvas.GetCanvasPosFromWorld(pos);
+	}
 
 	void SyncSwipe(){
 		if(state == State.Down){
-			Vector2 newPos = new Vector2(Input.mousePosition.x,Input.mousePosition.y);
+			Vector2 newPos = GetMousePos();
 			Vector2 pos_delta = newPos - CrtPos;
 			CrtPos = newPos;
 			if((pos_delta.x*pos_delta.x + pos_delta.y * pos_delta.y) > margin_delta*margin_delta){
@@ -110,5 +113,13 @@ public class Swipe : MonoBehaviour {
 	bool IsIn(Vector2 pos){
 		return (ObjPos1.x < pos.x && pos.x < ObjPos2.x && ObjPos1.y < pos.y && pos.y < ObjPos2.y );
 	}
+
+	void ApplyTouchSpace(){ 
+		if(TouchSpace.Exists){
+			TouchSpace.local_X = (ObjPos1.x + ObjPos2.x)/2.0f;
+			TouchSpace.local_Y = (ObjPos1.y + ObjPos2.y)/2.0f;
+		}
+	}
+
 
 }

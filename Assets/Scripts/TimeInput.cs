@@ -33,7 +33,7 @@ public class TimeInput : MonoBehaviour {
 	} 
 
 	public void SetTime(int _hour, int _min){
-		hour =  hour;
+		hour =  _hour;
 		min = _min;
 		HourField.text = formTimeFormat(_hour);
 		MinField.text = formTimeFormat(_min);

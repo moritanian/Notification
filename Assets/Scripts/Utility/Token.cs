@@ -101,6 +101,26 @@ public class Token : MonoBehaviour
     get { return transform.position.y; }
   }
 
+/// ローカル座標(X).
+  public float local_X {
+    set {
+      Vector3 pos = transform.localPosition;
+      pos.x = value;
+      transform.localPosition = pos;
+    }
+    get { return transform.localPosition.x; }
+  }
+
+  /// ローカル座標(Y).
+  public float local_Y {
+    set {
+      Vector3 pos = transform.localPosition;
+      pos.y = value;
+      transform.localPosition = pos;
+    }
+    get { return transform.localPosition.y; }
+  }
+
   /// 座標をVector2で取得する
   public Vector2 GetPosition()
   {
