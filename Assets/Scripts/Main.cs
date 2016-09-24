@@ -47,9 +47,7 @@ public class Main : Token {
 	// コンポーネント取得はStartの前に処理する
 	void Awake(){
 		TodoField.parent = new TokenMgr<TodoField>("TodoField",40);
-		//TodayField.parent = new TokenMgr<TodayField>("TodayField", 10);
 		_dpDown = MyCanvas.Find<Dropdown>("Dropdown");
-		today_scl = MyCanvas.Find<ScrollController>("TodayContent");
 		todo_scl = MyCanvas.Find<ScrollController>("TodoContent");
 		todoadd_button = MyCanvas.Find<Image>("TodoAdd");
 		_mycalendar = MyCanvas.Find<MyCalendar>("MyCalendar");
@@ -91,9 +89,12 @@ public class Main : Token {
 	}
 	
 	public void OnclickTodoAdd(){
-		SetTodoAddImg(false);
-
-		SetGoCal(getDefaultTime(_mycalendar.MyDateTime), true);	
+		SelectOpt opt = (SelectOpt)GetSelectOpt();
+		if(opt == SelectOpt.Memo){
+			TodoAdd(getDefaultTime(_mycalendar.MyDateTime),true, true);
+		}else{
+			TodoAdd(getDefaultTime(_mycalendar.MyDateTime));
+		}
 	}
 
 	public void OnClickGoSetting(){
@@ -310,14 +311,6 @@ public class Main : Token {
 			if(IsSameMonth(dt,Todos[i].TodoTime))numbers[Todos[i].TodoTime.Day - 1]++;
 		}
 		return numbers;
-	}
-
-	// スワイプ時にタッチ処理をさせないようにする
-	public void CancelEventwhenSwipe(){
-		TodoField.CanEdit(false);
-	}
-	public void AllowWhenSwipeEnd(){
-		TodoField.CanEdit(true);
 	}
 
 	int _days_in_month(DateTime dt){

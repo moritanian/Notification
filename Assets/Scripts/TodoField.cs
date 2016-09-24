@@ -77,20 +77,6 @@ public class TodoField : Token {
 		return obj;
 	}
 
-	public static void CanEdit(bool isCanEdit){
-		_canGoEdit = isCanEdit;
-		// filedText機能の有効化・無効化
-		if(isCanEdit){
-			parent.ForEachExists((f) => {f.SetFieldTextEnable(true);});
-		}else{
-			parent.ForEachExists((f) => {f.SetFieldTextEnable(false);});
-		}
-	}
-
-	public void SetFieldTextEnable(bool isEnable){
-		this._inputField.enabled = isEnable;
-	}
-	
 	Status status = Status.Inactive;
 
 	// Use this for initialization
@@ -113,6 +99,19 @@ public class TodoField : Token {
 	void Update(){
 		// 現在時刻過ぎた場合は強調する
 		SetTimeTextColor();
+
+		if (keyboard != null &&  this.keyboard.done)  // キーボードが閉じた時
+        {
+        	Debug.Log("updated");
+        	string text = this.keyboard.text;
+        	_todoData.UpdateTitle(text);
+        	SetText(text);
+			//_todoData.UpdateTitle("aho");
+			if(IsNotify){
+				// ローカル通知変更
+				setCall();
+			} 
+        }
 	}
 	// 新規todo作成時のtodofield設定処理
 	public void Create(DateTime Dt){
@@ -123,17 +122,16 @@ public class TodoField : Token {
 		SetText("");
 	}
 	
-
-	public string GetText(){
-		return _inputField.text;
-	}
-	
 	public void SetText(string text){
 		if(_inputField == null){
-			Debug.Log("SetText null!! ");
+			transform.FindChild("text").gameObject.GetComponent<TextObj>().Label = text;
 			return ;
 		}
-		if(_inputField.text  != null)_inputField.text = text;
+		_inputField.text = text;
+	}
+
+	public string GetText(){
+		return transform.FindChild("text").gameObject.GetComponent<TextObj>().Label;
 	}
 
 	public void OnclickEdit(){
@@ -147,11 +145,19 @@ public class TodoField : Token {
 		Body.GoBoardText();
 	}
 
+	// タイトル編集
+	public void OnClickTitleEdit(){
+		if(Util.isRunningOnAndroid()){
+			TouchScreenKeyboard.hideInput = true;
+			keyboard = TouchScreenKeyboard.Open(GetText(), TouchScreenKeyboardType.Default);
+		}else{
+			Debug.Log("OnclickTitleEdit On PC");
+		}
+	}
+
 	// タイトル編集完了ボタン
 	public void Modified(){
 		_todoData.UpdateTitle(GetText());
-		Main mainBoard = MyCanvas.Find<Main>("BoardMain");
-		//mainBoard.ShowToday();
 		if(IsNotify){
 			// ローカル通知変更
 			setCall();
