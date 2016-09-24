@@ -16,14 +16,22 @@ public class Swipe : Token {
 	[SerializeField]
 	UnityEvent SwipeEventDown;
 
+	[SerializeField] // swipe 時に処理するイベント
+	UnityEvent StartEvent;
+
+	bool isExcutedStartEvent; // startEvent処理したか
+
+	[SerializeField] // swipe 終了時に行うイベント
+	UnityEvent EndEvent;
+
 
 	[SerializeField]
 	SwipeEvent SyncSwipeEvent;
 	[SerializeField]
 	ImageObj TouchSpace;
 
-	float margin_distance = 40f;
-	float margin_delta = 3f;
+	float margin_distance = 20f; // 
+	float margin_delta = 0.4f; // これ以上スワイプすれば。長押しイベントがキャンセル
 
 	enum State {
 		Idle,
@@ -41,6 +49,7 @@ public class Swipe : Token {
 		state = State.Idle;
 		Vector2 sd = GetComponent<RectTransform>().sizeDelta;
 
+		// 自身の左上と右下を取得
 		ObjPos1.x = local_X - sd.x/2.0f;
 		ObjPos1.y = local_Y - sd.y/2.0f;
 		ObjPos2.x = local_X + sd.x/2.0f;
@@ -68,13 +77,18 @@ public class Swipe : Token {
 		if (Input.GetMouseButtonDown (0) && state == State.Idle) {
 			startPosition = GetMousePos();
 			if(!IsIn(startPosition))return;
+			
 			state = State.Down;
+			isExcutedStartEvent = false;
 			CrtPos = startPosition;
+
 		}
 		if (Input.GetMouseButtonUp (0) && state == State.Down) {
+			EndEvent.Invoke();
 			state = State.Idle;
-			endPosition = GetMousePos();
 			if(!IsIn(endPosition))return ;
+
+			endPosition = GetMousePos();
 			float distanceX = endPosition.x - startPosition.x;
 			float distanceY = endPosition.y - startPosition.y;
 			if(margin_distance < distanceX){
@@ -104,12 +118,17 @@ public class Swipe : Token {
 			if((pos_delta.x*pos_delta.x + pos_delta.y * pos_delta.y) > margin_delta*margin_delta){
 				// 長押しイベントキャンセル
 				LongPress.PressInit();
+				if(!isExcutedStartEvent){
+					StartEvent.Invoke();
+					isExcutedStartEvent = true;
+				}
 
-				SyncSwipeEvent.Invoke(pos_delta);
+				SyncSwipeEvent.Invoke(pos_delta * 2.5f);
 			}
 			
 		}
 	}
+
 	bool IsIn(Vector2 pos){
 		return (ObjPos1.x < pos.x && pos.x < ObjPos2.x && ObjPos1.y < pos.y && pos.y < ObjPos2.y );
 	}

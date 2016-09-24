@@ -916,7 +916,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1541277453}
   m_Direction: 2
   m_Value: 1
-  m_Size: 1
+  m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2229,6 +2229,16 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
+  StartEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  EndEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
   SyncSwipeEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -2918,7 +2928,7 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.5, y: 0.1}
+  m_AnchoredPosition: {x: -2.2, y: 0.1}
   m_SizeDelta: {x: -10, y: -13}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &430951875
@@ -2933,7 +2943,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -2943,11 +2953,11 @@ MonoBehaviour:
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 10
-    m_FontStyle: 0
+    m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 40
-    m_Alignment: 3
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -3103,7 +3113,7 @@ MonoBehaviour:
   FIRST_X: -96
   FIRST_Y: 74
   TodayColor: {r: 0.6102941, g: 1, b: 0.90324545, a: 0.984}
-  MyDayColor: {r: 1, g: 0.63742393, b: 0.5955882, a: 0.978}
+  MyDayColor: {r: 1, g: 0.96763885, b: 0.23296927, a: 0.978}
   TodayMyColor: {r: 0.6811418, g: 0.62348616, b: 0.9117647, a: 0.991}
   _inputTime: {fileID: 1675933320}
 --- !u!212 &478365262
@@ -3472,7 +3482,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9264706, g: 0.86516005, b: 0.8664285, a: 0.972}
+  m_Color: {r: 0.03633218, g: 0.61764705, b: 0.0643957, a: 0.972}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -7757,6 +7767,38 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
+  StartEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 867662826}
+        m_MethodName: CancelEventwhenSwipe
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  EndEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 867662826}
+        m_MethodName: AllowWhenSwipeEnd
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
   SyncSwipeEvent:
     m_PersistentCalls:
       m_Calls:
@@ -7821,7 +7863,7 @@ RectTransform:
   m_RootOrder: 1
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -7.2, y: 0}
+  m_AnchoredPosition: {x: -5.9, y: 0}
   m_SizeDelta: {x: 15, y: 18}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &993276081
@@ -7991,7 +8033,7 @@ RectTransform:
   m_RootOrder: 4
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 15, y: 104.2}
+  m_AnchoredPosition: {x: 2.1, y: 104.2}
   m_SizeDelta: {x: 80, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1010311102
@@ -8620,7 +8662,7 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -70, y: 72.49999}
+  m_AnchoredPosition: {x: -70, y: 72.49996}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1067815486
@@ -12281,7 +12323,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1581486615}
   m_Direction: 2
   m_Value: 1
-  m_Size: 1
+  m_Size: 0.99999976
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -12468,7 +12510,7 @@ RectTransform:
   m_RootOrder: 5
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 82, y: 102.8}
+  m_AnchoredPosition: {x: 84, y: 102.8}
   m_SizeDelta: {x: 70, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1618394243

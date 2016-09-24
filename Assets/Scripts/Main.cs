@@ -312,6 +312,14 @@ public class Main : Token {
 		return numbers;
 	}
 
+	// スワイプ時にタッチ処理をさせないようにする
+	public void CancelEventwhenSwipe(){
+		TodoField.CanEdit(false);
+	}
+	public void AllowWhenSwipeEnd(){
+		TodoField.CanEdit(true);
+	}
+
 	int _days_in_month(DateTime dt){
 		return DateTime.DaysInMonth(dt.Year, dt.Month);
 	}

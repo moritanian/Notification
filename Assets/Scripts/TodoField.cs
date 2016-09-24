@@ -19,6 +19,10 @@ public class TodoField : Token {
 
 	// 管理オブジェクト
 	public static TokenMgr<TodoField> parent = null;
+
+	// 編集画面に飛んでいいか
+	private static bool _canGoEdit = true;
+
 	public InputField _inputField;
 
 	// テキスト背景// 期限過ぎた場合は強調するなど
@@ -45,6 +49,8 @@ public class TodoField : Token {
 	// todofield が　TodoDataを持つ
 	public TodoData _todoData;
 
+	TouchScreenKeyboard keyboard;
+
 	// todo idのわりあて方法考える
 	enum Status{
 		Inactive,	//利用なし
@@ -69,6 +75,20 @@ public class TodoField : Token {
 		}
 		obj._todoData = todoData;
 		return obj;
+	}
+
+	public static void CanEdit(bool isCanEdit){
+		_canGoEdit = isCanEdit;
+		// filedText機能の有効化・無効化
+		if(isCanEdit){
+			parent.ForEachExists((f) => {f.SetFieldTextEnable(true);});
+		}else{
+			parent.ForEachExists((f) => {f.SetFieldTextEnable(false);});
+		}
+	}
+
+	public void SetFieldTextEnable(bool isEnable){
+		this._inputField.enabled = isEnable;
 	}
 	
 	Status status = Status.Inactive;
@@ -109,12 +129,17 @@ public class TodoField : Token {
 	}
 	
 	public void SetText(string text){
-		if(_inputField == null) Debug.Log("SetText null!! ");
+		if(_inputField == null){
+			Debug.Log("SetText null!! ");
+			return ;
+		}
 		if(_inputField.text  != null)_inputField.text = text;
 	}
 
 	public void OnclickEdit(){
-		_edit();
+		if(_canGoEdit){
+			_edit();
+		}
 	}
 	// 本文を編集する
 	void _edit(){
