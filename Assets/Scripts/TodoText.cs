@@ -50,7 +50,8 @@ public class TodoText : MonoBehaviour {
 		TitleSet(Tf._todoData.Title);
 		// ファイルから本文のテキストを読み込んで表示
 		_todoText.SetText(_todoText._load());
-		
+		// 参照日時更新
+		Tf._todoData.UpdateLookupTime();
 	}
 
 	public void OnClickGoBack(){

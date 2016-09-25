@@ -31,7 +31,6 @@ public class Main : Token {
 	readonly IsContain AllContain = (td) => {return true;};  
 
 	// スクロ＾ルcontent
-	ScrollController today_scl;
 	ScrollController todo_scl;
 	Image todoadd_button;
 
@@ -60,10 +59,10 @@ public class Main : Token {
 		Holiday.init();
 		crt_time = DateTime.Now;
 		Todos = TodoData.LoadAll();
-		TodoData.SortByDate(Todos);
-		// 全て表示
-		Show(AllContain);
 		_mycalendar.DispCal(DateTime.Now, (DateTime dt, bool IsSet, bool IsMemo) => MyCanvas.Find<Main>("BoardMain").ShowMyDay(dt));
+		
+		// Todo表示
+		ApplySelectOpt();
 		
 		//_searchField.GetComponent<Token>().Vanish();
 	}
@@ -141,21 +140,26 @@ public class Main : Token {
 	}
 
 	void Show (IsContain _eq){	
-		//Debug.Log("Show AllCount:" + Todos.Count);
 		// 破棄する前に場所をcanvas 直下に移動
 		TodoField.parent.ForEachExists(t => t.transform.SetParent(MyCanvas.GetCanvas().transform,false));
 		// 生存しているフィールドをすべて破棄
 		TodoField.parent.Vanish();
+		List<TodoData> showList = new List<TodoData>(); 
 		for(int i=0; i<Todos.Count; i++){
 			if(!_eq(Todos[i]))continue;
 			if(!searchWord(Todos[i].Title))continue;// サーチワードある場合はそれにひっかからなかったものも除外
-			TodoField _todoField = TodoField.Add(0,0,Todos[i]);
-			todo_scl.SetContent(_todoField.transform);
-			_todoField.SetText(Todos[i].Title);
-			_todoField.IsNotify = Todos[i].IsNotify;
-			_todoField.SetTimeText(Todos[i].TodoTime);
+			showList.Add(Todos[i]);
 		}	
-		//ShowToday();
+		// ソート
+		TodoData.SortByDate(showList);
+		foreach(TodoData todo_data in showList){
+			TodoField _todoField = TodoField.Add(0,0,todo_data);
+			todo_scl.SetContent(_todoField.transform);
+			_todoField.SetText(todo_data.Title);
+			_todoField.IsNotify = todo_data.IsNotify;
+			_todoField.SetTimeText(todo_data.TodoTime);
+		}	
+		todo_scl.ScrollTop();
 	}
 
 	public void ShowMyDay(DateTime dt){
@@ -170,7 +174,6 @@ public class Main : Token {
 		Util.DoneSave();
 		
 		Todos = TodoData.LoadAll();
-		TodoData.SortByDate(Todos);
 		TodoData.LogAll(Todos);
 		// 全て表示
 		Show(AllContain);
@@ -181,7 +184,6 @@ public class Main : Token {
 
 	// Todo時間などを変更した際に反映してTodoField表示
 	public void Restart(){
-		TodoData.SortByDate(Todos);
 		ApplySelectOpt();
 		SetDispCal(_mycalendar.MyDateTime);
 	}
@@ -195,12 +197,6 @@ public class Main : Token {
 	public void ApplySelectOpt(){
 		SelectOpt opt = (SelectOpt)GetSelectOpt();
 		showBySelectOpt(opt);
-		//Token searchToken = _searchField.GetComponent<Token>();
-		//if(opt == SelectOpt.Word && searchToken.enabled){
-		//	searchToken.Revive();
-		//} else if(opt != SelectOpt.Word && searchToken.enabled){
-		//	searchToken.Vanish();
-		//}
 	}
 
 	void showBySelectOpt(SelectOpt opt){
@@ -253,30 +249,7 @@ public class Main : Token {
 		_dpDown = MyCanvas.Find<Dropdown>("Dropdown");
 		return _dpDown.value;
 	}
-	/*
-	// 上のボード、今日のtodo表示
-	public void ShowToday(){
-		ShowUpperBoard(SelectOpt.Today);
-	}
-	*/
-/*
-	void ShowUpperBoard(SelectOpt option){
-		// 破棄する前に場所をcanvas 直下に移動
-		TodayField.parent.ForEachExists(t => t.transform.SetParent(MyCanvas.GetCanvas().transform,false));
-		// 生存しているフィールドをすべて破棄
-		TodayField.parent.Vanish();
-
-		IsContain _eq = GetEq(option);
-		for(int i=0; i<Todos.Count; i++){
-			if(!_eq(Todos[i]))continue;
-			TodayField _todayField = TodayField.Add(0,0,Todos[i]);
-			//_todoField.transform.SetParent(this.transform,false);
-			today_scl.SetContent(_todayField.transform);
-			_todayField.SetText(Todos[i].Title);
-			_todayField.SetTimeText(Todos[i].TodoTime);
-		}	
-	}
-*/
+	
 	public bool DeleteDataById(int id){
 		return TodoData.DeleteDataById(Todos,id);
 	}
@@ -293,7 +266,6 @@ public class Main : Token {
 		// 正規表現使いたい
 		//string pattern = "/" +title + "\\?/";
 		//return Regex.IsMatch(search_text, title);
-		//Debug.Log("search" + title + ":" + search_text);
 
 		return title.Contains(search_text);
 	}
@@ -301,7 +273,6 @@ public class Main : Token {
 	// 該当月のそれぞれの日の持つtodoの数をそれぞれ計算
 	public List<int> CalcTodoNumbers(DateTime dt){
 		int days_in_month = _days_in_month(dt);
-		//Debug.Log("days_in_month" + days_in_month);
 		List<int> numbers = new List<int>();
 		for(int i=0;i<days_in_month; i++){
 			numbers.Add(0);

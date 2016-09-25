@@ -110,7 +110,6 @@ public class CalendarCel : Token {
 		set {
 			if(value > 0){
 				status(Status.Normal);
-			//	Debug.Log("day "+ _celTime.ToString());
 				_celTime = new DateTime(_celTime.Year,_celTime.Month, value);
 				SetLabel(value.ToString());
 			}else{
@@ -205,7 +204,6 @@ public class CalendarCel : Token {
 	public void UpdateCelWithNum(List<int> numbers){
 		UpdateCel();
 		if(_status != Status.OutOfRange){
-			//Debug.Log("number " + (_celTime.Day -1).ToString());
 			SetPoint(numbers[_celTime.Day -1 ]);
 		}else{
 			// todo数ないので非表示

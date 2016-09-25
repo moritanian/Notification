@@ -56,7 +56,7 @@ public class TokenMgr<Type> where Type : Token {
 			}
 		}
 
-		if(_size == 0) {
+		if(_size == 0 || true) {
 			// 自動で拡張
 			GameObject g = GameObject.Instantiate(_prefab, new Vector3(), Quaternion.identity) as GameObject;
 			Type obj = g.GetComponent<Type>();

@@ -12,6 +12,7 @@ using System.Linq;
 		ModifiedTime,
 		NotificationTime,
 		TodoTime,
+		LookupTime,
 		MaxId,
 		IsNotify,
 		IsMemo
@@ -36,11 +37,15 @@ public class TodoData {
 	DateTime modified_time;	//更新日時
 	DateTime notification_time;	//通知する時間
 	DateTime todo_time;	// 予定のある日程
+	DateTime lookup_time; // 参照した時間 // これでmemoはソートする
 	public DateTime TodoTime {
 		get {return todo_time;}
 		set {todo_time = value; }
 	}
-	
+	public DateTime LookupTime {
+		get {return lookup_time;}
+		set {lookup_time= value; }
+	}
 	string _title;
 	public string Title{
 		get {return _title;}
@@ -65,6 +70,8 @@ public class TodoData {
 				return "Todo_TodoTime_id"+id;
 			case DataKeys.NotificationTime:
 				return "Todo_NotificationTime_id"+id;
+			case DataKeys.LookupTime:
+				return "Todo_LookupTime_id"+id;
 			case DataKeys.MaxId:
 				return "Todo_MaxId";
 			case DataKeys.IsNotify:
@@ -92,13 +99,14 @@ public class TodoData {
 		Title = new_title;
 		Util.SaveData(_get_data_key(DataKeys.Title,id),new_title);
 		Util.SaveData(_get_data_key(DataKeys.ModifiedTime,id),DateTime.Now.ToString());
+		UpdateLookupTime();
 	}
 
 	public void UpdateTodoTime(DateTime Dt){
-		Debug.Log("UpDateTodoTime " + Dt.ToString());
 		todo_time = Dt;
 		Util.SaveData(_get_data_key(DataKeys.TodoTime, id),Dt.ToString());
 		Util.SaveData(_get_data_key(DataKeys.ModifiedTime,id),DateTime.Now.ToString());
+		UpdateLookupTime();
 	}
 	// 新規追加をunityで保存
 	public void UpdateCreate(){
@@ -107,7 +115,17 @@ public class TodoData {
 		Util.SaveData(_get_data_key(DataKeys.CreateTime,id), create_time);
 		Util.SaveData(_get_data_key(DataKeys.IsMemo, id), IsMemo.ToString());
 		if(MaxId()<id)Util.SaveData(_get_data_key(DataKeys.MaxId),id.ToString());
+		UpdateLookupTime();
 	}
+
+	public void UpdateLookupTime(){
+		UpdateLookupTime(DateTime.Now);
+	}
+	public void UpdateLookupTime(DateTime dt){
+		Util.SaveData(_get_data_key(DataKeys.LookupTime,Id), dt.ToString());
+		lookup_time = dt;
+	}
+
 	// Isnotify 更新
 	// 更新結果を返す (過去を指定している場合、falseが返る) 更新できなければfalse
 	public bool UpdateIsNotify(bool _IsNotify){
@@ -136,11 +154,13 @@ public class TodoData {
 				string create_time = Util.LoadData(_get_data_key(DataKeys.CreateTime, id));
 				if(create_time == "")continue;
 				string todo_time = Util.LoadData(_get_data_key(DataKeys.TodoTime,id));
+				string lookup_time = Util.LoadData(_get_data_key(DataKeys.LookupTime, id));
 				string title = Util.LoadData(_get_data_key(DataKeys.Title,id));
 				string isNotifyStr = Util.LoadData(_get_data_key(DataKeys.IsNotify,id));
 				string isMemostr = Util.LoadData(_get_data_key(DataKeys.IsMemo, id));
 				TodoData todo = new TodoData(id);
 				if(todo_time != "")todo.TodoTime = DateTime.Parse(todo_time);
+				if(lookup_time != "")todo.LookupTime = DateTime.Parse(lookup_time);
 				todo.Title = title;
 				todo.IsNotify = (isNotifyStr == "True"); 
 				todo.IsMemo = (isMemostr == "True");
@@ -171,7 +191,12 @@ public class TodoData {
 	}
 
 	public static void SortByDate(List<TodoData> _list){
-		_list.Sort((a,b) => a.TodoTime.CompareTo(b.TodoTime));
+		if(_list.Count == 0)return;
+		if(_list[0].IsMemo){
+			_list.Sort((a,b) => b.LookupTime.CompareTo(a.LookupTime));
+		}else{
+			_list.Sort((a,b) => a.TodoTime.CompareTo(b.TodoTime));
+		}
 	}
 
 	// List からid指定されたデータ削除、playerprefのも削除する
@@ -188,6 +213,7 @@ public class TodoData {
 		deletekeys.Add(DataKeys.CreateTime);
 		deletekeys.Add(DataKeys.ModifiedTime);
 		deletekeys.Add(DataKeys.Title); 
+		deletekeys.Add(DataKeys.LookupTime);
 		foreach (DataKeys key in deletekeys){
 			PlayerPrefs.DeleteKey(_get_data_key(key, id));
 		}
