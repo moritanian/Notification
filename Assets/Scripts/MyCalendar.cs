@@ -47,6 +47,9 @@ public class MyCalendar : Token {
 	public Color TodayColor;
 	public Color MyDayColor;
 	public Color TodayMyColor;
+	public Color NormalDayColor;
+	public Color OutofRangeColor;
+	public Color FontColor = Color.black;
 
 	public TimeInput _inputTime;
 
@@ -79,6 +82,8 @@ public class MyCalendar : Token {
 	// カレンダーの日にちを決定したときに処理される内容
 	public delegate void CallBack(DateTime _time, bool IsSet = true, bool IsMemo = false);
 	CallBack _callBack;
+
+	public CalendarCel PointedCel;
 
 	void Awake(){
 		BattenButton = MyCanvas.Find<Image>("BattenButton");
@@ -172,7 +177,7 @@ public class MyCalendar : Token {
 			}
 		}
 	}
-	void SetCalendar(){
+	public void SetCalendar(){
 		// 表示する月の日数
 		int days_in_month = _days_in_month(_showDateTime);
 		DateTime first_day = new DateTime(_showDateTime.Year, _showDateTime.Month,1);

@@ -5,6 +5,10 @@ using UnityEngine.UI;
 
 public class Setting : Token {
 
+	[SerializeField]
+	Sprite mono_back;
+	[SerializeField]
+	Sprite default_back;
 
 	Text outputText;
 	Toggle _debugToggle;
@@ -39,6 +43,40 @@ public class Setting : Token {
    		Color.black // 黒 
    	};
 
+   	enum Theme{
+   		color,
+   		mono
+   	} 
+   	Theme theme;
+
+   	Color[] style_mono_colors = {
+   		Color.black,						// 基本色
+   		Color.white,						// 文字色
+   		new Color(0.3f,0.3f,0.3f),			// スクロール背景
+   		new Color(0.1f, 0.1f, 0.1f, 0.5f),	// outofrange
+   		new Color(0, 0, 0, 206.0f/255.0f), // textInfut 背景
+   		new Color(0, 0, 0, 44.0f/255.0f), // boardMain 背景
+   		new Color(182.0f/255.0f, 175.0f/255.0f, 24.0f/255.0f), // 押したセルの色
+   		new Color(7.0f/255.0f , 92.0f/255.0f ,71.0f/255.0f),
+   	};
+   	Color[] style_default_colors = {
+   		Color.white,
+   		Color.black,
+   		new Color(63.0f/255.0f,113.0f/255.0f,35.0f/255.0f),
+   		new Color(255,255,255, 0.5f),
+   		Color.white,
+   		Color.white,
+   		new Color(1.0f,247.0f ,59.0f/255.0f),
+   		new Color(156.0f/255.0f, 1.0f, 230.0f/255.0f),
+   	};
+
+   	void Awake(){
+		outputText = MyCanvas.Find<Text>("outputText");
+		_debugToggle = MyCanvas.Find<Toggle>("IsDebugLog");
+		_normalToggle = transform.FindChild("NormalToggle").gameObject.GetComponent<Toggle>();
+		_fontColorChgText = transform.FindChild("TextColor").gameObject.GetComponent<Text>();
+		_dp_notify_id = MyCanvas.Find<Dropdown>("DropdownId");
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -48,6 +86,7 @@ public class Setting : Token {
 		if(color_str != "")ChangeColor(int.Parse(color_str));
 		OnChangeDebugToggle(true);
 		OnChangeNormalLog(true);
+		LoadTheme();
 	}
 	
 	// Update is called once per frame
@@ -55,12 +94,12 @@ public class Setting : Token {
 
 	}
 
-	void Awake(){
-		outputText = MyCanvas.Find<Text>("outputText");
-		_debugToggle = MyCanvas.Find<Toggle>("IsDebugLog");
-		_normalToggle = transform.FindChild("NormalToggle").gameObject.GetComponent<Toggle>();
-		_fontColorChgText = transform.FindChild("TextColor").gameObject.GetComponent<Text>();
-		_dp_notify_id = MyCanvas.Find<Dropdown>("DropdownId");
+	void LoadTheme(){
+		string theme_str = Util.LoadData(GetDataKey(DataKeys.Theme));
+		if(theme_str != ""){
+			theme = (Theme)int.Parse(theme_str);
+		}
+		ApplyTheme();
 	}
 
 	// 設定保存
@@ -69,7 +108,8 @@ public class Setting : Token {
 		FontSize,
 		Color,
 		IsDebugLog,
-		IsNormalLog
+		IsNormalLog,
+		Theme,
 	}
 
 	public static string GetDataKey(DataKeys key){
@@ -168,6 +208,47 @@ public class Setting : Token {
     	ChangeColor(color_id + 1);
     }
 
+    // テーマ変更
+    public void OnClickThemeChange(){
+    	if(theme == Theme.color){
+    		theme = Theme.mono;
+    	}else{
+    		theme = Theme.color;
+    	}
+    	Util.SaveData(GetDataKey(DataKeys.Theme), ((int)theme).ToString());
+    	ApplyTheme();
+    }
+
+    public void ApplyTheme(){
+    	Color[] colors;
+    	if(theme == Theme.mono){
+    		colors = style_mono_colors;
+    		MyCanvas.Find<SpriteRenderer>("BackGround").sprite = mono_back;
+    	}else{
+    		colors = style_default_colors;
+    		MyCanvas.Find<SpriteRenderer>("BackGround").sprite = default_back;
+    	}
+    	fontcolor = colors[1];
+    	_fontColorChgText.color = colors[1];
+    	GetComponent<Image>().color = colors[4];
+    	MyCanvas.Find<Image>("ScrollView").color = colors[2];
+    	MyCanvas.Find<Image>("BoardMain").color = colors[5];
+    	MyCanvas.Find<Image>("TextInput").color = colors[4];
+    	MyCanvas.Find<Text>("TodoTextField").color = colors[1];
+    	MyCanvas.Find<Text>("DispDateTimeText").color = colors[1];
+    	MyCanvas.Find<Image>("SearchField").color = colors[3];
+    	MyCanvas.Find<Text>("SearchText").color = colors[1];
+    	MyCalendar myCalendar = MyCanvas.Find<MyCalendar>("MyCalendar");
+    	myCalendar.NormalDayColor = colors[0];
+    	myCalendar.OutofRangeColor = colors[3];
+    	myCalendar.FontColor = colors[1];
+    	myCalendar.MyDayColor = colors[6];
+    	myCalendar.TodayColor = colors[7];
+
+    	MyCanvas.Find<MyCalendar>("MyCalendar").SetCalendar();
+
+    }
+
     public void ChangeColor(int id){
     	if(id < 0 || color_nums <= id)id = 0;
     	color_id = id;
@@ -187,5 +268,9 @@ public class Setting : Token {
     public void OnClickNotifyReset(){
     	int id = _dp_notify_id.value;
     	androidObj.DebugReset(id);
+    }
+
+    public void OnClickSendData(){
+    	TranslateData.test();
     }
 }

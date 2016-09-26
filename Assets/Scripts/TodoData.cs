@@ -18,9 +18,10 @@ using System.Linq;
 		IsMemo
 	}
 //Todoの情報をもつ/ Todoの管理
-public class TodoData {
+	[Serializable]
+public class TodoData : ISerializationCallbackReceiver{
 
-
+	[SerializeField]
 	int id;
 	public int Id{
 		get {return id;}
@@ -46,6 +47,19 @@ public class TodoData {
 		get {return lookup_time;}
 		set {lookup_time= value; }
 	}
+
+	// 以下シリアライズ用メンバ
+	[SerializeField]
+	string todoTimeStr;
+	[SerializeField]
+	string lookupTimeStr;
+	[SerializeField]
+	string notificationTimeStr;
+	[SerializeField]
+	string todoText;
+	[SerializeField]
+	string titleStr;
+
 	string _title;
 	public string Title{
 		get {return _title;}
@@ -232,4 +246,20 @@ public class TodoData {
 		}
 		Debug.Log(str);
 	}
+
+	   public void OnBeforeSerialize()
+    {
+    	// サーバに渡すデータ処理
+    	// エスケープ処理も行う
+        todoTimeStr = todo_time.ToString();
+        notificationTimeStr = notification_time.ToString();
+        lookupTimeStr = lookup_time.ToString();
+        todoText = WWW.EscapeURL(TodoText.GetTextFromId(id));
+        titleStr = WWW.EscapeURL(Title);
+    }
+
+      public void OnAfterDeserialize()
+    {
+        
+    }
 }

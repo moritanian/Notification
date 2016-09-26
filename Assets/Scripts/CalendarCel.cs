@@ -49,7 +49,7 @@ public class CalendarCel : Token {
   		}else if(col == 6){					// 土曜
   			_text.color = Color.blue;
   		}else{								// 平日
-  			_text.color = Color.black;
+  			_text.color = _mycalendar.FontColor;
   		}
   	}
 
@@ -80,7 +80,7 @@ public class CalendarCel : Token {
 		_status = stat;
 		switch(_status){
 			case Status.OutOfRange:
-				CelImage.color = new Color(255,255,255,0.5f);
+				CelImage.color = _mycalendar.OutofRangeColor;
 				break;
 			case Status.Today:
 				CelImage.color = _mycalendar.TodayColor;
@@ -90,10 +90,11 @@ public class CalendarCel : Token {
 				break;
 			case Status.TodayPointed:
 				CelImage.color = _mycalendar.TodayMyColor;
+				if(_mycalendar.PointedCel == null)_mycalendar.PointedCel = this;
 				break;
 			case Status.Normal:
 			default:
-				CelImage.color = new Color(255,255,255,1.0f);
+				CelImage.color = _mycalendar.NormalDayColor;
 				break;
 		}
 	}
@@ -155,14 +156,6 @@ public class CalendarCel : Token {
     void Start(){	
     	UpdateCel();
     } 
-/*
-	void Update(){
-		// セルの変更が必要か
-		if(_celTime.Month != _mycalendar.CelMonth || _celTime.Year != _mycalendar.CelYear ){
-			UpdateCel();
-		}
-	}
-*/
 
 	// 全てのセルを更新する
 	public static void AllUpdate(){
@@ -226,12 +219,17 @@ public class CalendarCel : Token {
 	public void OnClickCel(){
 		if(Day!= 0){
 			// 時間更新
-			//_celTime = _mycalendar.AddTime(_celTime);
 			_mycalendar.MyDateTime = _celTime;
-			//UpDateStatus();
-			AllUpdate();
+			
+			// 	セルのポインタ表示更新
+			//AllUpdate();
+			if(_mycalendar.PointedCel != null){
+				_mycalendar.PointedCel.UpdateCel();
+			}
+			UpdateCel();
+			_mycalendar.PointedCel = this;
+			
 			_mycalendar.OnClickCel();
-			//MyCanvas.Find<MyCalendar>("MyCalendar").ExitCalWithCallBack(_celTime);
 			// イベントtext 表示
 		 	_mycalendar.SetEventText(event_text);
 		}

@@ -297,6 +297,15 @@ MonoBehaviour:
   timeTextImage: {fileID: 11419144}
   EnphasizedColor: {r: 1, g: 0.31790662, b: 0.8118362, a: 1}
   NormalTimeTextColor: {r: 0.7, g: 0.62, b: 0.253, a: 0.934}
+  _todoData:
+    id: 0
+    todoTimeStr: 1/1/0001 12:00:00 AM
+    lookupTimeStr: 1/1/0001 12:00:00 AM
+    notificationTimeStr: 1/1/0001 12:00:00 AM
+    todoText: 
+    _title: 
+    IsNotify: 0
+    IsMemo: 0
 --- !u!114 &11413948
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -531,7 +540,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9411765, g: 0.9411765, b: 0.51211077, a: 1}
+  m_Color: {r: 0.92008114, g: 0.9264706, b: 0.4632353, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -759,7 +768,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.022058845, g: 0.022221042, b: 0.022221042, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:

@@ -100,13 +100,6 @@ public class TextObj : Token {
 
   }
 
-  /// 剛体.
-  Rigidbody2D _rigidbody2D = null;
-
-  public Rigidbody2D RigidBody {
-    get { return _rigidbody2D ?? (_rigidbody2D = gameObject.GetComponent<Rigidbody2D> ()); }
-  }
-
   /// 移動量を設定.
   public void SetVelocity (float direction, float speed)
   {

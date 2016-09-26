@@ -64,7 +64,7 @@ public class Main : Token {
 		// Todo表示
 		ApplySelectOpt();
 		
-		//_searchField.GetComponent<Token>().Vanish();
+	//	TranslateData.test();
 	}
 
 	void Update(){

@@ -49,7 +49,6 @@ public class ScrollController : MonoBehaviour {
 	public void ScrollTop(){
 		if(scrollContent_init_y == 0){
 			scrollContent_init_y = scroll.GetComponent<RectTransform>().position.y;
-			Debug.Log(scrollContent_init_y.ToString());
 		}
 		Vector3 pos = transform.position;
 		pos.y = scrollContent_init_y;
