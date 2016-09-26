@@ -36,7 +36,7 @@ public class MyCanvas : MonoBehaviour {
   }
   */
   // 再帰的にオブジェクトを探索
-  static GameObject  SearchObj(string name, Transform children){
+  public static GameObject  SearchObj(string name, Transform children){
     Debug.Log(name);
     foreach (Transform child in children.transform){
       Debug.Log(child.name);

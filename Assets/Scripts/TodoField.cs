@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
 using System;
 /*
@@ -248,10 +249,17 @@ public class TodoField : Token {
 
 	// 消去するかダイアログ表示
 	public void AppDeleteDailog(){
+		/*
 		Dialog dialog = MyCanvas.FindChild<Dialog>("DialogBack");
-		dialog.Revive();
-		dialog.Text = "削除する";
-		dialog._yesCallBack = new YesCallBack(this.Delete);
+		dialog.Set("削除する", new YesCallBack(this.Delete));
+		*/
+		ToggleDialog toggleDialog = MyCanvas.FindChild<ToggleDialog>("ToggleDialog");
+		List<string> titles = new List<string>{"delete", "memo"};
+		List<string> texts = new List<string>{"削除します。よろしいですか？", "メモにします。よろしいですか？"};
+		List<YesCallBack> callBacks = new List<YesCallBack>{new YesCallBack(this.Delete), () => {this.ChangeIsMemo(true);}};
+
+		toggleDialog.Set(titles, texts, callBacks);
+
 	}
 
 	// 自分を消去(データごと)
@@ -270,6 +278,14 @@ public class TodoField : Token {
 		Vanish();
 		mainBoard.Restart();
 		
+	}
+
+	// メモに
+	public void ChangeIsMemo(bool isMemo = true){
+		Debug.Log(isMemo.ToString() + "memo");
+		Main mainBoard = MyCanvas.Find<Main>("BoardMain");
+		_todoData.UpdateIsMemo(isMemo);
+		mainBoard.Restart();		
 	}
 
 	// テキスト背景色変更 /

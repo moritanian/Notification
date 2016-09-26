@@ -158,6 +158,15 @@ public class TodoData : ISerializationCallbackReceiver{
 		return true;
 	}
 
+	public bool UpdateIsMemo(bool isMemo){
+		this.IsMemo = isMemo;
+		Util.SaveData(_get_data_key(DataKeys.IsMemo, id),isMemo.ToString());
+		Util.SaveData(_get_data_key(DataKeys.ModifiedTime,id),DateTime.Now.ToString());
+		UpdateLookupTime();
+	Debug.Log("Updateismemo" + isMemo.ToString());
+		return true;
+	}
+
 
 	// 全てをload createDateないものは不正なものとして無視
 	public static List<TodoData> LoadAll(){

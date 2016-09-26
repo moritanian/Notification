@@ -30,7 +30,6 @@ public class ScrollController : MonoBehaviour {
 	// 同じ子要素の中で最も最初にする
 	public void SetContentFirst(Transform tf){
 		SetContent(tf);
-		Debug.Log("first");
 		tf.transform.SetAsFirstSibling();
 	}
 

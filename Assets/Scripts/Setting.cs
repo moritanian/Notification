@@ -244,6 +244,7 @@ public class Setting : Token {
     	myCalendar.FontColor = colors[1];
     	myCalendar.MyDayColor = colors[6];
     	myCalendar.TodayColor = colors[7];
+    	myCalendar.FindChild<Text>("EditDateTime").color = colors[1];
 
     	MyCanvas.Find<MyCalendar>("MyCalendar").SetCalendar();
 

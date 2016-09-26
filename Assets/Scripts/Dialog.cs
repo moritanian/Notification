@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public delegate void YesCallBack(); 
 public class Dialog : Token {
@@ -13,7 +14,8 @@ public class Dialog : Token {
 	}
 	public override void Revive(){
 		base.Revive();
-		text = MyCanvas.Find<TextObj>("DialogText");
+		//text = transform.FindChild("Dialog/DialogText").gameObject.GetComponent<TextObj>();
+		text = FindDescendant<TextObj>("DialogText");
 	}
 	
 	// Update is called once per frame
@@ -21,6 +23,14 @@ public class Dialog : Token {
 		
 	}
 	public YesCallBack _yesCallBack;
+
+	public void Set(string title, YesCallBack _yesCallBack){
+		if(!this.gameObject.activeInHierarchy){
+			Revive();
+		}
+		this._yesCallBack = _yesCallBack;
+		Text = title;
+	}
 
 	public void OnClickYes(){
 		_yesCallBack();

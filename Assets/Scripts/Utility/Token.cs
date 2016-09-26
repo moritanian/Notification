@@ -510,6 +510,27 @@ public class Token : MonoBehaviour
     return false;
   }
 
+    // 再帰的に探す
+  public Type FindDescendant<Type>(string name){
+   return FindDescendant<Type>(name, this.transform);
+  }
+
+  public Type FindDescendant<Type>(string name, Transform ts){
+      foreach (Transform child in ts){
+      if(child.name == name){
+        return child.gameObject.GetComponent<Type>();
+      }else if(child.transform != null){
+        Type com = FindDescendant<Type>(name, child);
+        if(com != null) return com;
+      } 
+    }
+    return default(Type); 
+  }
+
+    // 子を所得(finddecendantより高速？)
+  public Type FindChild<Type>(string name){
+    return transform.FindChild(name).gameObject.GetComponent<Type>();
+  }
 
 
 }
