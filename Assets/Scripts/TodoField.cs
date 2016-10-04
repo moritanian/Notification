@@ -67,6 +67,9 @@ public class TodoField : Token {
 
 	DateTime TodoDate;
 	
+	// android keyboard 用
+	bool isTitleEdit; 
+
 	public static TodoField Add(float x,float y,TodoData todoData){
 		//TodoField obj = CreateInstanceEasy<TodoField>("TodoField",x,y);
 		TodoField obj = parent.Add(0,0);
@@ -101,13 +104,13 @@ public class TodoField : Token {
 		// 現在時刻過ぎた場合は強調する
 		SetTimeTextColor();
 
-		if (keyboard != null &&  this.keyboard.done)  // キーボードが閉じた時
+		if (isTitleEdit && keyboard != null &&  this.keyboard.done)  // キーボードが閉じた時
         {
         	Debug.Log("updated");
         	string text = this.keyboard.text;
         	_todoData.UpdateTitle(text);
         	SetText(text);
-			//_todoData.UpdateTitle("aho");
+			isTitleEdit = false;
 			if(IsNotify){
 				// ローカル通知変更
 				setCall();
@@ -149,8 +152,9 @@ public class TodoField : Token {
 	// タイトル編集
 	public void OnClickTitleEdit(){
 		if(Util.isRunningOnAndroid()){
-			TouchScreenKeyboard.hideInput = true;
+			TouchScreenKeyboard.hideInput = true; // キーボードインプット欄非標示(android非対応)
 			keyboard = TouchScreenKeyboard.Open(GetText(), TouchScreenKeyboardType.Default);
+			isTitleEdit = true;
 		}else{
 			Debug.Log("OnclickTitleEdit On PC");
 		}
