@@ -94,6 +94,8 @@ public class Main : Token {
 		}else{
 			TodoAdd(getDefaultTime(_mycalendar.MyDateTime));
 		}
+		// 最上部に追加されるため、そこまでスクロール
+		todo_scl.ScrollTop();
 	}
 
 	public void OnClickGoSetting(){
