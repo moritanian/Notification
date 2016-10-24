@@ -55,6 +55,11 @@ public class Main : Token {
 
 	void Start () {	
 
+		// ユーザデータ
+		if(UserData.LoadData()){
+			Debug.Log("Success Load user data");
+		}
+
 		// 祝日初期化
 		Holiday.init();
 		crt_time = DateTime.Now;
@@ -115,7 +120,7 @@ public class Main : Token {
 		TodoData new_todo = new TodoData(id);
 		new_todo.IsMemo = IsMemo; //
 		
-		Todos.Add(new_todo);// Todo 配列に追加
+		Todos.Add(new_todo);// Todo 配列に追z加
 
 		// todoField を生成
 		TodoField _todoField = TodoField.Add(0,0,new_todo);
@@ -258,10 +263,21 @@ public class Main : Token {
 
 	// サーチフィールド編集後に呼ばれる
 	public void OnChangeSearchField(){
+		applySearchField();
+	}
+
+	void applySearchField(){
 		string search_text = _searchField.text;
 		showBySelectOpt(SelectOpt.Word);
+		_dpDown.value = (int)SelectOpt.All;
 	}
 	
+	public void ClearSearchField(){
+		_searchField.text = "";
+		applySearchField();
+	}
+
+
 	// ワード検索 
 	bool searchWord(string title){
 		string search_text = _searchField.text;
@@ -284,6 +300,12 @@ public class Main : Token {
 			if(IsSameMonth(dt,Todos[i].TodoTime))numbers[Todos[i].TodoTime.Day - 1]++;
 		}
 		return numbers;
+	}
+
+	// todosデータ更新
+	public void insertTodos(List<TodoData> _todos){
+		Todos = _todos;
+		//# todo データの書き込み 
 	}
 
 	int _days_in_month(DateTime dt){

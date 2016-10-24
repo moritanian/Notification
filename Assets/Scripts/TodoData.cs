@@ -21,7 +21,6 @@ using System.Linq;
 	[Serializable]
 public class TodoData : ISerializationCallbackReceiver{
 
-	[SerializeField]
 	int id;
 	public int Id{
 		get {return id;}
@@ -33,6 +32,11 @@ public class TodoData : ISerializationCallbackReceiver{
 		Id = id;
 		_title = "";
 	}
+
+	public TodoData(){
+
+	}
+	
 	// 以下、時間
 	DateTime create_time;	// 作成日時
 	DateTime modified_time;	//更新日時
@@ -59,6 +63,8 @@ public class TodoData : ISerializationCallbackReceiver{
 	string todoText;
 	[SerializeField]
 	string titleStr;
+	[SerializeField]
+	int todo_id;
 
 	string _title;
 	public string Title{
@@ -265,10 +271,16 @@ public class TodoData : ISerializationCallbackReceiver{
         lookupTimeStr = lookup_time.ToString();
         todoText = WWW.EscapeURL(TodoText.GetTextFromId(id));
         titleStr = WWW.EscapeURL(Title);
+        todo_id = id;
     }
 
       public void OnAfterDeserialize()
     {
-        
+        todo_time = DateTime.Parse(todoTimeStr);
+        notification_time = DateTime.Parse(notificationTimeStr);
+        lookup_time = DateTime.Parse(lookupTimeStr);
+        //todoText = WWW.EscapeURL(TodoText.GetTextFromId(id));
+        Title = WWW.UnEscapeURL(titleStr);
+   		id = todo_id;
     }
 }

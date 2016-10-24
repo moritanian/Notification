@@ -2,7 +2,6 @@
 using System.Collections;
 using UnityEngine.UI;
 
-
 public class Setting : Token {
 
 	[SerializeField]
@@ -273,5 +272,16 @@ public class Setting : Token {
 
     public void OnClickSendData(){
     	TranslateData.test();
+    }
+
+    public void onClickRecieveData(){
+    	TranslateData.recieve();
+    }
+
+    public void OnClickCreateAccount(){
+    	UserAccountDialog dialog = MyCanvas.FindChild<UserAccountDialog>("UserCreateDialog");
+    	
+    	dialog.Revive();
+
     }
 }
