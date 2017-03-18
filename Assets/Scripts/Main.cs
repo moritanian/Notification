@@ -69,7 +69,7 @@ public class Main : Token {
 		// Todo表示
 		ApplySelectOpt();
 		
-	//	TranslateData.test();
+		MyCanvas.Find<Setting>("BoardSetting").ApplyUserAccountButton();
 	}
 
 	void Update(){
@@ -284,7 +284,6 @@ public class Main : Token {
 		// 正規表現使いたい
 		//string pattern = "/" +title + "\\?/";
 		//return Regex.IsMatch(search_text, title);
-
 		return title.Contains(search_text);
 	}
 
@@ -306,6 +305,7 @@ public class Main : Token {
 	public void insertTodos(List<TodoData> _todos){
 		Todos = _todos;
 		//# todo データの書き込み 
+		TodoData.RenewAllFromTodoList(Todos);
 	}
 
 	int _days_in_month(DateTime dt){

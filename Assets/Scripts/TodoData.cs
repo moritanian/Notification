@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Reflection;
 using System.Collections.Generic;
@@ -36,6 +36,11 @@ public class TodoData : ISerializationCallbackReceiver{
 	public TodoData(){
 
 	}
+
+	static readonly List<DataKeys>  tododataKeys = new List<DataKeys>(){
+		DataKeys.Title, DataKeys.CreateTime, DataKeys.ModifiedTime, DataKeys.NotificationTime,
+		DataKeys.TodoTime, DataKeys.LookupTime, DataKeys.IsNotify, DataKeys.IsMemo
+	};
 	
 	// 以下、時間
 	DateTime create_time;	// 作成日時
@@ -53,6 +58,7 @@ public class TodoData : ISerializationCallbackReceiver{
 	}
 
 	// 以下シリアライズ用メンバ
+	/*
 	[SerializeField]
 	string todoTimeStr;
 	[SerializeField]
@@ -65,6 +71,14 @@ public class TodoData : ISerializationCallbackReceiver{
 	string titleStr;
 	[SerializeField]
 	int todo_id;
+*/
+	// # TODO serialize field がLitjson で機能しないので、public にしている　なんとかしたい
+	public string todoTimeStr;
+	public string lookupTimeStr;
+	public string notificationTimeStr;
+	public string todoText;
+	public string titleStr;
+	public int todo_id;
 
 	string _title;
 	public string Title{
@@ -98,6 +112,30 @@ public class TodoData : ISerializationCallbackReceiver{
 				return "Todo_IsNotify" + id;
 			case DataKeys.IsMemo:
 				return "Todo_IsMemo" + id;	
+		}
+		return "";
+	}
+
+	// キーからメンバ変数を文字列で取得　
+	// Todo 自動てきに取得できるようにしたい
+	string getPropertyStrFromKey(DataKeys key){
+		switch(key){
+			case DataKeys.Title:
+				return Title;
+			case DataKeys.CreateTime:
+				return create_time.ToString();
+			case DataKeys.IsMemo:
+				return IsMemo.ToString();
+			case DataKeys.ModifiedTime:
+				return modified_time.ToString();
+			case DataKeys.IsNotify:
+				return IsNotify.ToString();
+			case DataKeys.LookupTime:
+				return lookup_time.ToString();
+			case DataKeys.NotificationTime:
+				return notification_time.ToString();
+			case DataKeys.TodoTime:
+				return TodoTime.ToString();
 		}
 		return "";
 	}
@@ -146,6 +184,13 @@ public class TodoData : ISerializationCallbackReceiver{
 		lookup_time = dt;
 	}
 
+		// Tododataから全てのデータセーブ
+	void saveFromTodoData(){
+		foreach (DataKeys key in tododataKeys){
+			Util.SaveData(_get_data_key(key, id), getPropertyStrFromKey(key));
+		}
+	}
+
 	// Isnotify 更新
 	// 更新結果を返す (過去を指定している場合、falseが返る) 更新できなければfalse
 	public bool UpdateIsNotify(bool _IsNotify){
@@ -169,7 +214,6 @@ public class TodoData : ISerializationCallbackReceiver{
 		Util.SaveData(_get_data_key(DataKeys.IsMemo, id),isMemo.ToString());
 		Util.SaveData(_get_data_key(DataKeys.ModifiedTime,id),DateTime.Now.ToString());
 		UpdateLookupTime();
-	Debug.Log("Updateismemo" + isMemo.ToString());
 		return true;
 	}
 
@@ -197,6 +241,22 @@ public class TodoData : ISerializationCallbackReceiver{
 			}
 		}
 		return _todos;
+	}
+
+	// List<todo> から データを更新
+	public static void RenewAllFromTodoList(List<TodoData> newTodoList){
+		// まずはTodoデータ削除
+		int max_id = MaxId();
+		for(int i=1; i<=max_id; i++){
+			deleteSaveDataById(i);
+		}
+		// list からデータ登録
+		foreach (TodoData todoData in newTodoList ){
+			todoData.saveFromTodoData();
+		}
+		// max_id セーブ
+		int new_max_id = newTodoList.Max(_todo => _todo.Id);
+		Util.SaveData(_get_data_key(DataKeys.MaxId), new_max_id.ToString());
 	}
 
 	// 新規Id使えるのを調べる
@@ -234,31 +294,44 @@ public class TodoData : ISerializationCallbackReceiver{
 		if(_tododata == null) return false;
 		// データ削除
 		if(!todolist.Remove(_tododata) ){
+			Debug.Log("DeleteDataById Remove failed !");
 			return false;
 		}
+
 		// player pref 削除
-		List<DataKeys> deletekeys = new List<DataKeys>();
-		deletekeys.Add(DataKeys.TodoTime);
-		deletekeys.Add(DataKeys.CreateTime);
-		deletekeys.Add(DataKeys.ModifiedTime);
-		deletekeys.Add(DataKeys.Title); 
-		deletekeys.Add(DataKeys.LookupTime);
-		foreach (DataKeys key in deletekeys){
-			PlayerPrefs.DeleteKey(_get_data_key(key, id));
-		}
+		deleteSaveDataById(id);
 		// 消去したデータが最後尾のデータだった
 		if(id == MaxId() && id > 0){
 			// #tdodo わたされたtododataの最大使っているがplayerpref のつかうべき
-			int new_max = (id==1) ? 0 :todolist.Max(_todo => _todo.Id);
+			int new_max = (todolist.Count == 0) ? 0 :todolist.Max(_todo => _todo.Id);
 			Util.SaveData(_get_data_key(DataKeys.MaxId) , new_max.ToString());
 		}
+
 		return true;
 	}
-	public static void LogAll(List<TodoData> todos){
-		string str = "id   title   IsMemo\n";
-		foreach (TodoData todo in todos){
-			str += todo.Id + "   " + todo.Title + "  " + todo.IsMemo + "\n";
+
+	// id からplayerpref データ消去 ただし max_id は更新されない!! 
+	static void deleteSaveDataById(int id){
+		foreach (DataKeys key in tododataKeys){
+			PlayerPrefs.DeleteKey(_get_data_key(key, id));
 		}
+		
+	}
+
+	public static void LogAll(List<TodoData> todos){
+		string str = "id |  title  | IsNoifi | IsMemo | notifiTime | todoTime \n";
+		foreach (TodoData todo in todos){
+			str += todo.Id + "  | " + todo.Title + " | " + todo.IsNotify.ToString() + " | "  + todo.IsMemo + " | " 
+					+ todo.notification_time.ToString() + " | " + todo.TodoTime.ToString() + "\n";
+		}
+		Debug.Log(str);
+	}
+
+	void LogStr(){
+		string str = "id |  title  | IsNoifi | IsMemo | notifiTime | todoTime \n";
+		str += todo_id.ToString() + "  | " + titleStr + " | " + IsNotify + " | "  + IsMemo + " | " 
+				+ notificationTimeStr + " | " + todoTimeStr + "\n";
+		
 		Debug.Log(str);
 	}
 
@@ -272,6 +345,7 @@ public class TodoData : ISerializationCallbackReceiver{
         todoText = WWW.EscapeURL(TodoText.GetTextFromId(id));
         titleStr = WWW.EscapeURL(Title);
         todo_id = id;
+        
     }
 
       public void OnAfterDeserialize()
@@ -279,7 +353,6 @@ public class TodoData : ISerializationCallbackReceiver{
         todo_time = DateTime.Parse(todoTimeStr);
         notification_time = DateTime.Parse(notificationTimeStr);
         lookup_time = DateTime.Parse(lookupTimeStr);
-        //todoText = WWW.EscapeURL(TodoText.GetTextFromId(id));
         Title = WWW.UnEscapeURL(titleStr);
    		id = todo_id;
     }

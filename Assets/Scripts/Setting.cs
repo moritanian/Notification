@@ -284,4 +284,20 @@ public class Setting : Token {
     	dialog.Revive();
 
     }
+
+    // アカウント作成 / 変更　ボタン切り替え 
+    public void ApplyUserAccountButton(){
+    	
+    	if(UserData.IsActivated){ // 変更ボタン
+			FindDescendant<TextObj>("CreateAccount").Vanish();
+    		FindDescendant<TextObj>("ModifyAccount").Revive();
+    		FindDescendant<TextObj>("SendData").Revive();
+    		FindDescendant<TextObj>("ReceiveData").Revive();
+    	}else{ // アカウント作成ボタン
+    		FindDescendant<TextObj>("CreateAccount").Revive();
+    		FindDescendant<TextObj>("ModifyAccount").Vanish();
+    		FindDescendant<TextObj>("SendData").Vanish();
+    		FindDescendant<TextObj>("ReceiveData").Vanish();
+    	}
+    }
 }

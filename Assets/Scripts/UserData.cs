@@ -44,6 +44,10 @@ public class UserData{
 		myData.setId(userData.id);
 		isActivated = true;
 		SaveData();
+
+		// ユーザ作成/ 変更ボタン　の切り替え
+		// fix me このクラスはデータを扱うクラスなので出来れば表示部分の関数を呼びたくない
+		MyCanvas.Find<Setting>("BoardSetting").ApplyUserAccountButton();
 	}
 
 	public static void SaveData(){
@@ -69,8 +73,9 @@ public class UserData{
 		string name = Util.LoadData("UserName");
 		string password = Util.LoadData("UserPass");
 		int id = int.Parse(Util.LoadData("UserId"));
-		UserData userData = new UserData(name, password, password);
-		userData.setId(id);
+		myData = new UserData(name, password, password);
+		myData.setId(id);
+		isActivated = true;
 		return true;
 
 	}
