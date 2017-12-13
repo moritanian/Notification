@@ -58,15 +58,21 @@ public class UserData{
 	}
 
 	public static bool LoadData(){
+		// nifty push 通知初期登録しているか
+		/*try {
+			int isRegisteredNifty
+		}*/
 
 		try {
             int isCreate = int.Parse(Util.LoadData("IsCreateUserData"));
             if(isCreate != 1)return false;
         }
         catch (FormatException) {
+        	Debug.LogWarning("Load data format exception");
            return false;
          }   
         catch (OverflowException) {
+        	Debug.LogWarning("Load data Overflow exception");
             return false;   
         }  
 		
