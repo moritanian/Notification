@@ -258,6 +258,10 @@ public class TodoData : ISerializationCallbackReceiver{
 
 	   public void OnBeforeSerialize()
     {
+		if (id == 0) {
+			return;
+		}
+		Debug.Log ("onBeforeSerialize");
     	// サーバに渡すデータ処理
     	// エスケープ処理も行う
         todoTimeStr = todo_time.ToString();

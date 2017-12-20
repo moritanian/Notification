@@ -15,7 +15,6 @@ public class LocalNotification : MonoBehaviour {
 	private static int primary_key;
 
 	public void Awake(){
-		Debug.Log("localNotification_C#script");
         // gameObject変数はstaticでないのでstatic関数から呼ぶことが出来ない.
         // そのためstaticの変数にあらかじめコピーしておく.
 		m_instance = gameObject;

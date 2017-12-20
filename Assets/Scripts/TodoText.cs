@@ -15,6 +15,8 @@ public class TodoText : MonoBehaviour {
 	}
 	string origi_text;
 
+	static bool isAutoSave = true;
+
 	void Awake(){
 		//_title = MyCanvas.Find<>("Titletxt");
 		_todoText = this;
@@ -64,10 +66,14 @@ public class TodoText : MonoBehaviour {
 
 	// Fieldを編集した
 	public void TextEdited(){
-		if(IsChanged()){
-			_changed_sign.enabled = true;
+		if (isAutoSave) {
+			_save();
 		} else {
-			_changed_sign.enabled = false;
+			if (IsChanged ()) {
+				_changed_sign.enabled = true;
+			} else {
+				_changed_sign.enabled = false;
+			}
 		}
 	}
 
@@ -121,7 +127,7 @@ public class TodoText : MonoBehaviour {
 		// saveするかしないか指定
 	public void GoBack(bool IsSave = true){
 		Body.GoBoardMain();
-		if(IsChanged()){
+		if(!isAutoSave && IsChanged()){
 			if(IsSave){
 				_save();
 				PopUp.PopUpStart("保存しました", 1.5f);
