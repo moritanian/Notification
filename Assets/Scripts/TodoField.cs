@@ -309,13 +309,13 @@ public class TodoField : Token {
 			IsNotify = false;
 			return false;
 		}
-		AndroidSamp.LocalCallSet(_todoData.Id, _todoData.TodoTime, "Notify"+ _todoData.Id.ToString(), "title", _todoData.Title);
+		LocalNotification.LocalCallSet(_todoData.Id, _todoData.TodoTime, "Notify"+ _todoData.Id.ToString(), "title", _todoData.Title);
 		return true;
 	}
 
 	// ローカル通知を削除
 	bool deleteCall(){
-		return AndroidSamp.LocalCallReset(_todoData.Id);
+		return LocalNotification.LocalCallReset(_todoData.Id);
 	}
 	
 }

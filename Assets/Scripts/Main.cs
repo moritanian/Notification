@@ -63,6 +63,11 @@ public class Main : Token {
 		
 		// Todo表示
 		ApplySelectOpt();
+		/*
+		for(int i=0; i< 100; i++){
+			Debug.Log ("file" + i);
+			Debug.Log(TodoText.GetTextFromId (i));
+		}*/
 		
 	//	TranslateData.test();
 	}

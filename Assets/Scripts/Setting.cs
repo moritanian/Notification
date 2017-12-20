@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System;
 
 
 public class Setting : Token {
@@ -14,7 +15,6 @@ public class Setting : Token {
 	Toggle _debugToggle;
 	Toggle _normalToggle;
 	public InputField _inputField;
-	public AndroidSamp androidObj;
 	Text _fontColorChgText;
 	Dropdown _dp_notify_id;
 
@@ -263,12 +263,12 @@ public class Setting : Token {
     // 通知デバッグon
     public void OnClickNotifySet(){
     	int id = _dp_notify_id.value;
-    	androidObj.DebugSet(id);
+		LocalNotification.LocalCallSet (id, DateTime.Now.AddSeconds(5), "Test Name" + id.ToString(), "Test Title" + id.ToString(), "Test Label" + id.ToString());
     }
     // 通知デバッグoff
     public void OnClickNotifyReset(){
     	int id = _dp_notify_id.value;
-    	androidObj.DebugReset(id);
+		LocalNotification.LocalCallReset (id);
     }
 
     public void OnClickSendData(){
