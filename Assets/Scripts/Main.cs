@@ -55,14 +55,20 @@ public class Main : Token {
 
 	void Start () {	
 
+		Setting.instance.Init ();
+
 		// 祝日初期化
 		Holiday.init();
 		crt_time = DateTime.Now;
 		Todos = TodoData.LoadAll();
 		_mycalendar.DispCal(DateTime.Now, (DateTime dt, bool IsSet, bool IsMemo) => MyCanvas.Find<Main>("BoardMain").ShowMyDay(dt));
-		
+
 		// Todo表示
 		ApplySelectOpt();
+
+		// event text 更新
+		_mycalendar.SetEventText(Holiday.GetHoliday(crt_time));
+
 		/*
 		for(int i=0; i< 100; i++){
 			Debug.Log ("file" + i);

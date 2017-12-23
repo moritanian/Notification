@@ -70,16 +70,22 @@ public class Setting : Token {
    		new Color(156.0f/255.0f, 1.0f, 230.0f/255.0f),
    	};
 
+	public static Setting instance; 
+
    	void Awake(){
 		outputText = MyCanvas.Find<Text>("outputText");
 		_debugToggle = MyCanvas.Find<Toggle>("IsDebugLog");
 		_normalToggle = transform.FindChild("NormalToggle").gameObject.GetComponent<Toggle>();
 		_fontColorChgText = transform.FindChild("TextColor").gameObject.GetComponent<Text>();
 		_dp_notify_id = MyCanvas.Find<Dropdown>("DropdownId");
+		instance = this;
 	}
 
 	// Use this for initialization
-	void Start () {
+	void Start(){
+	}
+
+	public void Init () {
 		string size_str = Util.LoadData(GetDataKey(DataKeys.FontSize));
 		if(size_str != "")fontsize = int.Parse(size_str);
 		string color_str = Util.LoadData(GetDataKey(DataKeys.Color));
@@ -217,6 +223,8 @@ public class Setting : Token {
     	}
     	Util.SaveData(GetDataKey(DataKeys.Theme), ((int)theme).ToString());
     	ApplyTheme();
+		MyCanvas.Find<MyCalendar>("MyCalendar").SetCalendar();
+
     }
 
     public void ApplyTheme(){
@@ -245,8 +253,6 @@ public class Setting : Token {
     	myCalendar.MyDayColor = colors[6];
     	myCalendar.TodayColor = colors[7];
     	myCalendar.FindChild<Text>("EditDateTime").color = colors[1];
-
-    	MyCanvas.Find<MyCalendar>("MyCalendar").SetCalendar();
 
     }
 
