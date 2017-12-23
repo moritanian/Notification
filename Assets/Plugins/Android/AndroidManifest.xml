@@ -29,13 +29,15 @@
             <meta-data android:name="unityplayer.ForwardNativeEventsToDalvik" android:value="false" />
         </activity>
 
-         <receiver android:name="example.com.alarmplugin.AlarmReceiver" >
+         <receiver android:name="example.com.alarmplugin.AlarmReceiver"
+         	 android:enabled="true" android:exported="false" >
             <intent-filter>
                 <action android:name="ACTION_ALARM"></action>
             </intent-filter>
         </receiver>
 
-        <receiver android:name="example.com.alarmplugin.Notifier">
+        <receiver android:name="example.com.alarmplugin.Notifier"
+        	android:enabled="true" android:exported="false">
             <intent-filter>
                 <action android:name="ACTION_NOTIFICATION"></action>
             </intent-filter>
@@ -43,9 +45,9 @@
 
         <receiver android:name="example.com.alarmplugin.UpdateBroadcastReceiver">
             <intent-filter>
-                <!--<action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>-->
+               	<action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
                 <!--<data android:scheme="package" />-->
             </intent-filter>
         </receiver>

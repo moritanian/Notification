@@ -47,12 +47,37 @@ public class LocalNotification : MonoBehaviour {
 	public static bool LocalCallReset(int id){
 		Debug.Log("localCallReset " + id.ToString());
 	#if UNITY_ANDROID && !UNITY_EDITOR
-		//send notification here
 		m_plugin.CallStatic("resetNotification", context, id);
 	#else
 		Debug.LogWarning("This asset is for Android only. It will not work inside the Unity editor!");
 		return false;
 	#endif
+		return true;
+	}
+
+	public static void AlarmSet(int id, DateTime call_time){
+		// 前回分をreset
+		LocalCallReset(id);
+
+		// #TODO unique id で識別するようにする
+		int seconds_from_now = (int)SecondsFromNow(call_time);
+		Debug.Log("SetUpAlarmSet id:" + id.ToString() + seconds_from_now.ToString());
+		#if UNITY_ANDROID && !UNITY_EDITOR
+		m_plugin.CallStatic("addAlarm", context, id, (int)seconds_from_now);
+		#else
+		Debug.LogWarning("This asset is for Android only. It will not work inside the Unity editor!");
+		#endif
+
+	}
+
+	public static bool AlarmReset(int id){
+		Debug.Log("AlarmReset " + id.ToString());
+		#if UNITY_ANDROID && !UNITY_EDITOR
+		m_plugin.CallStatic("resetAlarm", context, id);
+		#else
+		Debug.LogWarning("This asset is for Android only. It will not work inside the Unity editor!");
+		return false;
+		#endif
 		return true;
 	}
 

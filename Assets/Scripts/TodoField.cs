@@ -113,7 +113,7 @@ public class TodoField : Token {
 			isTitleEdit = false;
 			if(IsNotify){
 				// ローカル通知変更
-				setCall();
+				_todoData.setCall();
 			} 
         }
 	}
@@ -165,7 +165,7 @@ public class TodoField : Token {
 		_todoData.UpdateTitle(GetText());
 		if(IsNotify){
 			// ローカル通知変更
-			setCall();
+			_todoData.setCall();
 		}
 	}
 
@@ -198,9 +198,9 @@ public class TodoField : Token {
 		bool result = _todoData.UpdateIsNotify(IsNotify);
 		// ローカル通知セット or リセット　する
 		if(result){
-			if(IsNotify)setCall();
+			if(IsNotify)_todoData.setCall();
 			else{
-				if(deleteCall())
+				if(_todoData.deleteCall())
 					Debug.Log("Successfully delete call");
 			}
 		}
@@ -223,15 +223,15 @@ public class TodoField : Token {
 		SetTime(Dt);
 		//mainBoard.ShowToday();
 		if(IsNotify){
-			if(_todoData.TodoTime.CompareTo(DateTime.Now) > 0){
-				// ローカル通知設定変更
-				setCall();
-				}else{
-					// 時間変更で過去になった場合、falseに
-					deleteCall();
-					_todoData.UpdateIsNotify(false);
-				}
+			
+			// ローカル通知設定変更
+			_todoData.setCall();
+		}else{
+			// 時間変更で過去になった場合、falseに
+			_todoData.deleteCall();
+			_todoData.UpdateIsNotify(false);
 		}
+
 		mainBoard.Restart();
 	}
 	// 時間ボタン
@@ -271,7 +271,7 @@ public class TodoField : Token {
 		Main mainBoard = MyCanvas.Find<Main>("BoardMain");
 		// ローカル通知あれば削除
 		if(IsNotify){
-			if(deleteCall())
+			if(_todoData.deleteCall())
 				Debug.Log("Successfully delete Local Call");
 		}
 		// Todo Mainがもってるデータ消去、保存データ消去
@@ -300,22 +300,6 @@ public class TodoField : Token {
 		}
 		if(_todoData.TodoTime.CompareTo(DateTime.Now) < 0 && !_todoData.IsMemo)timeTextImage.color = EnphasizedColor;
 		else timeTextImage.color = NormalTimeTextColor;
-	}
-
-	// ローカル通知を登録
-	bool setCall(){
-		// 過去の場合
-		if(_todoData.TodoTime.CompareTo(DateTime.Now) < 0){
-			IsNotify = false;
-			return false;
-		}
-		LocalNotification.LocalCallSet(_todoData.Id, _todoData.TodoTime, "Notify"+ _todoData.Id.ToString(), "title", _todoData.Title);
-		return true;
-	}
-
-	// ローカル通知を削除
-	bool deleteCall(){
-		return LocalNotification.LocalCallReset(_todoData.Id);
 	}
 	
 }

@@ -141,12 +141,9 @@ public class TodoData : ISerializationCallbackReceiver{
 	}
 
 	// Isnotify 更新
-	// 更新結果を返す (過去を指定している場合、falseが返る) 更新できなければfalse
+	// 更新結果を返す  更新できなければfalse
 	public bool UpdateIsNotify(bool _IsNotify){
 		if(_IsNotify){
-			if(todo_time.CompareTo(DateTime.Now) < 0){
-				return false;
-			}
 			// memoに時間設定機能はない
 			if(IsMemo)return false;
 		} else if(IsNotify == _IsNotify){
@@ -275,4 +272,18 @@ public class TodoData : ISerializationCallbackReceiver{
     {
         
     }
+
+	// ローカル通知を登録
+	public bool setCall(){
+		if(TodoTime.CompareTo(DateTime.Now) < 0){
+			return false;
+		}
+		LocalNotification.LocalCallSet(Id, TodoTime, "Notify"+ Id.ToString(), "title", Title);
+		return true;
+	}
+
+	// ローカル通知を削除
+	public bool deleteCall(){
+		return LocalNotification.LocalCallReset(Id);
+	}
 }

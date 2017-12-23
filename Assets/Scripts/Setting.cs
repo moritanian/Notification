@@ -270,6 +270,11 @@ public class Setting : Token {
     	int id = _dp_notify_id.value;
 		LocalNotification.LocalCallReset (id);
     }
+	// alarm debug
+	public void OnClickAlarmSet(){
+		int id = 0;
+		LocalNotification.AlarmSet (id, DateTime.Now.AddSeconds(5));
+	}
 
     public void OnClickSendData(){
     	TranslateData.test();

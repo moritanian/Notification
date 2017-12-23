@@ -144,6 +144,8 @@ public class TodoText : MonoBehaviour {
 		string title_str = _get_title_text();
 		_todoField.SetText(title_str);
 		_todoField._todoData.UpdateTitle(title_str);
+		if (_todoField._todoData.IsNotify)
+			_todoField._todoData.setCall ();
 	}
 	public static void TitleSet(string txt){
 		MyCanvas.Find<TodoText>("BoardText")._inputTitle.text = txt;
