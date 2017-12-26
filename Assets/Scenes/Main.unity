@@ -1462,7 +1462,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 242899233}
   - 114: {fileID: 242899232}
-  - 114: {fileID: 242899235}
+  - 114: {fileID: 242899234}
   m_Layer: 0
   m_Name: Android
   m_TagString: Untagged
@@ -1494,7 +1494,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
---- !u!114 &242899235
+--- !u!114 &242899234
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -1502,7 +1502,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 242899231}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0be5318d19534964db36c6f7d377d781, type: 3}
+  m_Script: {fileID: 11500000, guid: 26888b4265e1a4353aaf9c45987db8c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &249912605
@@ -2460,6 +2460,7 @@ GameObject:
   m_Component:
   - 224: {fileID: 371585475}
   - 114: {fileID: 371585476}
+  - 114: {fileID: 371585477}
   m_Layer: 0
   m_Name: InputField
   m_TagString: Untagged
@@ -2561,6 +2562,26 @@ MonoBehaviour:
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
+--- !u!114 &371585477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 371585474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d94fbbbea60e45d68a29d0a9973dcb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  withDoneButton: 1
+  returnKeyType: 0
+  updateRectEveryFrame: 0
+  useInputFieldFont: 1
+  OnReturnPressed:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
 --- !u!1 &394460108
 GameObject:
   m_ObjectHideFlags: 0
@@ -6202,10 +6223,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 787906145}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8cca286c42ce5774d949facd9a46e2db, type: 3}
+  m_Script: {fileID: 11500000, guid: 2d94fbbbea60e45d68a29d0a9973dcb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   withDoneButton: 1
+  returnKeyType: 2
+  updateRectEveryFrame: 1
+  useInputFieldFont: 1
+  OnReturnPressed:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
 --- !u!1 &792555125
 GameObject:
   m_ObjectHideFlags: 0
@@ -7422,10 +7451,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 906284347}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8cca286c42ce5774d949facd9a46e2db, type: 3}
+  m_Script: {fileID: 11500000, guid: 2d94fbbbea60e45d68a29d0a9973dcb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   withDoneButton: 1
+  returnKeyType: 1
+  updateRectEveryFrame: 1
+  useInputFieldFont: 1
+  OnReturnPressed:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
 --- !u!1 &907835702
 GameObject:
   m_ObjectHideFlags: 0
