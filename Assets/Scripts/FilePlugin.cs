@@ -32,8 +32,14 @@ public class FilePlugin : MonoBehaviour {
 	
 	public static void WriteFile(string filePath, string text){
 		#if UNITY_ANDROID && !UNITY_EDITOR 
-		m_plugin.CallStatic("writeFile", filePath, text);
+		m_plugin.CallStatic("writeFileWithNotification", filePath, text);
 		#else
+		WriteFilePC(filePath, text);
+		#endif
+
+	}
+
+	private static void WriteFilePC(string filePath, string text){
 		StreamWriter sw;
 		FileInfo fi;
 		fi = new FileInfo(filePath);
@@ -41,9 +47,6 @@ public class FilePlugin : MonoBehaviour {
 		sw.WriteLine (text);
 		sw.Flush();
 		sw.Close ();
-
-		#endif
-
 	}
 
 	public static string ReadFileAsText(string filePath){
