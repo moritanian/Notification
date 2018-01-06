@@ -221,13 +221,13 @@ public class MyCalendar : Token {
 		_showDateTime = _showDateTime.AddMonths(-1);
 		_showDateTime = _showDateTime.AddDays(- _showDateTime.Day + 1);
 		SetCalendar();
-		MyCanvas.Find<Main>("BoardMain").ApplySelectOpt();
+		Main.Instance.ApplySelectOpt();
 	}
 	public void OnClickNextMonth(){
 		_showDateTime = _showDateTime.AddMonths(1);
 		_showDateTime = _showDateTime.AddDays(- _showDateTime.Day + 1);
 		SetCalendar();
-		MyCanvas.Find<Main>("BoardMain").ApplySelectOpt();
+		Main.Instance.ApplySelectOpt();
 	}
 
 	// calendarell のceltime にinputboxの時間、分を入れる

@@ -8,7 +8,7 @@ public class ToggleDialog : Dialog {
 
 	int id = 0;
 	int toggleMax = 0;
-	List<YesCallBack> callbacks;
+	List<DialogAction> callbacks;
 	List<string> texts;
 	ToggleGroup tglGroup;
 	// Use this for initialization
@@ -21,7 +21,7 @@ public class ToggleDialog : Dialog {
 	
 	}
 
-	public void Set(List<string> titles, List<string> texts,  List<YesCallBack> callbacks, int id = 0){
+	public void Set(List<string> titles, List<string> texts,  List<DialogAction> callbacks, int id = 0){
 		// 長さ設定
 		this.toggleMax =  titles.Count < callbacks.Count ? callbacks.Count : titles.Count;
 		if(this.toggleMax <= id) id = 0;
@@ -42,6 +42,9 @@ public class ToggleDialog : Dialog {
 			}
 			count++;
 		}
+
+		SetCancelAction (null);
+
 	}
 
 	// 
@@ -68,7 +71,5 @@ public class ToggleDialog : Dialog {
 		_yesCallBack();
 		Vanish();
 	}
-	public void OnClickCancel(){
-		Vanish();
-	}
+
 }

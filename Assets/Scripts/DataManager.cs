@@ -39,7 +39,6 @@ public class DataManager{
 			}
 		}
 		TodoData.SaveMaxId(id);
-		Main mainBoard = MyCanvas.Find<Main>("BoardMain");
-		mainBoard.Reload();
+		Main.Instance.Reload();
 	}	
 }

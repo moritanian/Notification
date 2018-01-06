@@ -213,11 +213,10 @@ public class TodoField : Token {
 	// 時間変更確定したときに呼ばれる
 	public void TimeModified(DateTime Dt, bool IsSet = true){
 
-		Main mainBoard = MyCanvas.Find<Main>("BoardMain");
-		mainBoard.SetTodoAddImg(true);
+		Main.Instance.SetTodoAddImg(true);
 		if(!IsSet){
 			// カレンダー設定
-			mainBoard.SetDispCal(Dt);
+			Main.Instance.SetDispCal(Dt);
 			return ;
 		}
 		SetTime(Dt);
@@ -232,14 +231,14 @@ public class TodoField : Token {
 			_todoData.UpdateIsNotify(false);
 		}
 
-		mainBoard.Restart();
+		Main.Instance.Restart();
 	}
 	// 時間ボタン
 	public void OnClickTime(){
 		// Memoの場合は設定できない
 		if(_todoData.IsMemo) return ;
 
-		MyCanvas.Find<Main>("BoardMain").SetTodoAddImg(false);
+		Main.Instance.SetTodoAddImg(false);
 		MyCanvas.Find<MyCalendar>("MyCalendar").GoCal(TodoDate, (DateTime _celTime, bool IsSet, bool IsMemo) => TimeModified(_celTime, IsSet));
 	}
 
@@ -253,43 +252,51 @@ public class TodoField : Token {
 
 	// 消去するかダイアログ表示
 	public void AppDeleteDailog(){
-		/*
-		Dialog dialog = MyCanvas.FindChild<Dialog>("DialogBack");
-		dialog.Set("削除する", new YesCallBack(this.Delete));
-		*/
+		
 		ToggleDialog toggleDialog = MyCanvas.FindChild<ToggleDialog>("ToggleDialog");
 		List<string> titles = new List<string>{"delete", "memo"};
 		List<string> texts = new List<string>{"削除します。よろしいですか？", "メモにします。よろしいですか？"};
-		List<YesCallBack> callBacks = new List<YesCallBack>{new YesCallBack(this.Delete), () => {this.ChangeIsMemo(true);}};
+		List<DialogAction> callBacks = new List<DialogAction>{
+			() => {
+				this.Delete();
+				Main.Instance.SetSearchFieldVisibility(true);
+			}, 
+			() => {
+				this.ChangeIsMemo(true);
+				Main.Instance.SetSearchFieldVisibility(true);
+			}
+		};
 
 		toggleDialog.Set(titles, texts, callBacks);
+		toggleDialog.SetCancelAction (() => {
+			Main.Instance.SetSearchFieldVisibility(true);	
+		});
 
+		Main.Instance.SetSearchFieldVisibility (false);
 	}
 
 	// 自分を消去(データごと)
 	public void Delete(){
-		Main mainBoard = MyCanvas.Find<Main>("BoardMain");
 		// ローカル通知あれば削除
 		if(IsNotify){
 			if(_todoData.deleteCall())
 				Debug.Log("Successfully delete Local Call");
 		}
 		// Todo Mainがもってるデータ消去、保存データ消去
-		mainBoard.DeleteDataById(_todoData.Id);
+		Main.Instance.DeleteDataById(_todoData.Id);
 		// ファイル削除
 		TodoText.DeleteFile(_todoData.Id);
 		//mainBoard.ShowToday();
 		Vanish();
-		mainBoard.Restart();
+		Main.Instance.Restart();
 		
 	}
 
 	// メモに
 	public void ChangeIsMemo(bool isMemo = true){
 		Debug.Log(isMemo.ToString() + "memo");
-		Main mainBoard = MyCanvas.Find<Main>("BoardMain");
 		_todoData.UpdateIsMemo(isMemo);
-		mainBoard.Restart();		
+		Main.Instance.Restart();		
 	}
 
 	// テキスト背景色変更 /

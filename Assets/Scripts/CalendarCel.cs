@@ -167,7 +167,7 @@ public class CalendarCel : Token {
 	// 全てのセルを更新する
 	public static void AllUpdate(){
 		DateTime Time = new DateTime(_mycalendar.ShowDateTime.Year, _mycalendar.ShowDateTime.Month,1);
-		List<int> numbers = MyCanvas.Find<Main>("BoardMain").CalcTodoNumbers(Time);	
+		List<int> numbers = Main.Instance.CalcTodoNumbers(Time);	
 		parent.ForEachExists(cel => cel.UpdateCelWithNum(numbers));
 	}
 

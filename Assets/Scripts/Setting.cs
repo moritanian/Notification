@@ -141,14 +141,12 @@ public class Setting : Token {
 		PlayerPrefs.DeleteAll();
 		PlayerPrefs.Save();
 		outputText.text = "全てのデータを削除しました!";
-		Main _main = MyCanvas.Find<Main>("BoardMain");
-		_main.Reload();
+		Main.Instance.Reload();
 	}
 
 	// Todo 一覧を再読み込みして表示
 	public void OnClickReload(){
-		Main _main = MyCanvas.Find<Main>("BoardMain");
-		_main.Reload();
+		Main.Instance.Reload();
 		outputText.text = "リロードしました。";
 	}
 
@@ -304,6 +302,6 @@ public class Setting : Token {
 		Dialog dialog = MyCanvas.FindChild<Dialog>("DialogBack");
 		dialog.Revive();
 		dialog.Text = text;
-		dialog._yesCallBack = new YesCallBack(okAction);
+		dialog._yesCallBack = new DialogAction(okAction);
 	}
 }

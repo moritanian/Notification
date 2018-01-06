@@ -8,6 +8,8 @@ using System.Text.RegularExpressions;
 
 public class Main : Token {
 
+	public static Main Instance;
+
 	DateTime crt_time;
 	List<TodoData> Todos;
 	
@@ -45,6 +47,7 @@ public class Main : Token {
 	// Use this for initialization
 	// コンポーネント取得はStartの前に処理する
 	void Awake(){
+		Instance = this;
 		_dpDown = MyCanvas.Find<Dropdown>("Dropdown");
 		todo_scl = MyCanvas.Find<ScrollController>("TodoContent");
 		todoadd_button = MyCanvas.Find<Image>("TodoAdd");
@@ -310,5 +313,10 @@ public class Main : Token {
 	DateTime getDefaultTime(DateTime Dt){
 		return new DateTime(Dt.Year, Dt.Month, Dt.Day, def_hour, def_min, 0);
 	}
+
+	public void SetSearchFieldVisibility(bool visible){
+		_searchField.enabled = visible;
+		_searchField.gameObject.SetActive (visible);
+	}	
 
 }
