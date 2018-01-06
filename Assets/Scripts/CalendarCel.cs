@@ -33,6 +33,9 @@ public class CalendarCel : Token {
 
   	//日にちと休日の色分け
   	void SetLabel(string txt){
+		if (_text == null) {
+			return;
+		}
   		_text.text = txt;
   		string holiday_txt = Holiday.GetHoliday(_celTime);
 	
@@ -78,6 +81,10 @@ public class CalendarCel : Token {
 	Status _status;
 	void status(Status stat){
 		_status = stat;
+		if (CelImage == null) {
+			return;
+		}
+
 		switch(_status){
 			case Status.OutOfRange:
 				CelImage.color = _mycalendar.OutofRangeColor;
@@ -237,6 +244,9 @@ public class CalendarCel : Token {
 
 	// todo 数表示
 	void SetPoint(int num){
+		if (numText == null) {
+			return;
+		}
 		if(num>0){
 			numText.enabled = true;
 			numText.text = num.ToString();

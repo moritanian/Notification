@@ -3,6 +3,8 @@ using System.Collections;
 using UnityEngine.UI;
 using System;
 
+using UnityEngine.SceneManagement;
+
 
 public class Setting : Token {
 
@@ -127,13 +129,9 @@ public class Setting : Token {
 		Body.GoBoardMain();
 	}
 	public void OnClickDataDelete(){
-		Debug.Log("OnClickDataDelete");
-		Dialog dialog = MyCanvas.FindChild<Dialog>("DialogBack");
-		dialog.Revive();
-		dialog.Text = "本当に消去してよろしいですか？";
-		dialog._yesCallBack = new YesCallBack(deleteData);
-		
+		ShowDialog ("本当に消去してよろしいですか？", deleteData);
 	}
+
 	void  deleteData(){
 		int max_id = TodoData.MaxId();
 		// ファイル消去
@@ -222,9 +220,8 @@ public class Setting : Token {
     		theme = Theme.color;
     	}
     	Util.SaveData(GetDataKey(DataKeys.Theme), ((int)theme).ToString());
-    	ApplyTheme();
-		MyCanvas.Find<MyCalendar>("MyCalendar").SetCalendar();
 
+		SceneManager.LoadScene("Main");
     }
 
     public void ApplyTheme(){
@@ -254,6 +251,15 @@ public class Setting : Token {
     	myCalendar.TodayColor = colors[7];
     	myCalendar.FindChild<Text>("EditDateTime").color = colors[1];
 
+		// set TodoField prefab
+		switch (theme) {
+		case Theme.color:
+			TodoField.parent = new TokenMgr<TodoField> ("TodoField", 40);
+			break;
+		case Theme.mono:
+			TodoField.parent = new TokenMgr<TodoField> ("TodoFieldMono", 40);
+			break;
+		}
     }
 
     public void ChangeColor(int id){
@@ -287,10 +293,17 @@ public class Setting : Token {
     }
 
 	public void OnClickDumpData(){
-		DataManager.DumpJson ();
+		ShowDialog ("Dump user data.", DataManager.DumpJson);
 	}
 
 	public void OnClickLoadData(){
-		DataManager.LoadJsonFile ();
+		ShowDialog ("Load user data from json file", DataManager.LoadJsonFile);
+	}
+
+	void ShowDialog(string text, Action okAction){
+		Dialog dialog = MyCanvas.FindChild<Dialog>("DialogBack");
+		dialog.Revive();
+		dialog.Text = text;
+		dialog._yesCallBack = new YesCallBack(okAction);
 	}
 }

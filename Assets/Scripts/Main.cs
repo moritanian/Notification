@@ -45,7 +45,6 @@ public class Main : Token {
 	// Use this for initialization
 	// コンポーネント取得はStartの前に処理する
 	void Awake(){
-		TodoField.parent = new TokenMgr<TodoField>("TodoField",40);
 		_dpDown = MyCanvas.Find<Dropdown>("Dropdown");
 		todo_scl = MyCanvas.Find<ScrollController>("TodoContent");
 		todoadd_button = MyCanvas.Find<Image>("TodoAdd");
