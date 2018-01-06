@@ -5,9 +5,9 @@ using UnityEngine.UI;
 public class TodoText : MonoBehaviour {
 
 	static TextObj _title;
-	public InputField _inputField;
+	public NativeEditBox _inputField;
 	public static TodoText _todoText;
-	public InputField _inputTitle;
+	public NativeEditBox _inputTitle;
 	public TodoField _todoField;
 	public Text _changed_sign;
 	public TodoData todoData{
