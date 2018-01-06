@@ -30,8 +30,6 @@ public class LocalNotification : MonoBehaviour {
 	}
 	
 	public static void LocalCallSet(int id, DateTime call_time, string name, string title, string label, string type = ""){
-		// 前回分をreset
-		LocalCallReset(id);
 
 		// #TODO unique id で識別するようにする
 		int seconds_from_now = (int)SecondsFromNow(call_time);

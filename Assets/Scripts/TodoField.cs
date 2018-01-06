@@ -85,9 +85,9 @@ public class TodoField : Token {
 
 	// Use this for initialization
 	void Awake(){
-		_timeText = transform.FindChild("Time/TimeText").gameObject.GetComponent<TextObj>();
+		_timeText = transform.Find("Time/TimeText").gameObject.GetComponent<TextObj>();
 		_timeText.Label = "";
-		_toggle = transform.FindChild("Toggle").gameObject.GetComponent<Toggle>();
+		_toggle = transform.Find("Toggle").gameObject.GetComponent<Toggle>();
 	}
 
 	public override void Revive(){
@@ -128,14 +128,14 @@ public class TodoField : Token {
 	
 	public void SetText(string text){
 		if(_inputField == null){
-			transform.FindChild("text").gameObject.GetComponent<TextObj>().Label = text;
+			transform.Find("text").gameObject.GetComponent<TextObj>().Label = text;
 			return ;
 		}
 		_inputField.text = text;
 	}
 
 	public string GetText(){
-		return transform.FindChild("text").gameObject.GetComponent<TextObj>().Label;
+		return transform.Find("text").gameObject.GetComponent<TextObj>().Label;
 	}
 
 	public void OnclickEdit(){

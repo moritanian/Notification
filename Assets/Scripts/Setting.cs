@@ -75,8 +75,8 @@ public class Setting : Token {
    	void Awake(){
 		outputText = MyCanvas.Find<Text>("outputText");
 		_debugToggle = MyCanvas.Find<Toggle>("IsDebugLog");
-		_normalToggle = transform.FindChild("NormalToggle").gameObject.GetComponent<Toggle>();
-		_fontColorChgText = transform.FindChild("TextColor").gameObject.GetComponent<Text>();
+		_normalToggle = transform.Find("NormalToggle").gameObject.GetComponent<Toggle>();
+		_fontColorChgText = transform.Find("TextColor").gameObject.GetComponent<Text>();
 		_dp_notify_id = MyCanvas.Find<Dropdown>("DropdownId");
 		instance = this;
 	}
@@ -285,4 +285,12 @@ public class Setting : Token {
     public void OnClickSendData(){
     	TranslateData.test();
     }
+
+	public void OnClickDumpData(){
+		DataManager.DumpJson ();
+	}
+
+	public void OnClickLoadData(){
+		DataManager.LoadJsonFile ();
+	}
 }

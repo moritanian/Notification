@@ -87,8 +87,12 @@ public class TodoText : MonoBehaviour {
 		return FileIo.Load(_get_filename(id));
 	}
 
+	public static void SaveText(int id, string text){
+		FileIo.Write(_get_filename(id), text);
+	}
+
 	void _save(){
-		FileIo.Write(_get_filename(_todoField._todoData.Id),_get_text());
+		SaveText (_todoField._todoData.Id, _get_text());
 		origi_text = _get_text();
 		// 変更印オフ
 		_changed_sign.enabled = false;
