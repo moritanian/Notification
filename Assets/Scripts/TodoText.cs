@@ -15,6 +15,8 @@ public class TodoText : MonoBehaviour {
 	}
 	string origi_text;
 
+	static bool isAutoSave = true;
+
 	void Awake(){
 		//_title = MyCanvas.Find<>("Titletxt");
 		_todoText = this;
@@ -64,10 +66,14 @@ public class TodoText : MonoBehaviour {
 
 	// Fieldを編集した
 	public void TextEdited(){
-		if(IsChanged()){
-			_changed_sign.enabled = true;
+		if (isAutoSave) {
+			_save();
 		} else {
-			_changed_sign.enabled = false;
+			if (IsChanged ()) {
+				_changed_sign.enabled = true;
+			} else {
+				_changed_sign.enabled = false;
+			}
 		}
 	}
 
@@ -81,8 +87,12 @@ public class TodoText : MonoBehaviour {
 		return FileIo.Load(_get_filename(id));
 	}
 
+	public static void SaveText(int id, string text){
+		FileIo.Write(_get_filename(id), text);
+	}
+
 	void _save(){
-		FileIo.Write(_get_filename(_todoField._todoData.Id),_get_text());
+		SaveText (_todoField._todoData.Id, _get_text());
 		origi_text = _get_text();
 		// 変更印オフ
 		_changed_sign.enabled = false;
@@ -121,7 +131,7 @@ public class TodoText : MonoBehaviour {
 		// saveするかしないか指定
 	public void GoBack(bool IsSave = true){
 		Body.GoBoardMain();
-		if(IsChanged()){
+		if(!isAutoSave && IsChanged()){
 			if(IsSave){
 				_save();
 				PopUp.PopUpStart("保存しました", 1.5f);
@@ -138,6 +148,8 @@ public class TodoText : MonoBehaviour {
 		string title_str = _get_title_text();
 		_todoField.SetText(title_str);
 		_todoField._todoData.UpdateTitle(title_str);
+		if (_todoField._todoData.IsNotify)
+			_todoField._todoData.setCall ();
 	}
 	public static void TitleSet(string txt){
 		MyCanvas.Find<TodoText>("BoardText")._inputTitle.text = txt;

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System;
 
 
 public class Setting : Token {
@@ -14,7 +15,6 @@ public class Setting : Token {
 	Toggle _debugToggle;
 	Toggle _normalToggle;
 	public InputField _inputField;
-	public AndroidSamp androidObj;
 	Text _fontColorChgText;
 	Dropdown _dp_notify_id;
 
@@ -70,16 +70,22 @@ public class Setting : Token {
    		new Color(156.0f/255.0f, 1.0f, 230.0f/255.0f),
    	};
 
+	public static Setting instance; 
+
    	void Awake(){
 		outputText = MyCanvas.Find<Text>("outputText");
 		_debugToggle = MyCanvas.Find<Toggle>("IsDebugLog");
-		_normalToggle = transform.FindChild("NormalToggle").gameObject.GetComponent<Toggle>();
-		_fontColorChgText = transform.FindChild("TextColor").gameObject.GetComponent<Text>();
+		_normalToggle = transform.Find("NormalToggle").gameObject.GetComponent<Toggle>();
+		_fontColorChgText = transform.Find("TextColor").gameObject.GetComponent<Text>();
 		_dp_notify_id = MyCanvas.Find<Dropdown>("DropdownId");
+		instance = this;
 	}
 
 	// Use this for initialization
-	void Start () {
+	void Start(){
+	}
+
+	public void Init () {
 		string size_str = Util.LoadData(GetDataKey(DataKeys.FontSize));
 		if(size_str != "")fontsize = int.Parse(size_str);
 		string color_str = Util.LoadData(GetDataKey(DataKeys.Color));
@@ -217,6 +223,8 @@ public class Setting : Token {
     	}
     	Util.SaveData(GetDataKey(DataKeys.Theme), ((int)theme).ToString());
     	ApplyTheme();
+		MyCanvas.Find<MyCalendar>("MyCalendar").SetCalendar();
+
     }
 
     public void ApplyTheme(){
@@ -233,9 +241,9 @@ public class Setting : Token {
     	GetComponent<Image>().color = colors[4];
     	MyCanvas.Find<Image>("ScrollView").color = colors[2];
     	MyCanvas.Find<Image>("BoardMain").color = colors[5];
-    	MyCanvas.Find<Image>("TextInput").color = colors[4];
-    	MyCanvas.Find<Text>("TodoTextField").color = colors[1];
-    	MyCanvas.Find<Text>("DispDateTimeText").color = colors[1];
+		MyCanvas.Find<Image>("TextInput").color = colors[4];
+		MyCanvas.Find<Text>("TodoTextField").color = colors[1];
+		MyCanvas.Find<Text>("DispDateTimeText").color = colors[1];
     	MyCanvas.Find<Image>("SearchField").color = colors[3];
     	MyCanvas.Find<Text>("SearchText").color = colors[1];
     	MyCalendar myCalendar = MyCanvas.Find<MyCalendar>("MyCalendar");
@@ -245,8 +253,6 @@ public class Setting : Token {
     	myCalendar.MyDayColor = colors[6];
     	myCalendar.TodayColor = colors[7];
     	myCalendar.FindChild<Text>("EditDateTime").color = colors[1];
-
-    	MyCanvas.Find<MyCalendar>("MyCalendar").SetCalendar();
 
     }
 
@@ -263,15 +269,28 @@ public class Setting : Token {
     // 通知デバッグon
     public void OnClickNotifySet(){
     	int id = _dp_notify_id.value;
-    	androidObj.DebugSet(id);
+		LocalNotification.LocalCallSet (id, DateTime.Now.AddSeconds(5), "Test Name" + id.ToString(), "Test Title" + id.ToString(), "Test Label" + id.ToString());
     }
     // 通知デバッグoff
     public void OnClickNotifyReset(){
     	int id = _dp_notify_id.value;
-    	androidObj.DebugReset(id);
+		LocalNotification.LocalCallReset (id);
     }
+	// alarm debug
+	public void OnClickAlarmSet(){
+		int id = 0;
+		LocalNotification.AlarmSet (id, DateTime.Now.AddSeconds(5));
+	}
 
     public void OnClickSendData(){
     	TranslateData.test();
     }
+
+	public void OnClickDumpData(){
+		DataManager.DumpJson ();
+	}
+
+	public void OnClickLoadData(){
+		DataManager.LoadJsonFile ();
+	}
 }

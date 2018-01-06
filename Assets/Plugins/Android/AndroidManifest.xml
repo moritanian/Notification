@@ -1,28 +1,73 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.moritanian.localpush"
+    package="com.moritanian.notification"
     android:versionCode="1"
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="10"
-        android:targetSdkVersion="10" />
+        android:minSdkVersion="17"
+        android:targetSdkVersion="25" />
+
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
+     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+     <supports-screens
+        android:smallScreens="true"
+        android:normalScreens="true"
+        android:largeScreens="true"
+        android:xlargeScreens="true"
+        android:anyDensity="true"/>
 
     <application
+    	android:theme="@android:style/Theme.NoTitleBar"
         android:allowBackup="true"
         android:icon="@drawable/app_icon"
         android:label="@string/app_name"
         android:debuggable="true">
-         <receiver android:name="com.moritanian.localpush.Notifier"></receiver>
-      <activity android:name="com.unity3d.player.UnityPlayerNativeActivity"
-                android:label="@string/app_name">
+
+		<activity android:name="com.unity3d.player.UnityPlayerNativeActivity"
+                android:label="@string/app_name"
+               >
+           
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
             </intent-filter>
             <meta-data android:name="unityplayer.UnityActivity" android:value="true" />
-            <meta-data android:name="unityplayer.ForwardNativeEventsToDalvik" android:value="false" />
+            <meta-data android:name="unityplayer.ForwardNativeEventsToDalvik" android:value="true" />
         </activity>
+
+         <receiver android:name="example.com.alarmplugin.AlarmReceiver"
+         	 android:enabled="true" android:exported="false" >
+            <intent-filter>
+                <action android:name="ACTION_ALARM"></action>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name="example.com.alarmplugin.Notifier"
+        	android:enabled="true" android:exported="false">
+            <intent-filter>
+                <action android:name="ACTION_NOTIFICATION"></action>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name="example.com.alarmplugin.UpdateBroadcastReceiver">
+            <intent-filter>
+               	<action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
+                <!--<data android:scheme="package" />-->
+            </intent-filter>
+        </receiver>
+
+        <service android:name="example.com.alarmplugin.MyAlarmService" ></service>
+        <activity android:name="example.com.alarmplugin.AlarmNotificationActivity" ></activity>
+
     </application>
 
 </manifest>

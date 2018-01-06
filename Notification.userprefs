@@ -1,0 +1,22 @@
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Plugins\Android\AndroidManifest.xml">
+    <Files>
+      <File FileName="Assets\Plugins\Android\AndroidManifest.xml" Line="31" Column="16" />
+      <File FileName="Assets\Scripts\Utility\Swipe.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\ToggleDialog.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Main.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\TodoField.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\NativeUIBuilder.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\TodoText.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Utility\MyCanvas.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Setting.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\NativeEditPlugin\NativeEditBox.cs" Line="464" Column="29" />
+      <File FileName="Assets\Scripts\Body.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

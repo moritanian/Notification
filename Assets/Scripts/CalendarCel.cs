@@ -35,7 +35,7 @@ public class CalendarCel : Token {
   	void SetLabel(string txt){
   		_text.text = txt;
   		string holiday_txt = Holiday.GetHoliday(_celTime);
-  		
+	
   		// event 表示
   		if(holiday_txt != ""){
   			event_text = holiday_txt;
@@ -154,7 +154,7 @@ public class CalendarCel : Token {
     }
 
     void Start(){	
-    	UpdateCel();
+    	//UpdateCel();
     } 
 
 	// 全てのセルを更新する
@@ -169,10 +169,10 @@ public class CalendarCel : Token {
 		// 割り当ての日にち取得
 		int new_day = GetMyDay();
 		if(new_day>0){
-			SetLabel(new_day.ToString());
+			//SetLabel(new_day.ToString());
 			Day = new_day;
 		}else{
-			SetLabel("");
+			//SetLabel("");
 			Day = 0;
 		}
 		// 範囲外の時はここで処理終了 

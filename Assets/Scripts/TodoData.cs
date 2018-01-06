@@ -50,6 +50,8 @@ public class TodoData : ISerializationCallbackReceiver{
 
 	// 以下シリアライズ用メンバ
 	[SerializeField]
+	string createTimeStr;
+	[SerializeField]
 	string todoTimeStr;
 	[SerializeField]
 	string lookupTimeStr;
@@ -128,7 +130,8 @@ public class TodoData : ISerializationCallbackReceiver{
 		string create_time = DateTime.Now.ToString();
 		Util.SaveData(_get_data_key(DataKeys.CreateTime,id), create_time);
 		Util.SaveData(_get_data_key(DataKeys.IsMemo, id), IsMemo.ToString());
-		if(MaxId()<id)Util.SaveData(_get_data_key(DataKeys.MaxId),id.ToString());
+		if (MaxId () < id)
+			SaveMaxId (id);
 		UpdateLookupTime();
 	}
 
@@ -141,12 +144,9 @@ public class TodoData : ISerializationCallbackReceiver{
 	}
 
 	// Isnotify 更新
-	// 更新結果を返す (過去を指定している場合、falseが返る) 更新できなければfalse
+	// 更新結果を返す  更新できなければfalse
 	public bool UpdateIsNotify(bool _IsNotify){
 		if(_IsNotify){
-			if(todo_time.CompareTo(DateTime.Now) < 0){
-				return false;
-			}
 			// memoに時間設定機能はない
 			if(IsMemo)return false;
 		} else if(IsNotify == _IsNotify){
@@ -167,23 +167,38 @@ public class TodoData : ISerializationCallbackReceiver{
 		return true;
 	}
 
+	// 今の値でデータ保存
+	public void SaveCurrent(){
+		Util.SaveData(_get_data_key(DataKeys.Title,id), Title);
+		Util.SaveData(_get_data_key(DataKeys.CreateTime, id), create_time.ToString());
+		Util.SaveData(_get_data_key(DataKeys.NotificationTime, id), notification_time.ToString());
+		Util.SaveData(_get_data_key(DataKeys.LookupTime, id), lookup_time.ToString());
+		Util.SaveData(_get_data_key(DataKeys.ModifiedTime, id), modified_time.ToString());
+		Util.SaveData(_get_data_key(DataKeys.TodoTime, id), TodoTime.ToString());
+		Util.SaveData(_get_data_key(DataKeys.IsMemo, id), IsMemo.ToString());
+		Util.SaveData(_get_data_key(DataKeys.IsNotify, id),IsNotify.ToString());
+		TodoText.SaveText (Id, WWW.UnEscapeURL(todoText));
+		//Util.SaveData(_get_data_key(DataKeys.ModifiedTime,id), create_time);
+	}
+
 
 	// 全てをload createDateないものは不正なものとして無視
 	public static List<TodoData> LoadAll(){
 		List<TodoData> _todos = new List<TodoData>();
 		int head_id = MaxId();
+		Debug.Log ("max id = " + head_id.ToString ());
 		if(head_id>0){
 			for(int id= 1; id<=head_id; id++){
-				string create_time = Util.LoadData(_get_data_key(DataKeys.CreateTime, id));
-				if(create_time == "")continue;
-				string todo_time = Util.LoadData(_get_data_key(DataKeys.TodoTime,id));
-				string lookup_time = Util.LoadData(_get_data_key(DataKeys.LookupTime, id));
+				string create_time_str = Util.LoadData(_get_data_key(DataKeys.CreateTime, id));
+				if(create_time_str == "")continue;
+				string todo_time_str = Util.LoadData(_get_data_key(DataKeys.TodoTime,id));
+				string lookup_time_str = Util.LoadData(_get_data_key(DataKeys.LookupTime, id));
 				string title = Util.LoadData(_get_data_key(DataKeys.Title,id));
 				string isNotifyStr = Util.LoadData(_get_data_key(DataKeys.IsNotify,id));
 				string isMemostr = Util.LoadData(_get_data_key(DataKeys.IsMemo, id));
 				TodoData todo = new TodoData(id);
-				if(todo_time != "")todo.TodoTime = DateTime.Parse(todo_time);
-				if(lookup_time != "")todo.LookupTime = DateTime.Parse(lookup_time);
+				if(todo_time_str != "")todo.TodoTime = DateTime.Parse(todo_time_str);
+				if(lookup_time_str != "")todo.LookupTime = DateTime.Parse(lookup_time_str);
 				todo.Title = title;
 				todo.IsNotify = (isNotifyStr == "True"); 
 				todo.IsMemo = (isMemostr == "True");
@@ -244,7 +259,7 @@ public class TodoData : ISerializationCallbackReceiver{
 		if(id == MaxId() && id > 0){
 			// #tdodo わたされたtododataの最大使っているがplayerpref のつかうべき
 			int new_max = (id==1) ? 0 :todolist.Max(_todo => _todo.Id);
-			Util.SaveData(_get_data_key(DataKeys.MaxId) , new_max.ToString());
+			SaveMaxId (new_max);
 		}
 		return true;
 	}
@@ -256,10 +271,19 @@ public class TodoData : ISerializationCallbackReceiver{
 		Debug.Log(str);
 	}
 
+	public static void SaveMaxId(int maxId){
+		Util.SaveData(_get_data_key(DataKeys.MaxId) , maxId.ToString());	
+	}
+
 	   public void OnBeforeSerialize()
     {
+		if (id == 0) {
+			return;
+		}
+		Debug.Log ("onBeforeSerialize");
     	// サーバに渡すデータ処理
     	// エスケープ処理も行う
+		createTimeStr = create_time.ToString();
         todoTimeStr = todo_time.ToString();
         notificationTimeStr = notification_time.ToString();
         lookupTimeStr = lookup_time.ToString();
@@ -269,6 +293,28 @@ public class TodoData : ISerializationCallbackReceiver{
 
       public void OnAfterDeserialize()
     {
-        
+		if (id == 0) {
+			return;
+		}
+		create_time = DateTime.Parse (createTimeStr);
+		todo_time = DateTime.Parse (todoTimeStr);
+		notification_time = DateTime.Parse (notificationTimeStr);
+		lookup_time = DateTime.Parse (todoTimeStr);
+		_title = WWW.UnEscapeURL (titleStr);
+		lookup_time = DateTime.Parse (lookupTimeStr);
     }
+
+	// ローカル通知を登録
+	public bool setCall(){
+		if(TodoTime.CompareTo(DateTime.Now) < 0){
+			return false;
+		}
+		LocalNotification.LocalCallSet(Id, TodoTime, "Notify"+ Id.ToString(), "title", Title);
+		return true;
+	}
+
+	// ローカル通知を削除
+	public bool deleteCall(){
+		return LocalNotification.LocalCallReset(Id);
+	}
 }

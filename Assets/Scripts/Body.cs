@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-enum Screen{
+enum ScreenMode{
 		Main,
 		Setting,
 		Text,
@@ -12,7 +12,7 @@ public class Body : Token {
 	static PanelSlider _body;
 
 	
-	static Screen screen;
+	static ScreenMode screenMode;
 	// いったんボタンが押された場合、次にボタンが押されたと判定するのはボタンが上がってから
 	bool Is_Button = false;
 
@@ -23,22 +23,22 @@ public class Body : Token {
 	}
 
 	void Start () {
-		screen = Screen.Main;
+		screenMode = ScreenMode.Main;
 	}
 
 	void Update(){
 		if(Util.BackButton() && !Is_Button){
 			Is_Button = true;
-			switch(screen){
-				case Screen.Main:
+			switch(screenMode){
+				case ScreenMode.Main:
 					Debug.Log("ApplicationFinish");
 					Application.Quit();
 					break;
-				case Screen.Setting:
+				case ScreenMode.Setting:
 					
 					MyCanvas.Find<Setting>("BoardSetting").OnClickGoMain();
 					break;
-				case Screen.Text:
+				case ScreenMode.Text:
 					TodoText._todoText.GoBack(true);
 					//MyCanvas.Find<TodoText>("BoardText").OnClickGoBack();
 					break;
@@ -61,15 +61,15 @@ public class Body : Token {
 	
 	public static void GoBoardText(){
 		_body.SlideIn();
-		screen = Screen.Text;
+		screenMode = ScreenMode.Text;
 	}
 
 	public static void GoBoardMain(){
 		_body.SlideOut();
-		screen = Screen.Main;
+		screenMode = ScreenMode.Main;
 	}
 	public static void GoBoardSetting(){
 		_body.SlideIn(1);
-		screen = Screen.Setting;
+		screenMode = ScreenMode.Setting;
 	}
 }
