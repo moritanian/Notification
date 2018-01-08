@@ -38,7 +38,7 @@ public class Main : Token {
 
 	MyCalendar _mycalendar;
 
-	InputField _searchField;
+	NativeEditBox _searchField;
 
 	// 追加モードで表示される時間
 	int def_hour = 8;
@@ -52,7 +52,7 @@ public class Main : Token {
 		todo_scl = MyCanvas.Find<ScrollController>("TodoContent");
 		todoadd_button = MyCanvas.Find<Image>("TodoAdd");
 		_mycalendar = MyCanvas.Find<MyCalendar>("MyCalendar");
-		_searchField = MyCanvas.Find<InputField>("SearchField");
+		_searchField = MyCanvas.Find<NativeEditBox>("SearchField");
 	}
 
 	void Start () {	
@@ -63,7 +63,7 @@ public class Main : Token {
 		Holiday.init();
 		crt_time = DateTime.Now;
 		Todos = TodoData.LoadAll();
-		_mycalendar.DispCal(DateTime.Now, (DateTime dt, bool IsSet, bool IsMemo) => MyCanvas.Find<Main>("BoardMain").ShowMyDay(dt));
+		_mycalendar.DispCal(DateTime.Now, (DateTime dt, bool IsSet, bool IsMemo) => Main.Instance.ShowMyDay(dt));
 
 		// Todo表示
 		ApplySelectOpt();
@@ -273,6 +273,8 @@ public class Main : Token {
 	public void OnChangeSearchField(){
 		string search_text = _searchField.text;
 		showBySelectOpt(SelectOpt.Word);
+		_dpDown.value = (int)SelectOpt.All;
+
 	}
 	
 	// ワード検索 
@@ -315,8 +317,7 @@ public class Main : Token {
 	}
 
 	public void SetSearchFieldVisibility(bool visible){
-		_searchField.enabled = visible;
-		_searchField.gameObject.SetActive (visible);
+		_searchField.SetVisible (visible);
 	}	
 
 }

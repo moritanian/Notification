@@ -708,8 +708,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _inputField: {fileID: 0}
   textImage: {fileID: 11425118}
-  NormalColor: {r: 0.947, g: 0.947, b: 0.506, a: 0.991}
-  SelectedColor: {r: 0.984, g: 0.816, b: 0.516, a: 0.991}
+  NormalColor: {r: 1, g: 1, b: 1, a: 0.991}
+  SelectedColor: {r: 0.6068302, g: 0.5495783, b: 0.78676474, a: 0.991}
   MemoColor: {r: 0.29141435, g: 0.8088235, b: 0.74459344, a: 0.991}
   timeTextImage: {fileID: 11476970}
   EnphasizedColor: {r: 1, g: 0.31790662, b: 0.8118362, a: 1}
