@@ -83,12 +83,13 @@ public class Swipe : Token {
 			CrtPos = startPosition;
 
 		}
+
 		if (Input.GetMouseButtonUp (0) && state == State.Down) {
 			EndEvent.Invoke();
 			state = State.Idle;
+			endPosition = GetMousePos();
 			if(!IsIn(endPosition))return ;
 
-			endPosition = GetMousePos();
 			float distanceX = endPosition.x - startPosition.x;
 			float distanceY = endPosition.y - startPosition.y;
 			if(margin_distance < distanceX){
