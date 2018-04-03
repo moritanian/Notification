@@ -131,7 +131,7 @@ public class Main : Token {
 		Todos.Add(new_todo);// Todo 配列に追加
 
 		// todoField を生成
-		TodoField _todoField = TodoField.Add(0,0,new_todo);
+		TodoField _todoField = TodoField.Add(new_todo);
 		
 		// TododField をスクロールビューの子要素にする
 		todo_scl.SetContentFirst(_todoField.transform);
@@ -168,7 +168,7 @@ public class Main : Token {
 		// ソート
 		TodoData.SortByDate(showList);
 		foreach(TodoData todo_data in showList){
-			TodoField _todoField = TodoField.Add(0,0,todo_data);
+			TodoField _todoField = TodoField.Add(todo_data);
 			todo_scl.SetContent(_todoField.transform);
 			_todoField.SetText(todo_data.Title);
 			_todoField.IsNotify = todo_data.IsNotify;

@@ -70,7 +70,7 @@ public class TodoField : Token {
 	// android keyboard 用
 	bool isTitleEdit; 
 
-	public static TodoField Add(float x,float y,TodoData todoData){
+	public static TodoField Add(TodoData todoData){
 		//TodoField obj = CreateInstanceEasy<TodoField>("TodoField",x,y);
 		TodoField obj = parent.Add(0,0);
 		if(obj == null){

@@ -164,8 +164,7 @@ public class MyCalendar : Token {
 			if(MemoButton.Exists)MemoButton.Vanish();
 		}
 	}
-
-
+		
 	void InitCalendar(){
 		if(CalendarCel.parent == null){
 			CalendarCel.parent = new TokenMgr<CalendarCel>("CalendarCel", DAYS_IN_WEEK * NUM_OF_ROW);
@@ -177,6 +176,7 @@ public class MyCalendar : Token {
 			}
 		}
 	}
+
 	public void SetCalendar(){
 		// 表示する月の日数
 		int days_in_month = _days_in_month(_showDateTime);
@@ -215,7 +215,6 @@ public class MyCalendar : Token {
 	int _days_in_month(DateTime dt){
 		return DateTime.DaysInMonth(dt.Year, dt.Month);
 	}
-	
 
 	public void OnClickPreMonth(){
 		_showDateTime = _showDateTime.AddMonths(-1);
@@ -223,6 +222,7 @@ public class MyCalendar : Token {
 		SetCalendar();
 		Main.Instance.ApplySelectOpt();
 	}
+
 	public void OnClickNextMonth(){
 		_showDateTime = _showDateTime.AddMonths(1);
 		_showDateTime = _showDateTime.AddDays(- _showDateTime.Day + 1);
