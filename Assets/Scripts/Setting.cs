@@ -18,7 +18,6 @@ public class Setting : Token {
 	Toggle _normalToggle;
 	public InputField _inputField;
 	Text _fontColorChgText;
-	Dropdown _dp_notify_id;
 
 	static int fontsize = 11;
 	public static int FontSize{
@@ -79,7 +78,6 @@ public class Setting : Token {
 		_debugToggle = MyCanvas.Find<Toggle>("IsDebugLog");
 		_normalToggle = transform.Find("NormalToggle").gameObject.GetComponent<Toggle>();
 		_fontColorChgText = transform.Find("TextColor").gameObject.GetComponent<Text>();
-		_dp_notify_id = MyCanvas.Find<Dropdown>("DropdownId");
 		instance = this;
 	}
 
@@ -269,17 +267,7 @@ public class Setting : Token {
     	Util.SaveData(GetDataKey(DataKeys.Color),color_id.ToString());
     	
     }
-
-    // 通知デバッグon
-    public void OnClickNotifySet(){
-    	int id = _dp_notify_id.value;
-		LocalNotification.LocalCallSet (id, DateTime.Now.AddSeconds(5), "Test Name" + id.ToString(), "Test Title" + id.ToString(), "Test Label" + id.ToString());
-    }
-    // 通知デバッグoff
-    public void OnClickNotifyReset(){
-    	int id = _dp_notify_id.value;
-		LocalNotification.LocalCallReset (id);
-    }
+		
 	// alarm debug
 	public void OnClickAlarmSet(){
 		int id = 0;
@@ -291,11 +279,28 @@ public class Setting : Token {
     }
 
 	public void OnClickDumpData(){
-		ShowDialog ("Dump user data.", DataManager.DumpJson);
+		ShowDialog ("Dump user data.", ExecDumpData);
 	}
 
 	public void OnClickLoadData(){
-		ShowDialog ("Load user data from json file", DataManager.LoadJsonFile);
+		ShowDialog ("Load user data from json file", ExecLoadData);
+	}
+
+	public void ExecDumpData(){
+		if (DataManager.DumpJson ()) {
+			outputText.text = "Successfully dumped!";
+		} else {
+			outputText.text = "Validation failed";
+		}
+	}
+
+	public void ExecLoadData(){
+		if (DataManager.LoadDataFromJsonFile ()) {
+			Main.Instance.Reload ();
+			outputText.text = "Successfully loaded!";
+		} else {
+			outputText.text = "Failed to load json file.";
+		}
 	}
 
 	void ShowDialog(string text, Action okAction){
@@ -303,5 +308,42 @@ public class Setting : Token {
 		dialog.Revive();
 		dialog.Text = text;
 		dialog._yesCallBack = new DialogAction(okAction);
+	}
+
+	public void OnClickCreateDummyData(){
+		InputField dummyNumInput = MyCanvas.Find<InputField>("DummyNumInput");
+		int dummyNum;
+		try {
+			dummyNum = Int32.Parse(dummyNumInput.text);
+
+		} catch(FormatException e){
+			Debug.Log ("dummyNumInput: \"" + dummyNumInput.text + "\" is invalid");
+			return;
+		}
+
+		ShowDialog (string.Format ("Create {0} dummy data", dummyNum), () => {
+			CreateDummyData (dummyNum);
+		});
+	}
+
+	public void CreateDummyData(int dummyNum){
+		
+			
+		for (int i = 0; i < dummyNum; i++) {
+			int id = i + 1;
+			TodoData new_todo = new TodoData(id);
+			new_todo.IsMemo = i % 4 == 0;
+			new_todo.SaveCreation();
+			// title
+			new_todo.UpdateTitle ("title" + id);
+			// date
+			new_todo.UpdateTodoTime (DateTime.Now.AddDays (UnityEngine.Random.Range (-100, 100)));
+			//
+			new_todo.UpdateIsNotify(i%6 == 0);
+			// content
+			TodoText.SaveText(id, "content" + id);
+		}
+		Main.Instance.Reload();
+		Debug.Log("append " + dummyNum + " dummy data");
 	}
 }

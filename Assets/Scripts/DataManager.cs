@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // json dumpデータとアプリデータとの変換処理
+using System;
+
+
 public class DataManager{
 
 	static string filename = "notification_dump.json";
@@ -11,23 +14,45 @@ public class DataManager{
 		return JsonUtility.ToJson(new Serialization<TodoData>(TodoData.LoadAll())); 
 	}
 
-	public static void DumpJson(){
+	public static bool DumpJson(){
 
 		string path = FilePlugin.GetDownloadPath (filename);
-		FilePlugin.WriteFile (path, GetJson());
+		string jsonStr = GetJson ();
+		int len = jsonStr.Length;
+		FilePlugin.WriteFile (path, jsonStr);
 		Debug.Log (path);
 
+		return ValidateJsonFile ();
 	}
 
-	public static void LoadJsonFile(){
+	static bool ValidateJsonFile(){
+		string jsonStr = LoadJsonFile ();
+		try {
+			GetTodoListFromJson(jsonStr);
+		} catch(Exception e){
+			return false;
+		}
+
+		return true;
+	}
+
+	static string LoadJsonFile(){
 		string path = FilePlugin.GetDownloadPath (filename);
 		string jsonStr = FilePlugin.ReadFileAsText (path);
-		LoadJson (jsonStr);
+		return jsonStr;
 	}
 
-	static void LoadJson(string jsonStr){
-		List<TodoData> Todos = JsonUtility.FromJson<Serialization<TodoData>>(jsonStr).ToList();
-		Debug.Log (jsonStr);
+	public static bool LoadDataFromJsonFile(){
+		return LoadJson (LoadJsonFile());
+	}
+
+	static bool LoadJson(string jsonStr){
+		List<TodoData> Todos;
+		try {
+			Todos = GetTodoListFromJson(jsonStr);
+		} catch(Exception e){
+			return false;
+		}
 		Debug.Log (Todos.Count.ToString ());
 		int id = TodoData.MaxId();
 		foreach(TodoData todoData in Todos){
@@ -39,6 +64,10 @@ public class DataManager{
 			}
 		}
 		TodoData.SaveMaxId(id);
-		Main.Instance.Reload();
-	}	
+		return true;
+	}
+
+	static List<TodoData> GetTodoListFromJson(string jsonStr){
+		return JsonUtility.FromJson<Serialization<TodoData>>(jsonStr).ToList();
+	}
 }

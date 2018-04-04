@@ -139,7 +139,7 @@ public class Main : Token {
 		_todoField.Create(Dt);	//新規に作成時の処理
 
 		// unity に保存する手続き
-		new_todo.UpdateCreate();
+		new_todo.SaveCreation();
 
 		if(IsMemo) _dpDown.value = (int)SelectOpt.Memo;
 		else _dpDown.value = (int)SelectOpt.PointedDay;// ドロップダウンのセレクト表示をPointedDayにしておく

@@ -5,6 +5,11 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 
+/*
+ * TODO
+ * todoList をメインで管理するのではなくここのstatic か管理クラス作成して保持したい
+ */
+
 // 保存するデータのキー
 	public enum DataKeys{
 		Title,	//タイトル文
@@ -29,9 +34,9 @@ public class TodoData : ISerializationCallbackReceiver{
 	}
 
 	// コンストラクタ
-	public TodoData(int id){
+	public TodoData(int id, string _title = ""){
 		Id = id;
-		_title = "";
+		this._title = _title;
 	}
 	// 以下、時間
 	DateTime create_time;	// 作成日時
@@ -65,7 +70,6 @@ public class TodoData : ISerializationCallbackReceiver{
 	string _title;
 	public string Title{
 		get {return _title;}
-		set {_title = value;}
 	}
 
 	public bool IsNotify = false;
@@ -112,7 +116,7 @@ public class TodoData : ISerializationCallbackReceiver{
 	*/
 	// タイトル更新
 	public void UpdateTitle(string new_title){
-		Title = new_title;
+		_title = new_title;
 		Util.SaveData(_get_data_key(DataKeys.Title,id),new_title);
 		Util.SaveData(_get_data_key(DataKeys.ModifiedTime,id),DateTime.Now.ToString());
 		UpdateLookupTime();
@@ -125,7 +129,7 @@ public class TodoData : ISerializationCallbackReceiver{
 		UpdateLookupTime();
 	}
 	// 新規追加をunityで保存
-	public void UpdateCreate(){
+	public void SaveCreation(){
 		//int id = NewId();
 		string create_time = DateTime.Now.ToString();
 		Util.SaveData(_get_data_key(DataKeys.CreateTime,id), create_time);
@@ -196,10 +200,9 @@ public class TodoData : ISerializationCallbackReceiver{
 				string title = Util.LoadData(_get_data_key(DataKeys.Title,id));
 				string isNotifyStr = Util.LoadData(_get_data_key(DataKeys.IsNotify,id));
 				string isMemostr = Util.LoadData(_get_data_key(DataKeys.IsMemo, id));
-				TodoData todo = new TodoData(id);
+				TodoData todo = new TodoData(id, title);
 				if(todo_time_str != "")todo.TodoTime = DateTime.Parse(todo_time_str);
 				if(lookup_time_str != "")todo.LookupTime = DateTime.Parse(lookup_time_str);
-				todo.Title = title;
 				todo.IsNotify = (isNotifyStr == "True"); 
 				todo.IsMemo = (isMemostr == "True");
 				_todos.Add(todo);
