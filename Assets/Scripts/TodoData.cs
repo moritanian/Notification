@@ -181,7 +181,7 @@ public class TodoData : ISerializationCallbackReceiver{
 		Util.SaveData(_get_data_key(DataKeys.TodoTime, id), TodoTime.ToString());
 		Util.SaveData(_get_data_key(DataKeys.IsMemo, id), IsMemo.ToString());
 		Util.SaveData(_get_data_key(DataKeys.IsNotify, id),IsNotify.ToString());
-		TodoText.SaveText (Id, WWW.UnEscapeURL(todoText));
+		TodoText.GetInstance().SaveText (Id, WWW.UnEscapeURL(todoText));
 		//Util.SaveData(_get_data_key(DataKeys.ModifiedTime,id), create_time);
 	}
 

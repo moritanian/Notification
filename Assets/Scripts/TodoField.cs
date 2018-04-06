@@ -145,7 +145,7 @@ public class TodoField : Token {
 	}
 	// 本文を編集する
 	void _edit(){
-		TodoText.SetUp(this);
+		TodoText.GetInstance().SetUp(_todoData);
 		Body.GoBoardText();
 	}
 

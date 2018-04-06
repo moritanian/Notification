@@ -9,8 +9,10 @@ enum ScreenMode{
 // main,text両方をまとめる
 public class Body : Token {
 
-	static PanelSlider _body;
+	[SerializeField]
+	MyCalendar calender;
 
+	static PanelSlider _body;
 	
 	static ScreenMode screenMode;
 	// いったんボタンが押された場合、次にボタンが押されたと判定するのはボタンが上がってから
@@ -71,5 +73,17 @@ public class Body : Token {
 	public static void GoBoardSetting(){
 		_body.SlideIn(1);
 		screenMode = ScreenMode.Setting;
+	}
+
+	public void OnSwipeRight(){
+		if (screenMode == ScreenMode.Main) {
+			calender.OnClickPreMonth ();
+		}
+	}
+
+	public void OnSwipeLeft(){
+		if (screenMode == ScreenMode.Main) {
+			calender.OnClickNextMonth ();
+		}
 	}
 }

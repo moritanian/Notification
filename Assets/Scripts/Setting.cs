@@ -341,7 +341,7 @@ public class Setting : Token {
 			//
 			new_todo.UpdateIsNotify(i%6 == 0);
 			// content
-			TodoText.SaveText(id, "content" + id);
+			TodoText.GetInstance().SaveText(id, "content" + id);
 		}
 		Main.Instance.Reload();
 		Debug.Log("append " + dummyNum + " dummy data");

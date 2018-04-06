@@ -217,17 +217,21 @@ public class MyCalendar : Token {
 	}
 
 	public void OnClickPreMonth(){
-		_showDateTime = _showDateTime.AddMonths(-1);
-		_showDateTime = _showDateTime.AddDays(- _showDateTime.Day + 1);
-		SetCalendar();
-		Main.Instance.ApplySelectOpt();
+		moveMonth (-1);
 	}
 
 	public void OnClickNextMonth(){
-		_showDateTime = _showDateTime.AddMonths(1);
+		moveMonth (1);
+	}
+
+	void moveMonth(int move){
+		_showDateTime = _showDateTime.AddMonths(move);
 		_showDateTime = _showDateTime.AddDays(- _showDateTime.Day + 1);
 		SetCalendar();
-		Main.Instance.ApplySelectOpt();
+
+		if(Main.Instance.IsNeedUpdateShowInMonthChange()){
+			Main.Instance.ApplySelectOpt();
+		}
 	}
 
 	// calendarell のceltime にinputboxの時間、分を入れる

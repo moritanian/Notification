@@ -8,14 +8,15 @@ public class TodoText : MonoBehaviour {
 	public NativeEditBox _inputField;
 	public static TodoText _todoText;
 	public NativeEditBox _inputTitle;
-	public TodoField _todoField;
+	public TodoData _todoData;
 	public Text _changed_sign;
-	public TodoData todoData{
-		set {_todoField._todoData = value;}
-	}
 	string origi_text;
 
 	static bool isAutoSave = true;
+
+	public static TodoText GetInstance(){
+		return _todoText;
+	}
 
 	void Awake(){
 		//_title = MyCanvas.Find<>("Titletxt");
@@ -39,21 +40,20 @@ public class TodoText : MonoBehaviour {
 		MyCanvas.Find<Text>("TodoTextField").fontSize= size;
 	}
 
-	// テキスト本文編集画面遷移時の処理
-	public static void SetUp(TodoField Tf){
+	public void SetUp(TodoData todoData){
 		// 文字カラー設定
-		_todoText.SetTextColor(Setting.FontColor);
-		
+		SetTextColor (Setting.FontColor);
+
 		// 文字サイズ設定
-		_todoText.SetTextFontSize(Setting.FontSize);
+		SetTextFontSize (Setting.FontSize);
 		// Tododata をセット
-		_todoText._todoField = Tf;
+		_todoData = todoData;
 		// タイトル表示
-		TitleSet(Tf._todoData.Title);
+		TitleSet (todoData.Title);
 		// ファイルから本文のテキストを読み込んで表示
-		_todoText.SetText(_todoText._load());
+		SetText (_todoText._load ());
 		// 参照日時更新
-		Tf._todoData.UpdateLookupTime();
+		_todoData.UpdateLookupTime ();
 	}
 
 	public void OnClickGoBack(){
@@ -87,19 +87,19 @@ public class TodoText : MonoBehaviour {
 		return FileIo.Load(_get_filename(id));
 	}
 
-	public static void SaveText(int id, string text){
+	public void SaveText(int id, string text){
 		FileIo.Write(_get_filename(id), text);
 	}
 
 	void _save(){
-		SaveText (_todoField._todoData.Id, _get_text());
+		SaveText (_todoData.Id, _get_text());
 		origi_text = _get_text();
 		// 変更印オフ
 		_changed_sign.enabled = false;
 	}
 
 	string _load(){
-		return GetTextFromId(_todoField._todoData.Id);
+		return GetTextFromId(_todoData.Id);
 	}
 
 	static string _get_filename(int id){
@@ -146,12 +146,17 @@ public class TodoText : MonoBehaviour {
 	// タイトル編集完了
 	public void TitleModified(){
 		string title_str = _get_title_text();
-		_todoField.SetText(title_str);
-		_todoField._todoData.UpdateTitle(title_str);
-		if (_todoField._todoData.IsNotify)
-			_todoField._todoData.setCall ();
+		TodoField.parent.ForEachExists (todoField => {
+			if(todoField._todoData.Id == _todoData.Id){
+				todoField.SetText(title_str);
+			}
+		});
+
+		_todoData.UpdateTitle(title_str);
+		if (_todoData.IsNotify)
+			_todoData.setCall ();
 	}
-	public static void TitleSet(string txt){
+	public void TitleSet(string txt){
 		MyCanvas.Find<TodoText>("BoardText")._inputTitle.text = txt;
 	}
 }

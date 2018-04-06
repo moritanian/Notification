@@ -214,6 +214,11 @@ public class Main : Token {
 		showBySelectOpt(opt);
 	}
 
+	// 表示月の移動にともなって表示する内容を変える必要あるか
+	public bool IsNeedUpdateShowInMonthChange(){
+		return (SelectOpt)GetSelectOpt () == SelectOpt.ThisMonth;
+	}
+
 	void showBySelectOpt(SelectOpt opt){
 		IsContain _eq = GetEq(opt);
 		Show(_eq);
