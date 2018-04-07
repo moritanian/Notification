@@ -116,6 +116,9 @@ public class TodoText : MonoBehaviour {
 
 	void SetText(string text){
 		_inputField.text = text;
+		// set scroll 0 for NativeEditBox
+		_inputField.SetVerticalScrollOffset(0);
+
 		//編集したか比較するために持っておく
 		origi_text = text;
 		// 編集印をオフに

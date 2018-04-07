@@ -2549,7 +2549,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 371585474}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d94fbbbea60e45d68a29d0a9973dcb2, type: 3}
+  m_Script: {fileID: 11500000, guid: 13b9142a68f20af46b74e65bc4c9a119, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   withDoneButton: 1
@@ -2561,6 +2561,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
+  verticalScrollbarEnabled: 1
 --- !u!1 &394460108
 GameObject:
   m_ObjectHideFlags: 0
@@ -6096,7 +6097,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 787906145}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d94fbbbea60e45d68a29d0a9973dcb2, type: 3}
+  m_Script: {fileID: 11500000, guid: 13b9142a68f20af46b74e65bc4c9a119, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   withDoneButton: 1
@@ -6108,6 +6109,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
+  verticalScrollbarEnabled: 0
 --- !u!1 &792555125
 GameObject:
   m_ObjectHideFlags: 0
@@ -7324,7 +7326,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 906284347}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d94fbbbea60e45d68a29d0a9973dcb2, type: 3}
+  m_Script: {fileID: 11500000, guid: 13b9142a68f20af46b74e65bc4c9a119, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   withDoneButton: 1
@@ -7336,6 +7338,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
+  verticalScrollbarEnabled: 0
 --- !u!1 &907835702
 GameObject:
   m_ObjectHideFlags: 0

@@ -69,11 +69,13 @@ public class NativeEditBox : PluginMsgReceiver
 	public bool updateRectEveryFrame;
 	public bool useInputFieldFont;
 	public UnityEngine.Events.UnityEvent OnReturnPressed;
+	public bool verticalScrollbarEnabled;
 
 	private bool bNativeEditCreated = false;
 
 	private InputField	objUnityInput;
 	private Text objUnityText;
+	private NativeRectManager nRectManager;
 	private bool focusOnCreate;
 	private bool visibleOnCreate = true;
 
@@ -89,6 +91,7 @@ public class NativeEditBox : PluginMsgReceiver
 	private const string MSG_ANDROID_KEY_DOWN = "AndroidKeyDown";
 	private const string MSG_RETURN_PRESSED = "ReturnPressed";
 	private const string MSG_GET_TEXT = "GetText";
+	private const string MSG_SET_VERTICAL_SCROLL_OFFSET = "SetVerticalScrollOffset";
 
 	public InputField InputField { get { return objUnityInput; } }
 	public bool Visible { get; private set; }
@@ -103,36 +106,6 @@ public class NativeEditBox : PluginMsgReceiver
 		}
 	}
 
-	public static Rect GetScreenRectFromRectTransform(RectTransform rectTransform)
-	{
-		Vector3[] corners = new Vector3[4];
-		
-		rectTransform.GetWorldCorners(corners);
-		
-		float xMin = float.PositiveInfinity;
-		float xMax = float.NegativeInfinity;
-		float yMin = float.PositiveInfinity;
-		float yMax = float.NegativeInfinity;
-		
-		for (int i = 0; i < 4; i++)
-		{
-			// For Canvas mode Screen Space - Overlay there is no Camera; best solution I've found
-			// is to use RectTransformUtility.WorldToScreenPoint) with a null camera.
-			Vector3 screenCoord = RectTransformUtility.WorldToScreenPoint(null, corners[i]);
-			
-			if (screenCoord.x < xMin)
-				xMin = screenCoord.x;
-			if (screenCoord.x > xMax)
-				xMax = screenCoord.x;
-			if (screenCoord.y < yMin)
-				yMin = screenCoord.y;
-			if (screenCoord.y > yMax)
-				yMax = screenCoord.y;
-		}
-		Rect result = new Rect(xMin, Screen.height - yMax, xMax - xMin, yMax - yMin);
-		return result;
-	}
-
 	private EditBoxConfig mConfig;
 
 	private void Awake()
@@ -145,6 +118,8 @@ public class NativeEditBox : PluginMsgReceiver
 		}
 
 		objUnityText = objUnityInput.textComponent;
+
+		nRectManager = new NativeRectManager ();
 	}
 
 	// Use this for initialization
@@ -206,7 +181,7 @@ public class NativeEditBox : PluginMsgReceiver
 #if UNITY_ANDROID && !UNITY_EDITOR
 		this.UpdateForceKeyeventForAndroid();
 #endif
-
+	
 		if (updateRectEveryFrame && this.objUnityInput != null && bNativeEditCreated)
 		{
 			SetRectNative(this.objUnityText.rectTransform);
@@ -224,7 +199,7 @@ public class NativeEditBox : PluginMsgReceiver
 		mConfig.placeHolderColor = placeHolder.color;
 		mConfig.characterLimit = objUnityInput.characterLimit;
 
-		Rect rectScreen = GetScreenRectFromRectTransform(this.objUnityText.rectTransform);
+		Rect rectScreen = NativeRectManager.GetScreenRectFromRectTransform(this.objUnityText.rectTransform);
 		float fHeightRatio = rectScreen.height / objUnityText.rectTransform.rect.height;
 		mConfig.fontSize = ((float)objUnityText.fontSize) * fHeightRatio;
 
@@ -297,16 +272,17 @@ public class NativeEditBox : PluginMsgReceiver
 
 	private void CreateNativeEdit()
 	{
-		Rect rectScreen = GetScreenRectFromRectTransform(this.objUnityText.rectTransform);
+
+		nRectManager.updateRect (this.objUnityText.rectTransform);
 
 		JsonObject jsonMsg = new JsonObject();
 
 		jsonMsg["msg"] = MSG_CREATE;
 
-		jsonMsg["x"] = rectScreen.x / Screen.width;
-		jsonMsg["y"] = rectScreen.y / Screen.height;
-		jsonMsg["width"] = rectScreen.width / Screen.width;
-		jsonMsg["height"] = rectScreen.height / Screen.height;
+		jsonMsg["x"] = nRectManager.X;
+		jsonMsg["y"] = nRectManager.Y;
+		jsonMsg["width"] = nRectManager.Width;
+		jsonMsg["height"] = nRectManager.Height;
 		jsonMsg["characterLimit"] = mConfig.characterLimit;
 
 		jsonMsg["textColor_r"] = mConfig.textColor.r;
@@ -328,6 +304,7 @@ public class NativeEditBox : PluginMsgReceiver
 		jsonMsg["placeHolderColor_b"] = mConfig.placeHolderColor.b;
 		jsonMsg["placeHolderColor_a"] = mConfig.placeHolderColor.a;
 		jsonMsg["multiline"] = mConfig.multiline;
+		jsonMsg ["verticalScrollbarEnabled"] = verticalScrollbarEnabled;
 
 		switch (returnKeyType)
 		{
@@ -379,16 +356,19 @@ public class NativeEditBox : PluginMsgReceiver
 
 	public void SetRectNative(RectTransform rectTrans)
 	{
-		Rect rectScreen = GetScreenRectFromRectTransform(rectTrans);
+		bool isChanged = nRectManager.updateRect (rectTrans);
+		if (!isChanged) {
+			return;
+		}
 
 		JsonObject jsonMsg = new JsonObject();
 		
 		jsonMsg["msg"] = MSG_SET_RECT;
 
-		jsonMsg["x"] = rectScreen.x / Screen.width;
-		jsonMsg["y"] = rectScreen.y / Screen.height;
-		jsonMsg["width"] = rectScreen.width / Screen.width;
-		jsonMsg["height"] = rectScreen.height / Screen.height;
+		jsonMsg ["x"] = nRectManager.X;
+		jsonMsg["y"] = nRectManager.Y;
+		jsonMsg["width"] = nRectManager.Width;
+		jsonMsg["height"] = nRectManager.Height;
 
 		this.SendPluginMsg(jsonMsg);
 	}
@@ -437,6 +417,20 @@ public class NativeEditBox : PluginMsgReceiver
 		this.SendPluginMsg(jsonMsg);
 
 		this.Visible = bVisible;
+	}
+
+	public void SetVerticalScrollOffset(int offset){
+		if (!bNativeEditCreated)
+		{
+			return;
+		}
+
+		JsonObject jsonMsg = new JsonObject();
+
+		jsonMsg["msg"] = MSG_SET_VERTICAL_SCROLL_OFFSET;
+		jsonMsg["offset"] = offset;
+
+		this.SendPluginMsg(jsonMsg);
 	}
 
 	#if UNITY_ANDROID && !UNITY_EDITOR
