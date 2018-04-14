@@ -150,19 +150,33 @@ public class TodoData : ISerializationCallbackReceiver{
 	// Isnotify 更新
 	// 更新結果を返す  更新できなければfalse
 	public bool UpdateIsNotify(bool _IsNotify){
-		if(_IsNotify){
-			// memoに時間設定機能はない
-			if(IsMemo)return false;
-		} else if(IsNotify == _IsNotify){
+
+		// memoに時間設定機能はない
+		if(IsMemo)return false;
+
+			
+		if(IsNotify == _IsNotify){
 			//更新不要
 			return false;
 		}
+
 		IsNotify = _IsNotify;
 		Util.SaveData(_get_data_key(DataKeys.IsNotify, id),IsNotify.ToString());
+
+		if (IsNotify) {
+			setCall ();
+		} else {
+			deleteCall ();
+		}
+
 		return true;
 	}
 
 	public bool UpdateIsMemo(bool isMemo){
+
+		// notification off に
+		UpdateIsNotify(false);
+
 		this.IsMemo = isMemo;
 		Util.SaveData(_get_data_key(DataKeys.IsMemo, id),isMemo.ToString());
 		Util.SaveData(_get_data_key(DataKeys.ModifiedTime,id),DateTime.Now.ToString());

@@ -146,6 +146,9 @@ public class Main : Token {
 		// Dispモード指定
 		//Restart();
 		SetDispCal(_mycalendar.MyDateTime);
+
+		// 生成されたtodoField の notificationトグルにデータを合わせる
+		new_todo.UpdateIsNotify (_todoField.IsNotify);
 	}
 
 	// todo 追加ボタンの表示、非表示

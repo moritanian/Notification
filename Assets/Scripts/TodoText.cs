@@ -134,13 +134,16 @@ public class TodoText : MonoBehaviour {
 		// saveするかしないか指定
 	public void GoBack(bool IsSave = true){
 		Body.GoBoardMain();
-		if(!isAutoSave && IsChanged()){
-			if(IsSave){
-				_save();
-				PopUp.PopUpStart("保存しました", 1.5f);
-			
-			}else{
-				PopUp.PopUpStart("保存せず戻ります", 1.5f);
+		if( IsChanged()){
+			if (IsSave) {
+				_save ();
+				if (!isAutoSave) {
+					PopUp.PopUpStart ("保存しました", 1.5f);
+				}
+			} else {
+				if (!isAutoSave) {
+					PopUp.PopUpStart ("保存せず戻ります", 1.5f);
+				}
 			}
 		}
 		

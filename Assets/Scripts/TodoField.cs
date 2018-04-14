@@ -196,18 +196,6 @@ public class TodoField : Token {
 	// 通知On/Off
 	public void OnClickIsNotify(){
 		bool result = _todoData.UpdateIsNotify(IsNotify);
-		// ローカル通知セット or リセット　する
-		if(result){
-			if(IsNotify)_todoData.setCall();
-			else{
-				if(_todoData.deleteCall())
-					Debug.Log("Successfully delete call");
-			}
-		}
-		// 過去であるため通知onにできない
-		if(result == false && IsNotify == true ){
-			IsNotify = false;
-		}
 	}
 	
 	// 時間変更確定したときに呼ばれる
@@ -221,14 +209,10 @@ public class TodoField : Token {
 		}
 		SetTime(Dt);
 		//mainBoard.ShowToday();
-		if(IsNotify){
+		if(IsNotify) {
 			
 			// ローカル通知設定変更
-			_todoData.setCall();
-		}else{
-			// 時間変更で過去になった場合、falseに
-			_todoData.deleteCall();
-			_todoData.UpdateIsNotify(false);
+			_todoData.setCall ();
 		}
 
 		Main.Instance.Restart();
