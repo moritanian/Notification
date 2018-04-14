@@ -62,7 +62,9 @@ public class Body : Token {
 
 	
 	public static void GoBoardText(){
-		_body.SlideIn();
+		_body.SlideIn(0, ()=>{
+			TodoText.GetInstance()._inputField.SetVerticalScrollOffset(0);
+		});
 		screenMode = ScreenMode.Text;
 	}
 

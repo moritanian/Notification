@@ -1,17 +1,21 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System;
  
 public class PanelSlider : MonoBehaviour {
     public AnimationCurve animCurve = AnimationCurve.Linear(0, 0, 1, 1);
     public Vector3[] inPosition = new Vector3[2];        // スライドイン後の位置
     public Vector3 outPosition;      // スライドアウト後の位置
-    public float duration = 1.0f;    // スライド時間（秒）
+    public float duration = 2.0f;    // スライド時間（秒）
+
+	private Action slideEndAction; 
  
-    // スライドイン（Pauseボタンが押されたときに、これを呼ぶ）
-    public void SlideIn(int id = 0){
-        StartCoroutine( StartSlidePanel(true,id) );
-    }
+	// スライドイン（Pauseボタンが押されたときに、これを呼ぶ）
+	public void SlideIn(int id = 0, Action endAction = null){
+		slideEndAction = endAction;
+		StartCoroutine( StartSlidePanel(true,id) );
+	}
  
     // スライドアウト
     public void SlideOut(){
@@ -33,5 +37,8 @@ public class PanelSlider : MonoBehaviour {
             yield return 0;        // 1フレーム後、再開
         }
         transform.localPosition = startPos + moveDistance;
-    }
+    	
+		// set scroll 0 for NativeEditBox
+		if(slideEndAction != null)slideEndAction();
+	}
 }
