@@ -7,7 +7,7 @@ public class PanelSlider : MonoBehaviour {
     public AnimationCurve animCurve = AnimationCurve.Linear(0, 0, 1, 1);
     public Vector3[] inPosition = new Vector3[2];        // スライドイン後の位置
     public Vector3 outPosition;      // スライドアウト後の位置
-    public float duration = 2.0f;    // スライド時間（秒）
+    public float duration = 1.0f;    // スライド時間（秒）
 
 	private Action slideEndAction; 
  

@@ -67,7 +67,8 @@ public class TodoText : MonoBehaviour {
 	// Fieldを編集した
 	public void TextEdited(){
 		if (isAutoSave) {
-			_save();
+			if (IsChanged ()) 
+				_save();
 		} else {
 			if (IsChanged ()) {
 				_changed_sign.enabled = true;

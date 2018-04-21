@@ -35,30 +35,31 @@ public class FileIo  {
 	}
 
 	static void _writeWin(string filename, string text){
-		StreamWriter sw;
-		FileInfo fi;
 		string path = Application.dataPath + "/AppData/"+ filename;
-		fi = new FileInfo(path);
-		sw = fi.CreateText();
-		sw.WriteLine (text);
-		sw.Flush();
-		sw.Close ();
-		Debug.Log (path);
+		_write (path, text);
 	}
 	static void _writeAndroid(string filename, string text){
-		StreamWriter sw;
-		FileInfo fi;
+		
 		string path = getFileName(filename);
+		/*
 		if (!Directory.Exists(Application.persistentDataPath)){
         	Directory.CreateDirectory(path);
     	}
-		fi = new FileInfo(path);
+    	*/
+		_write (path, text);
+
+	}
+
+	static void _write(string fullpath, string text){
+		StreamWriter sw;
+		FileInfo fi;
+		fi = new FileInfo(fullpath);
 		sw = fi.CreateText();
-		sw.WriteLine (text);
+		sw.Write (text);
 		sw.Flush();
 		sw.Close ();
-		Debug.Log (path);
-	}
+		Debug.Log (fullpath);
+	}	
 
 	public static string Load(string filename){
 		if(isRunningOnAndroid()){
@@ -66,37 +67,33 @@ public class FileIo  {
 		}
 		return _loadWin(filename );
 	}
+
 	static string _loadWin(string filename){
-		string text = "";
 		string path = Application.dataPath + "/AppData/"+ filename;
-		FileInfo fi = new FileInfo(path);
-		try {
-			 // 一行毎読み込み
-            using (StreamReader sr = new StreamReader(fi.OpenRead(), Encoding.UTF8)){
-                text = sr.ReadToEnd();
-            }
-        } catch (Exception e){
-            // 改行コード
-            text += SetDefaultText();
-        }
-		return text;
+		return _load(path);
 	}
+
 	static string _loadAndroid(string filename){
-		string text = "";
 		string path = getFileName(filename);
-		FileInfo fi = new FileInfo(path);
+		return _load (path);
+	}
+
+	static string _load(string fullpath){
+		string text = "";
+		FileInfo fi = new FileInfo(fullpath);
 		try {
-			 // 一行毎読み込み
-            using (StreamReader sr = new StreamReader(fi.OpenRead(), Encoding.UTF8)){
-                text = sr.ReadToEnd();
-            }
-        } catch (Exception e){
-            // 改行コード
-            text += SetDefaultText();
-        }
-        Debug.Log("Load!! " + path);
+			// 一行毎読み込み
+			using (StreamReader sr = new StreamReader(fi.OpenRead(), Encoding.UTF8)){
+				text = sr.ReadToEnd();
+			}
+		} catch (Exception e){
+			// 改行コード
+			text += SetDefaultText();
+		}
+		Debug.Log("Load!! " + fullpath);
 		return text;
 	}
+
     // 改行コード処理
     static string SetDefaultText(){
         return "";

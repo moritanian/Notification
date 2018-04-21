@@ -44,6 +44,9 @@ public class Main : Token {
 	int def_hour = 8;
 	int def_min = 0;
 
+	// todoField リスト表示コルーチン
+	IEnumerator showTodoFieldsCoroutine;
+
 	// Use this for initialization
 	// コンポーネント取得はStartの前に処理する
 	void Awake(){
@@ -158,6 +161,8 @@ public class Main : Token {
 	}
 
 	void Show (IsContain _eq){	
+		if(showTodoFieldsCoroutine != null)
+			StopCoroutine (showTodoFieldsCoroutine);
 		// 破棄する前に場所をcanvas 直下に移動
 		TodoField.parent.ForEachExists(t => t.transform.SetParent(MyCanvas.GetCanvas().transform,false));
 		// 生存しているフィールドをすべて破棄
@@ -170,14 +175,20 @@ public class Main : Token {
 		}	
 		// ソート
 		TodoData.SortByDate(showList);
+		showTodoFieldsCoroutine = ShowTodoFieldsCoroutine (showList);
+		StartCoroutine (showTodoFieldsCoroutine);
+	}
+
+	private IEnumerator ShowTodoFieldsCoroutine(List<TodoData> showList){
 		foreach(TodoData todo_data in showList){
 			TodoField _todoField = TodoField.Add(todo_data);
 			todo_scl.SetContent(_todoField.transform);
 			_todoField.SetText(todo_data.Title);
 			_todoField.IsNotify = todo_data.IsNotify;
 			_todoField.SetTimeText(todo_data.TodoTime);
+			yield return null;
 		}	
-		todo_scl.ScrollTop();
+		showTodoFieldsCoroutine = null;
 	}
 
 	public void ShowMyDay(DateTime dt){
