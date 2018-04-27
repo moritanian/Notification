@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 /// 様々なユーティリティ.
 public class Util {
@@ -142,7 +143,12 @@ public class Util {
 		}
 		return false;
     }
-   
-
+		
+	public static IEnumerator DelayMethod(int delayCount, Action action){
+		for(int i=0; i<delayCount; i++){
+			yield return null;
+		}
+		action();
+	}	
 
 }

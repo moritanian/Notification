@@ -79,13 +79,7 @@ public class Setting : Token {
 		_normalToggle = transform.Find("NormalToggle").gameObject.GetComponent<Toggle>();
 		_fontColorChgText = transform.Find("TextColor").gameObject.GetComponent<Text>();
 		instance = this;
-	}
 
-	// Use this for initialization
-	void Start(){
-	}
-
-	public void Init () {
 		string size_str = Util.LoadData(GetDataKey(DataKeys.FontSize));
 		if(size_str != "")fontsize = int.Parse(size_str);
 		string color_str = Util.LoadData(GetDataKey(DataKeys.Color));
@@ -94,7 +88,12 @@ public class Setting : Token {
 		OnChangeNormalLog(true);
 		LoadTheme();
 	}
-	
+
+	// Use this for initialization
+	void Start(){
+	}
+
+
 	// Update is called once per frame
 	void Update () {
 
@@ -272,6 +271,13 @@ public class Setting : Token {
 	public void OnClickAlarmSet(){
 		int id = 0;
 		LocalNotification.AlarmSet (id, DateTime.Now.AddSeconds(5));
+	}
+
+	// notification debug
+	public void OnClickNotificationSet(){
+		int id = 2;
+		MyLocalNotification.LocalCallSet (id, DateTime.Now.AddSeconds(5), "name", "title", "label");
+		Main.Instance.ShowDayById (2);
 	}
 
     public void OnClickSendData(){

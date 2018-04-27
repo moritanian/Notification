@@ -1504,9 +1504,9 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 242899233}
-  - 114: {fileID: 242899232}
   - 114: {fileID: 242899234}
   - 114: {fileID: 242899235}
+  - 114: {fileID: 242899232}
   m_Layer: 0
   m_Name: Android
   m_TagString: Untagged
@@ -1522,7 +1522,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 242899231}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f93352cc7d7fa4840853aa8be9c89ff6, type: 3}
+  m_Script: {fileID: 11500000, guid: 6229e6b309903a74a85f26c310b0744c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &242899233
@@ -2285,7 +2285,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1904661289}
-        m_MethodName: OnClickAlarmSet
+        m_MethodName: OnClickNotificationSet
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

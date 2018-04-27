@@ -67,7 +67,7 @@
 
         <service android:name="example.com.alarmplugin.MyAlarmService" ></service>
         <activity android:name="example.com.alarmplugin.AlarmNotificationActivity" ></activity>
-
+ 		<activity android:name="example.com.alarmplugin.NotificationOnClickActivity" ></activity>
     </application>
 
 </manifest>

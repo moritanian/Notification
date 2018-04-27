@@ -14,19 +14,72 @@ public class LocalNotification : MonoBehaviour {
 	private static readonly DateTime UNIX_EPOCH = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);	
 	private static int primary_key;
 
+	private bool isStarted;
+
+	void OnApplicationPause (bool pauseStatus)
+	{
+		if (!isStarted) {
+			return;
+		}
+
+		if (pauseStatus) {
+		} else {
+			initNativeObject ();
+
+			int id = GetClickedNotificationId ();
+			if (id > 0) {
+				OnClickNotification (id);
+			}
+		}
+	}
+
 	public void Awake(){
         // gameObject変数はstaticでないのでstatic関数から呼ぶことが出来ない.
         // そのためstaticの変数にあらかじめコピーしておく.
 		m_instance = gameObject;
 		primary_key = 0;
 
-#if UNITY_ANDROID && !UNITY_EDITOR
-        // プラグイン名をパッケージ名+クラス名で指定する。
+		initNativeObject ();
+	}
+
+	public void Start(){
+		isStarted = true;
+		CheckNotificationClick ();
+	}
+
+	private void CheckNotificationClick(){
+
+		#if UNITY_ANDROID && !UNITY_EDITOR
+		int id = GetClickedNotificationId();
+
+		if(id > 0){
+			StartCoroutine(Util.DelayMethod(1, ()=>{
+				OnClickNotification(id);
+			}));
+		}
+		#endif
+	}
+
+	protected virtual void OnClickNotification(int id){
+		Debug.Log ("OncLickNotification : " + id);
+	}
+
+	private int GetClickedNotificationId(){
+		int id = 0;
+		#if UNITY_ANDROID && !UNITY_EDITOR
+		id = m_plugin.CallStatic<int>("getClickedNotificationId");
+		#endif
+		return id;
+	}
+
+	private void initNativeObject(){
+		#if UNITY_ANDROID && !UNITY_EDITOR
+		// プラグイン名をパッケージ名+クラス名で指定する。
 		m_plugin = new AndroidJavaObject( "example.com.alarmplugin.MyAlarmManager" );
 		unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer"); 
 		context  = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
 
-#endif
+		#endif
 	}
 	
 	public static void LocalCallSet(int id, DateTime call_time, string name, string title, string label, string type = ""){

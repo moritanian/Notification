@@ -94,10 +94,11 @@ public class CalendarCel : Token {
 				break;
 			case Status.Pointed:
 				CelImage.color = _mycalendar.MyDayColor;
+				_mycalendar.PointedCel = this;
 				break;
 			case Status.TodayPointed:
 				CelImage.color = _mycalendar.TodayMyColor;
-				if(_mycalendar.PointedCel == null)_mycalendar.PointedCel = this;
+				_mycalendar.PointedCel = this;
 				break;
 			case Status.Normal:
 			default:

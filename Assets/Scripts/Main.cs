@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Reflection;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine.UI;
 using System;
 using System.Text.RegularExpressions;
@@ -10,7 +11,6 @@ public class Main : Token {
 
 	public static Main Instance;
 
-	DateTime crt_time;
 	List<TodoData> Todos;
 	
 	Dropdown _dpDown; 
@@ -23,7 +23,8 @@ public class Main : Token {
 		Previous,
 		Future,
 		Memo,
-		Word
+		Word,
+		PointedId
 	}
 
 	readonly string[] japanese_week = {"日", "月", "火", "水", "木", "金", "土"};
@@ -56,29 +57,24 @@ public class Main : Token {
 		todoadd_button = MyCanvas.Find<Image>("TodoAdd");
 		_mycalendar = MyCanvas.Find<MyCalendar>("MyCalendar");
 		_searchField = MyCanvas.Find<NativeEditBox>("SearchField");
+
+		// 祝日初期化
+		Holiday.init();
+
+		Todos = TodoData.LoadAll();
+
 	}
 
 	void Start () {	
 
-		Setting.instance.Init ();
 
-		// 祝日初期化
-		Holiday.init();
-		crt_time = DateTime.Now;
-		Todos = TodoData.LoadAll();
-		_mycalendar.DispCal(DateTime.Now, (DateTime dt, bool IsSet, bool IsMemo) => Main.Instance.ShowMyDay(dt));
+		SetDispCal ();
 
 		// Todo表示
 		ApplySelectOpt();
 
 		// event text 更新
-		_mycalendar.SetEventText(Holiday.GetHoliday(crt_time));
-
-		/*
-		for(int i=0; i< 100; i++){
-			Debug.Log ("file" + i);
-			Debug.Log(TodoText.GetTextFromId (i));
-		}*/
+		_mycalendar.SetEventText(Holiday.GetHoliday(DateTime.Now));
 		
 	//	TranslateData.test();
 	}
@@ -225,7 +221,24 @@ public class Main : Token {
 
 	public void ApplySelectOpt(){
 		SelectOpt opt = (SelectOpt)GetSelectOpt();
-		showBySelectOpt(opt);
+		ShowBySelectOpt(opt);
+	}
+
+	public void ShowById(int id){
+		ShowBySelectOpt (SelectOpt.PointedId, id);
+	}
+
+	// idで指定されたdataのある日を表示
+	public void ShowDayById(int id){
+		TodoData todo = Todos.Find (t => t.Id == id);
+		if (todo == null) {
+			Debug.LogError ("ShowDayById: no todo data id = " + id);
+			return;
+		}	
+
+		SetDispCal (todo.TodoTime);
+		ShowMyDay (todo.TodoTime);
+
 	}
 
 	// 表示月の移動にともなって表示する内容を変える必要あるか
@@ -233,8 +246,13 @@ public class Main : Token {
 		return (SelectOpt)GetSelectOpt () == SelectOpt.ThisMonth;
 	}
 
-	void showBySelectOpt(SelectOpt opt){
+	void ShowBySelectOpt(SelectOpt opt){
 		IsContain _eq = GetEq(opt);
+		Show(_eq);
+	}
+
+	void ShowBySelectOpt(SelectOpt opt, int id){
+		IsContain _eq = GetEq(opt, id);
 		Show(_eq);
 	}
 
@@ -272,6 +290,22 @@ public class Main : Token {
 		return _eq;
 	}
 
+	IsContain GetEq(SelectOpt opt, int id){
+		IsContain _eq;
+		switch (opt){
+			case SelectOpt.PointedId:
+				_eq = (td) => {
+					return td.Id == id;
+				};
+				break;
+			default:
+				_eq = AllContain;
+					break;
+			
+		}
+		return _eq;
+	}
+
 	// 同じ日を検索するラムダ式取得
 	IsContain GetEq(DateTime eq_date){
 		IsContain _eq = (td) => {return (IsDayEq(td.TodoTime, eq_date)) && !td.IsMemo;};
@@ -291,7 +325,7 @@ public class Main : Token {
 	// サーチフィールド編集後に呼ばれる
 	public void OnChangeSearchField(){
 		string search_text = _searchField.text;
-		showBySelectOpt(SelectOpt.Word);
+		ShowBySelectOpt(SelectOpt.Word);
 		_dpDown.value = (int)SelectOpt.All;
 
 	}
