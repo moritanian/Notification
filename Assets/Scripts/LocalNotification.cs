@@ -7,8 +7,6 @@ using System.Linq;
 
 public class LocalNotification : MonoBehaviour {
 	static AndroidJavaObject    m_plugin = null;
-	static AndroidJavaClass unityPlayer = null;
-	static AndroidJavaObject context = null;
 
 	static GameObject           m_instance;
 	private static readonly DateTime UNIX_EPOCH = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);	
@@ -75,10 +73,7 @@ public class LocalNotification : MonoBehaviour {
 	private void initNativeObject(){
 		#if UNITY_ANDROID && !UNITY_EDITOR
 		// プラグイン名をパッケージ名+クラス名で指定する。
-		m_plugin = new AndroidJavaObject( "example.com.alarmplugin.MyAlarmManager" );
-		unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer"); 
-		context  = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
-
+		m_plugin = new AndroidJavaObject( "example.com.alarmplugin.AlarmPlugin" );
 		#endif
 	}
 	
@@ -88,7 +83,7 @@ public class LocalNotification : MonoBehaviour {
 		int seconds_from_now = (int)SecondsFromNow(call_time);
 		Debug.Log("SetUpLocalSet id:" + id.ToString() + " label" + label + " " + seconds_from_now.ToString());
 	#if UNITY_ANDROID && !UNITY_EDITOR
-		m_plugin.CallStatic("addNotification", context, id, name , title, label, (int)seconds_from_now);
+		m_plugin.CallStatic("addNotification", id, name , title, label, (int)seconds_from_now);
 	#else
 		Debug.LogWarning("This asset is for Android only. It will not work inside the Unity editor!");
 	#endif
@@ -98,7 +93,7 @@ public class LocalNotification : MonoBehaviour {
 	public static bool LocalCallReset(int id){
 		Debug.Log("localCallReset " + id.ToString());
 	#if UNITY_ANDROID && !UNITY_EDITOR
-		m_plugin.CallStatic("resetNotification", context, id);
+		m_plugin.CallStatic("resetNotification", id);
 	#else
 		Debug.LogWarning("This asset is for Android only. It will not work inside the Unity editor!");
 		return false;
@@ -114,7 +109,7 @@ public class LocalNotification : MonoBehaviour {
 		int seconds_from_now = (int)SecondsFromNow(call_time);
 		Debug.Log("SetUpAlarmSet id:" + id.ToString() + seconds_from_now.ToString());
 		#if UNITY_ANDROID && !UNITY_EDITOR
-		m_plugin.CallStatic("addAlarm", context, id, (int)seconds_from_now);
+		m_plugin.CallStatic("addAlarm", id, (int)seconds_from_now);
 		#else
 		Debug.LogWarning("This asset is for Android only. It will not work inside the Unity editor!");
 		#endif
@@ -124,7 +119,7 @@ public class LocalNotification : MonoBehaviour {
 	public static bool AlarmReset(int id){
 		Debug.Log("AlarmReset " + id.ToString());
 		#if UNITY_ANDROID && !UNITY_EDITOR
-		m_plugin.CallStatic("resetAlarm", context, id);
+		m_plugin.CallStatic("resetAlarm", id);
 		#else
 		Debug.LogWarning("This asset is for Android only. It will not work inside the Unity editor!");
 		return false;

@@ -54,8 +54,7 @@ public class Swipe : Token {
 		ObjPos1.y = local_Y - sd.y/2.0f;
 		ObjPos2.x = local_X + sd.x/2.0f;
 		ObjPos2.y = local_Y + sd.y/2.0f;
-		LogObjPos();
-		//ApplyTouchSpace();
+		//LogObjPos();
 	}
 
 	public void LogObjPos(){
@@ -133,13 +132,5 @@ public class Swipe : Token {
 	bool IsIn(Vector2 pos){
 		return (ObjPos1.x < pos.x && pos.x < ObjPos2.x && ObjPos1.y < pos.y && pos.y < ObjPos2.y );
 	}
-
-	void ApplyTouchSpace(){ 
-		if(TouchSpace.Exists){
-			TouchSpace.local_X = (ObjPos1.x + ObjPos2.x)/2.0f;
-			TouchSpace.local_Y = (ObjPos1.y + ObjPos2.y)/2.0f;
-		}
-	}
-
 
 }
