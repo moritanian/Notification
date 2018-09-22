@@ -245,15 +245,6 @@ public class TodoData : ISerializationCallbackReceiver{
 		return int.Parse(str);
 	}
 
-	public static void SortByDate(List<TodoData> _list){
-		if(_list.Count == 0)return;
-		if(_list[0].IsMemo){
-			_list.Sort((a,b) => b.LookupTime.CompareTo(a.LookupTime));
-		}else{
-			_list.Sort((a,b) => a.TodoTime.CompareTo(b.TodoTime));
-		}
-	}
-
 	// List からid指定されたデータ削除、playerprefのも削除する
 	public static bool DeleteDataById(List<TodoData> todolist, int id){
 		TodoData _tododata = todolist.Find(todo => todo.Id == id);

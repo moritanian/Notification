@@ -14,24 +14,8 @@ public class Main : Token {
 	List<TodoData> Todos;
 	
 	Dropdown _dpDown; 
-	// コンボボックス用選択肢列挙
-	// コンボボックスの表示の順番に合わせる必要あり
-	enum  SelectOpt{
-		All,
-		PointedDay,
-		ThisMonth,
-		Previous,
-		Future,
-		Memo,
-		Word,
-		PointedId
-	}
 
 	readonly string[] japanese_week = {"日", "月", "火", "水", "木", "金", "土"};
-
-	// 一覧表示するtodoにふくまれるかどうか判定するラムダ式を入れる型
-	delegate bool IsContain(TodoData td);
-	readonly IsContain AllContain = (td) => {return true;};  
 
 	// スクロ＾ルcontent
 	ScrollController todo_scl;
@@ -100,12 +84,11 @@ public class Main : Token {
 	}
 	
 	public void OnclickTodoAdd(){
-		SelectOpt opt = (SelectOpt)GetSelectOpt();
-		if(opt == SelectOpt.Memo){
-			TodoAdd(getDefaultTime(_mycalendar.MyDateTime),true, true);
-		}else{
-			TodoAdd(getDefaultTime(_mycalendar.MyDateTime));
-		}
+		
+		SelectOpt opt = GetSelectOpt();
+
+		TodoAdd(getDefaultTime(_mycalendar.MyDateTime),true, opt.IsMemo());
+	
 		// 最上部に追加されるため、そこまでスクロール
 		todo_scl.ScrollTop();
 	}
@@ -140,8 +123,9 @@ public class Main : Token {
 		// unity に保存する手続き
 		new_todo.SaveCreation();
 
-		if(IsMemo) _dpDown.value = (int)SelectOpt.Memo;
-		else _dpDown.value = (int)SelectOpt.PointedDay;// ドロップダウンのセレクト表示をPointedDayにしておく
+		SelectOpt selectOpt = GetSelectOpt ();
+		_dpDown.value = selectOpt.OptAfterAdd ();
+
 		// Dispモード指定
 		//Restart();
 		SetDispCal(_mycalendar.MyDateTime);
@@ -156,7 +140,7 @@ public class Main : Token {
 
 	}
 
-	void Show (IsContain _eq){	
+	void Show (SelectOpt selectOpt){	
 		if(showTodoFieldsCoroutine != null)
 			StopCoroutine (showTodoFieldsCoroutine);
 		// 破棄する前に場所をcanvas 直下に移動
@@ -165,12 +149,13 @@ public class Main : Token {
 		TodoField.parent.Vanish();
 		List<TodoData> showList = new List<TodoData>(); 
 		for(int i=0; i<Todos.Count; i++){
-			if(!_eq(Todos[i]))continue;
+			if(!selectOpt.IsContain(Todos[i]))continue;
 			if(!searchWord(Todos[i].Title))continue;// サーチワードある場合はそれにひっかからなかったものも除外
 			showList.Add(Todos[i]);
 		}	
 		// ソート
-		TodoData.SortByDate(showList);
+		showList.Sort( (x, y) => selectOpt.Sort(x, y) );
+
 		showTodoFieldsCoroutine = ShowTodoFieldsCoroutine (showList);
 		StartCoroutine (showTodoFieldsCoroutine);
 	}
@@ -188,10 +173,14 @@ public class Main : Token {
 	}
 
 	public void ShowMyDay(DateTime dt){
-		// コンボボックス変更
-		_dpDown.value = (int)SelectOpt.PointedDay;
 
-		Show(GetEq(dt));
+
+		SelectOpt selectOpt = new SelectOpt.PointedDay(dt);
+
+		// コンボボックス変更
+		_dpDown.value = SelectOpt.PointedDay.id;
+
+		Show(selectOpt);
 	}
 	// 再読み込みして表示
 	public void Reload(){
@@ -201,8 +190,8 @@ public class Main : Token {
 		Todos = TodoData.LoadAll();
 		TodoData.LogAll(Todos);
 		// 全て表示
-		Show(AllContain);
-		_dpDown.value = (int)SelectOpt.All;
+		Show( new SelectOpt.All() );
+		_dpDown.value = SelectOpt.All.id;
 		// カレンダーreload
 		SetDispCal(_mycalendar.MyDateTime);
 	}
@@ -220,12 +209,13 @@ public class Main : Token {
 	}
 
 	public void ApplySelectOpt(){
-		SelectOpt opt = (SelectOpt)GetSelectOpt();
-		ShowBySelectOpt(opt);
+		SelectOpt opt = GetSelectOpt();
+		Show(opt);
 	}
 
 	public void ShowById(int id){
-		ShowBySelectOpt (SelectOpt.PointedId, id);
+		SelectOpt selectOpt = new SelectOpt.PointedId(id);
+		Show( selectOpt );
 	}
 
 	// idで指定されたdataのある日を表示
@@ -243,79 +233,13 @@ public class Main : Token {
 
 	// 表示月の移動にともなって表示する内容を変える必要あるか
 	public bool IsNeedUpdateShowInMonthChange(){
-		return (SelectOpt)GetSelectOpt () == SelectOpt.ThisMonth;
+		return GetSelectOpt ().IsNeedUpdateShowInMonthChange ();
 	}
 
-	void ShowBySelectOpt(SelectOpt opt){
-		IsContain _eq = GetEq(opt);
-		Show(_eq);
-	}
-
-	void ShowBySelectOpt(SelectOpt opt, int id){
-		IsContain _eq = GetEq(opt, id);
-		Show(_eq);
-	}
-
-	// TodoData の条件つき取得用の条件
-	// delegate が返る
-	IsContain GetEq(SelectOpt opt){
-		IsContain _eq;
-		switch(opt){
-			case SelectOpt.All:
-				_eq = AllContain;
-				break;
-			case SelectOpt.ThisMonth:
-				_eq = (td) => {return (IsSameMonth(td.TodoTime, _mycalendar.ShowDateTime)
-									&& !td.IsMemo);};
-				break;
-			case SelectOpt.Previous:
-				_eq = (td) => {return (td.TodoTime.CompareTo(DateTime.Now) < 0) && !td.IsMemo;};
-				break;
-			case SelectOpt.Future:
-				_eq = (td) => {return (td.TodoTime.CompareTo(DateTime.Now) > 0 && !td.IsMemo);};
-				break;
-			case SelectOpt.PointedDay:
-				_eq = (td) => {return (IsSameDay(td.TodoTime, _mycalendar.MyDateTime) && !td.IsMemo);};
-				break;
-			case SelectOpt.Memo:
-				_eq = (td) => {return (td.IsMemo);};
-				break;
-			case SelectOpt.Word:
-				_eq = (td) => {return (searchWord(td.Title));};
-				break;
-			default:
-				_eq = AllContain;
-				break;
-		}
-		return _eq;
-	}
-
-	IsContain GetEq(SelectOpt opt, int id){
-		IsContain _eq;
-		switch (opt){
-			case SelectOpt.PointedId:
-				_eq = (td) => {
-					return td.Id == id;
-				};
-				break;
-			default:
-				_eq = AllContain;
-					break;
-			
-		}
-		return _eq;
-	}
-
-	// 同じ日を検索するラムダ式取得
-	IsContain GetEq(DateTime eq_date){
-		IsContain _eq = (td) => {return (IsDayEq(td.TodoTime, eq_date)) && !td.IsMemo;};
-		return _eq;
-	}
-
-	// コンボボックスの値を取得
-	int GetSelectOpt(){
-		_dpDown = MyCanvas.Find<Dropdown>("Dropdown");
-		return _dpDown.value;
+	// Get SelectOpt instance for selected dropdown
+	SelectOpt GetSelectOpt(){
+		int id = _dpDown.value;
+		return SelectOpt.GetInstanceById( id, _mycalendar);
 	}
 	
 	public bool DeleteDataById(int id){
@@ -324,10 +248,9 @@ public class Main : Token {
 
 	// サーチフィールド編集後に呼ばれる
 	public void OnChangeSearchField(){
-		string search_text = _searchField.text;
-		ShowBySelectOpt(SelectOpt.Word);
-		_dpDown.value = (int)SelectOpt.All;
-
+		SelectOpt selectOpt = new SelectOpt.All ();
+		Show( selectOpt );
+		_dpDown.value = SelectOpt.All.id;
 	}
 	
 	// ワード検索 
@@ -359,9 +282,6 @@ public class Main : Token {
 	}
 	bool IsSameMonth(DateTime dt1, DateTime dt2){
 		return (dt1.Year == dt2.Year && dt1.Month == dt2.Month);
-	}
-	bool IsSameDay(DateTime dt1, DateTime dt2){
-		return (dt1.Year == dt2.Year && dt1.Month == dt2.Month && dt1.Day == dt2.Day);
 	}
 
 	// 新規作成の際の時間を設定したDateTimeを返す
