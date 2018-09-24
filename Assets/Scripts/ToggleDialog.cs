@@ -67,7 +67,7 @@ public class ToggleDialog : Dialog {
 		}
 	}
 
-	public void OnClickYes(){
+	public override void OnClickYes(){
 		_yesCallBack();
 		Vanish();
 	}

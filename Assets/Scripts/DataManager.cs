@@ -18,7 +18,6 @@ public class DataManager{
 
 		string path = FilePlugin.GetDownloadPath (filename);
 		string jsonStr = GetJson ();
-		int len = jsonStr.Length;
 		FilePlugin.WriteFile (path, jsonStr);
 		Debug.Log (path);
 
@@ -51,6 +50,7 @@ public class DataManager{
 		try {
 			Todos = GetTodoListFromJson(jsonStr);
 		} catch(Exception e){
+			Debug.LogWarning (e);
 			return false;
 		}
 		Debug.Log (Todos.Count.ToString ());

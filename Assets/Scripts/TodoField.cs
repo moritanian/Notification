@@ -106,17 +106,29 @@ public class TodoField : Token {
 
 		if (isTitleEdit && keyboard != null &&  this.keyboard.done)  // キーボードが閉じた時
         {
-        	Debug.Log("updated");
-        	string text = this.keyboard.text;
-        	_todoData.UpdateTitle(text);
-        	SetText(text);
-			isTitleEdit = false;
-			if(IsNotify){
-				// ローカル通知変更
-				_todoData.setCall();
-			} 
+			OnKeyboardClosed ();	
         }
 	}
+
+	void OnKeyboardClosed(){
+		isTitleEdit = false;
+
+		if (this.keyboard.wasCanceled) {
+			Debug.Log("keyboard canceled!!");
+			return;
+		}
+
+		Debug.Log("updated");
+		string text = this.keyboard.text;
+		_todoData.UpdateTitle(text);
+		SetText(text);
+
+		if(IsNotify){
+			// ローカル通知変更
+			_todoData.setCall();
+		} 
+	}
+
 	// 新規todo作成時のtodofield設定処理
 	public void Create(DateTime Dt){
 		SetTime(Dt);
@@ -195,7 +207,7 @@ public class TodoField : Token {
 	}
 	// 通知On/Off
 	public void OnClickIsNotify(){
-		bool result = _todoData.UpdateIsNotify(IsNotify);
+		_todoData.UpdateIsNotify(IsNotify);
 	}
 	
 	// 時間変更確定したときに呼ばれる

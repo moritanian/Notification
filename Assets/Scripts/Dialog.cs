@@ -39,7 +39,7 @@ public class Dialog : Token {
 		this.cancelAction = cancelAction;
 	}
 
-	public void OnClickYes(){
+	public virtual void OnClickYes(){
 		_yesCallBack();
 		Vanish();
 	}
