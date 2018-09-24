@@ -27,8 +27,6 @@ public class Swipe : Token {
 
 	[SerializeField]
 	SwipeEvent SyncSwipeEvent;
-	[SerializeField]
-	ImageObj TouchSpace;
 
 	float margin_distance = 20f; // 
 	float margin_delta = 0.4f; // これ以上スワイプすれば。長押しイベントがキャンセル
