@@ -59,8 +59,13 @@ public class Main : Token {
 
 		// event text 更新
 		_mycalendar.SetEventText(Holiday.GetHoliday(DateTime.Now));
-		
-	//	TranslateData.test();
+
+		// set Screen size 
+		float sizeX = MyCanvas.GetCanvas ().GetComponent<RectTransform> ().localScale.x;
+		float sizeY = MyCanvas.GetCanvas ().GetComponent<RectTransform> ().localScale.y;
+		Vector2 sizeDelta = new Vector2( Screen.width / sizeX , Screen.height / sizeY) ;
+		GetComponent<RectTransform> ().sizeDelta = sizeDelta;
+		MyCanvas.Find<RectTransform> ("Body/BoardText").sizeDelta = sizeDelta;
 	}
 
 	void Update(){
