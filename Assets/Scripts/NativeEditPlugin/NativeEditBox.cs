@@ -451,6 +451,14 @@ public class NativeEditBox : PluginMsgReceiver
 			{
 				this.ForceSendKeydown_Android("backspace");
 			}
+			else if(Input.GetKeyDown(KeyCode.RightArrow))
+			{
+				this.ForceSendKeydown_Android("right");
+			}
+			else if(Input.GetKeyDown(KeyCode.LeftArrow))
+			{
+				this.ForceSendKeydown_Android("left");
+			}		
 			else
 			{
 				foreach(char c in Input.inputString)
