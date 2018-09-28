@@ -163,18 +163,13 @@ public class TodoField : Token {
 
 	// タイトル編集
 	public void OnClickTitleEdit(){
-		if(Util.isRunningOnAndroid()){
-			TouchScreenKeyboard.hideInput = true; // キーボードインプット欄非標示(android非対応)
-			keyboard = TouchScreenKeyboard.Open(GetText(), TouchScreenKeyboardType.Default);
-			isTitleEdit = true;
-		}else{
-			Debug.Log("OnclickTitleEdit On PC");
-		}
+		Main.Instance.SetTextDialog (GetText (), (text) => Modified(text));
 	}
 
 	// タイトル編集完了ボタン
-	public void Modified(){
-		_todoData.UpdateTitle(GetText());
+	public void Modified(string text){
+		SetText (text);
+		_todoData.UpdateTitle(text);
 		if(IsNotify){
 			// ローカル通知変更
 			_todoData.setCall();

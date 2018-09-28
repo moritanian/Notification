@@ -25,6 +25,8 @@ public class Main : Token {
 
 	NativeEditBox _searchField;
 
+	InputFieldDialog _textDialog;
+
 	// 追加モードで表示される時間
 	int def_hour = 8;
 	int def_min = 0;
@@ -41,7 +43,8 @@ public class Main : Token {
 		todoadd_button = MyCanvas.Find<Image>("TodoAdd");
 		_mycalendar = MyCanvas.Find<MyCalendar>("MyCalendar");
 		_searchField = MyCanvas.Find<NativeEditBox>("SearchField");
-
+		_textDialog = transform.FindChild ("TextDialog").gameObject.GetComponent<InputFieldDialog>();
+			
 		// 祝日初期化
 		Holiday.init();
 
@@ -297,5 +300,9 @@ public class Main : Token {
 	public void SetSearchFieldVisibility(bool visible){
 		_searchField.SetVisible (visible);
 	}	
+
+	public void SetTextDialog(string text, Action<string> action){
+		_textDialog.Set (text, action);
+	}
 
 }

@@ -55,7 +55,7 @@ public class Setting : Token {
    		Color.white,						// 文字色
    		new Color(0.3f,0.3f,0.3f),			// スクロール背景
    		new Color(0.1f, 0.1f, 0.1f, 0.5f),	// outofrange
-   		new Color(0, 0, 0, 206.0f/255.0f), // textInfut 背景
+   		new Color(0, 0, 0, 206.0f/255.0f), // textInput 背景
    		new Color(0, 0, 0, 44.0f/255.0f), // boardMain 背景
    		new Color(182.0f/255.0f, 175.0f/255.0f, 24.0f/255.0f), // 押したセルの色
    		new Color(7.0f/255.0f , 92.0f/255.0f ,71.0f/255.0f),
