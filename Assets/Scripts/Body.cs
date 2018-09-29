@@ -37,11 +37,10 @@ public class Body : Token {
 					Application.Quit();
 					break;
 				case ScreenMode.Setting:
-					
-					MyCanvas.Find<Setting>("BoardSetting").OnClickGoMain();
+					Setting.Instance.OnClickGoMain();
 					break;
 				case ScreenMode.Text:
-					TodoText._todoText.GoBack(true);
+					TodoText.Instance.GoBack(true);
 					//MyCanvas.Find<TodoText>("BoardText").OnClickGoBack();
 					break;
 				default:
@@ -62,18 +61,27 @@ public class Body : Token {
 
 	
 	public static void GoBoardText(){
+		TodoText.Instance.gameObject.SetActive (true);
 		_body.SlideIn(0, ()=>{
+			Main.Instance.gameObject.SetActive (false);
 			TodoText.GetInstance()._inputField.SetVerticalScrollOffset(0);
 		});
 		screenMode = ScreenMode.Text;
 	}
 
 	public static void GoBoardMain(){
-		_body.SlideOut();
+		Main.Instance.gameObject.SetActive (true);
+		_body.SlideOut( () => {
+			Setting.Instance.gameObject.SetActive (false);
+			TodoText.Instance.gameObject.SetActive(false);
+		});
 		screenMode = ScreenMode.Main;
 	}
 	public static void GoBoardSetting(){
-		_body.SlideIn(1);
+		Setting.Instance.gameObject.SetActive (true);
+		_body.SlideIn(1, () => {
+			Main.Instance.gameObject.SetActive (false);
+		});
 		screenMode = ScreenMode.Setting;
 	}
 

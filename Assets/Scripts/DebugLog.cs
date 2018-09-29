@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 public class DebugLog: MonoBehaviour {
-    private const int LOG_MAX = 10;
+    private const int LOG_MAX = 50;
     private Queue<string> logStack = new Queue<string>(LOG_MAX);
     public static bool IsLogDebug = false;
     public static bool NormalLog = false;

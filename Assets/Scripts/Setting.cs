@@ -71,14 +71,15 @@ public class Setting : Token {
    		new Color(156.0f/255.0f, 1.0f, 230.0f/255.0f),
    	};
 
-	public static Setting instance; 
+	public static Setting Instance; 
 
    	void Awake(){
 		outputText = MyCanvas.Find<Text>("outputText");
 		_debugToggle = MyCanvas.Find<Toggle>("IsDebugLog");
 		_normalToggle = transform.Find("NormalToggle").gameObject.GetComponent<Toggle>();
 		_fontColorChgText = transform.Find("TextColor").gameObject.GetComponent<Text>();
-		instance = this;
+
+		Instance = this;
 
 		string size_str = Util.LoadData(GetDataKey(DataKeys.FontSize));
 		if(size_str != "")fontsize = int.Parse(size_str);
@@ -91,6 +92,7 @@ public class Setting : Token {
 
 	// Use this for initialization
 	void Start(){
+		Instance.gameObject.SetActive (false);
 	}
 
 

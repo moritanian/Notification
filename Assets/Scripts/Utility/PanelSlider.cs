@@ -18,7 +18,8 @@ public class PanelSlider : MonoBehaviour {
 	}
  
     // スライドアウト
-    public void SlideOut(){
+	public void SlideOut(Action endAction = null){
+		slideEndAction = endAction;
         StartCoroutine( StartSlidePanel(false) );
     }
  

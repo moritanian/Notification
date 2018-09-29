@@ -6,7 +6,7 @@ public class TodoText : MonoBehaviour {
 
 	static TextObj _title;
 	public NativeEditBox _inputField;
-	public static TodoText _todoText;
+	public static TodoText Instance;
 	public NativeEditBox _inputTitle;
 	public TodoData _todoData;
 	public Text _changed_sign;
@@ -15,12 +15,12 @@ public class TodoText : MonoBehaviour {
 	static bool isAutoSave = true;
 
 	public static TodoText GetInstance(){
-		return _todoText;
+		return Instance;
 	}
 
 	void Awake(){
 		//_title = MyCanvas.Find<>("Titletxt");
-		_todoText = this;
+		Instance = this;
 	}
 	// Use this for initialization
 	void Start () {
@@ -51,7 +51,7 @@ public class TodoText : MonoBehaviour {
 		// タイトル表示
 		TitleSet (todoData.Title);
 		// ファイルから本文のテキストを読み込んで表示
-		SetText (_todoText._load ());
+		SetText (Instance._load ());
 		// 参照日時更新
 		_todoData.UpdateLookupTime ();
 	}

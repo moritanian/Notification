@@ -23,7 +23,7 @@ public class Main : Token {
 
 	MyCalendar _mycalendar;
 
-	NativeEditBox _searchField;
+	SearchField _searchField;
 
 	InputFieldDialog _textDialog;
 
@@ -42,7 +42,7 @@ public class Main : Token {
 		todo_scl = MyCanvas.Find<ScrollController>("TodoContent");
 		todoadd_button = MyCanvas.Find<Image>("TodoAdd");
 		_mycalendar = MyCanvas.Find<MyCalendar>("MyCalendar");
-		_searchField = MyCanvas.Find<NativeEditBox>("SearchField");
+		_searchField = MyCanvas.Find<SearchField>("SearchField");
 		_textDialog = transform.FindChild ("TextDialog").gameObject.GetComponent<InputFieldDialog>();
 			
 		// 祝日初期化
@@ -256,9 +256,7 @@ public class Main : Token {
 
 	// サーチフィールド編集後に呼ばれる
 	public void OnChangeSearchField(){
-		SelectOpt selectOpt = new SelectOpt.All ();
-		Show( selectOpt );
-		_dpDown.value = SelectOpt.All.id;
+		ApplySelectOpt ();
 	}
 	
 	// ワード検索 
@@ -298,7 +296,7 @@ public class Main : Token {
 	}
 
 	public void SetSearchFieldVisibility(bool visible){
-		_searchField.SetVisible (visible);
+		_searchField.gameObject.SetActive (visible);
 	}	
 
 	public void SetTextDialog(string text, Action<string> action){

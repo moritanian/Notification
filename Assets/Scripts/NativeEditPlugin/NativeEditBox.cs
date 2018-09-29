@@ -431,6 +431,7 @@ public class NativeEditBox : PluginMsgReceiver
 		jsonMsg["offset"] = offset;
 
 		this.SendPluginMsg(jsonMsg);
+
 	}
 
 	#if UNITY_ANDROID && !UNITY_EDITOR
@@ -447,6 +448,7 @@ public class NativeEditBox : PluginMsgReceiver
 	{
 		if (Input.anyKeyDown)
 		{
+	Debug.Log("keydown " + gameObject.name);
 			if (Input.GetKeyDown(KeyCode.Backspace))
 			{
 				this.ForceSendKeydown_Android("backspace");
