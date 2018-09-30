@@ -69,6 +69,17 @@ public class Main : Token {
 		Vector2 sizeDelta = new Vector2( Screen.width / sizeX , Screen.height / sizeY) ;
 		GetComponent<RectTransform> ().sizeDelta = sizeDelta;
 		MyCanvas.Find<RectTransform> ("Body/BoardText").sizeDelta = sizeDelta;
+
+		RectTransform rect = _textDialog.transform.Find("Dialog").GetComponent<RectTransform>();
+		PluginMsgHandler.getInst ().OnShowKeyboard += (bool bKeyboardShow, int nKeyHeight) => {
+			if( !_textDialog.gameObject.activeInHierarchy){
+				return;
+			}
+
+			Vector3 pos = rect.localPosition;
+			rect.localPosition = new Vector3(pos.x, - (Screen.height - nKeyHeight*2 - rect.sizeDelta.y * sizeY)/sizeY/2, pos.z);
+		};
+
 	}
 
 	void Update(){
@@ -300,7 +311,15 @@ public class Main : Token {
 	}	
 
 	public void SetTextDialog(string text, Action<string> action){
-		_textDialog.Set (text, action);
+		_searchField.gameObject.SetActive (false);
+		_textDialog.SetCancelAction ( () => {
+			_searchField.gameObject.SetActive (true);
+		});
+		_textDialog.Set (text, (string newText) => {
+			action.Invoke( newText );
+			_searchField.gameObject.SetActive (true);
+		});
+
 	}
 
 }

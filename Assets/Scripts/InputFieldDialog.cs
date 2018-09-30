@@ -23,7 +23,6 @@ public class InputFieldDialog : Dialog {
 		}
 		this._textCallback = _textCallBack;
 		Text = title;
-		SetCancelAction (null);
 
 		yesButton.gameObject.SetActive( false );
 		cancelButton.gameObject.SetActive( true );
@@ -32,7 +31,6 @@ public class InputFieldDialog : Dialog {
 	}
 
 	public void OnTextValueChanged(){
-		Debug.Log ("textValueCganged");
 		yesButton.gameObject.SetActive( true );
 		cancelButton.gameObject.SetActive( false );
 	}

@@ -460,6 +460,10 @@ public class NativeEditBox : PluginMsgReceiver
 			else if(Input.GetKeyDown(KeyCode.LeftArrow))
 			{
 				this.ForceSendKeydown_Android("left");
+			}
+			else if(Input.GetKeyDown(KeyCode.Space))
+			{
+				this.ForceSendKeydown_Android("space");
 			}		
 			else
 			{

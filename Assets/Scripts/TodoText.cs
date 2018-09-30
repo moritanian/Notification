@@ -24,8 +24,17 @@ public class TodoText : MonoBehaviour {
 	}
 	// Use this for initialization
 	void Start () {
-		
-	
+		PluginMsgHandler.getInst ().OnShowKeyboard += (bool bKeyboardShow, int nKeyHeight) => {
+			Debug.Log("OnSHowKeyboard" + bKeyboardShow + nKeyHeight + " | "+ Screen.height);
+
+
+			float sizeX = MyCanvas.GetCanvas ().GetComponent<RectTransform> ().localScale.x;
+			float sizeY = MyCanvas.GetCanvas ().GetComponent<RectTransform> ().localScale.y;
+			Vector2 sizeDelta = new Vector2( Screen.width / sizeX , (Screen.height - nKeyHeight) / sizeY) ;
+			GetComponent<RectTransform>().sizeDelta = sizeDelta;
+			Vector3 pos = GetComponent<RectTransform>().localPosition;
+			GetComponent<RectTransform>().localPosition = new Vector3(pos.x, nKeyHeight/sizeY /2.0f, pos.z);
+		};
 	}
 	
 	// Update is called once per frame

@@ -235,7 +235,10 @@ public class Setting : Token {
     	GetComponent<Image>().color = colors[4];
     	MyCanvas.Find<Image>("ScrollView").color = colors[2];
     	MyCanvas.Find<Image>("BoardMain").color = colors[5];
+		MyCanvas.Find<Image>("Title").color = colors[4];
+
 		MyCanvas.Find<Image>("TextInput").color = colors[4];
+		MyCanvas.Find<Text>("Titletxt").color = colors[1];
 		MyCanvas.Find<Text>("TodoTextField").color = colors[1];
 		MyCanvas.Find<Text>("DispDateTimeText").color = colors[1];
     	MyCanvas.Find<Image>("SearchField").color = colors[3];

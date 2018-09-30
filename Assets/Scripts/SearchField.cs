@@ -28,11 +28,10 @@ public class SearchField : MonoBehaviour {
 		clearButton.onClick.AddListener (OnClickClearButton);
 		editBox = GetComponent<NativeEditBox> ();
 
-		InputField inputField = GetComponent<InputField> ();
-		inputField.onValueChange.AddListener (
+		editBox.InputField.onValueChange.AddListener (
 			delegate{ OnChangeText();}
 		);
-		inputField.onEndEdit.AddListener (
+		editBox.InputField.onEndEdit.AddListener (
 			delegate { OnEndEdit(); }
 		);
 	
