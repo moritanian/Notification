@@ -1,18 +1,51 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System.Collections.Generic;
+using System;
 
 public class TodoText : MonoBehaviour {
 
 	static TextObj _title;
-	public NativeEditBox _inputField;
-	public static TodoText Instance;
-	public NativeEditBox _inputTitle;
-	public TodoData _todoData;
-	public Text _changed_sign;
-	string origi_text;
 
+	[SerializeField]
+	NativeEditBox _inputField;
+	public NativeEditBox InputField {
+		get { return _inputField;}
+	}
+
+	public static TodoText Instance;
+
+	[SerializeField]
+	NativeEditBox _inputTitle;
+
+	[SerializeField]
+	TodoData _todoData;
+
+	[SerializeField]
+	Text _changed_sign;
+
+	[SerializeField]
+	Button undoButton;
+
+	[SerializeField]
+	Button redoButton;
+
+	[SerializeField]
+	Image undoButtonImage;
+
+	[SerializeField]
+	Image redoButtonImage;
+
+	string origi_text;
+	List<string> textHistory = new List<string> ();
+	int currentHistoryIndex;
+	bool setTextFlag;
+	DateTime lastTextChangeTime;
 	static bool isAutoSave = true;
+
+	readonly Color EnableButtonColor = new Color (255.0f, 255.0f, 255.0f, 1.0f);
+	readonly Color DisableButtonColor = new Color (255.0f, 255.0f, 255.0f, 0.2f);
 
 	public static TodoText GetInstance(){
 		return Instance;
@@ -35,19 +68,30 @@ public class TodoText : MonoBehaviour {
 	}
 
 	public void SetUp(TodoData todoData){
+
+		// Tododata をセット
+		_todoData = todoData;
+
+		// ファイルから本文のテキストを読み込む
+		string text = Instance._load ();
+
 		// 文字カラー設定
 		SetTextColor (Setting.FontColor);
 
 		// 文字サイズ設定
 		SetTextFontSize (Setting.FontSize);
-		// Tododata をセット
-		_todoData = todoData;
+
 		// タイトル表示
 		TitleSet (todoData.Title);
-		// ファイルから本文のテキストを読み込んで表示
-		SetText (Instance._load ());
+		// 表示
+		SetText (text);
 		// 参照日時更新
 		_todoData.UpdateLookupTime ();
+
+		textHistory.Clear ();
+		textHistory.Add (text);
+		currentHistoryIndex = 0;
+		UpdateButtons ();
 	}
 
 	public void OnClickGoBack(){
@@ -56,6 +100,58 @@ public class TodoText : MonoBehaviour {
 	
 	public void OnClickSave(){
 		_save();
+	}
+
+	public void OnTextValueChanged(){
+
+		if (setTextFlag) {
+			setTextFlag = false;
+			return;
+		}
+
+		// En route
+		if (textHistory.Count != currentHistoryIndex + 1) {
+			textHistory.RemoveRange (
+				currentHistoryIndex + 1,
+				textHistory.Count - currentHistoryIndex - 1
+			);
+		}
+
+		DateTime currentTime = DateTime.Now;
+		if (currentTime - lastTextChangeTime > TimeSpan.FromMilliseconds (500)) {
+			textHistory.Add (_get_text ());
+			currentHistoryIndex++;
+			lastTextChangeTime = currentTime;
+		} else {
+			// elapsed time since last modified is too small
+			textHistory[currentHistoryIndex] = _get_text ();
+		}
+
+		UpdateButtons ();
+	}
+
+	public void OnClickUndo(){
+
+		if (currentHistoryIndex < 1) {
+			Debug.LogError ("OnClickUndo: index = 0");
+			return;
+		}
+
+		currentHistoryIndex--;
+		SetText (textHistory [currentHistoryIndex]);
+		UpdateButtons ();
+	}
+
+	public void OnClickRedo(){
+		
+		if (currentHistoryIndex >= textHistory.Count - 1) {
+			Debug.LogError ("OnClickRedo: index = " + currentHistoryIndex);
+			return;
+		}
+
+		currentHistoryIndex++;
+		SetText (textHistory [currentHistoryIndex]);
+		UpdateButtons ();
 	}
 
 	// Fieldを編集した
@@ -110,6 +206,9 @@ public class TodoText : MonoBehaviour {
 	}
 
 	void SetText(string text){
+
+		setTextFlag = true;
+
 		_inputField.text = text;
 
 		//編集したか比較するために持っておく
@@ -157,5 +256,25 @@ public class TodoText : MonoBehaviour {
 	}
 	public void TitleSet(string txt){
 		MyCanvas.Find<TodoText>("BoardText")._inputTitle.text = txt;
+	}
+
+	void UpdateButtons(){
+
+		if (this.currentHistoryIndex < this.textHistory.Count - 1) {
+			redoButton.enabled = true;
+			redoButtonImage.color = EnableButtonColor;
+		} else {
+			redoButton.enabled = false;
+			redoButtonImage.color = DisableButtonColor;
+		}
+
+		if (this.currentHistoryIndex > 0) {
+			undoButton.enabled = true;
+			undoButtonImage.color = EnableButtonColor;
+		} else {
+			undoButton.enabled = false;
+			undoButtonImage.color = DisableButtonColor;
+		}
+			
 	}
 }

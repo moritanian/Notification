@@ -64,7 +64,7 @@ public class Body : Token {
 		TodoText.Instance.gameObject.SetActive (true);
 		_body.SlideIn(0, ()=>{
 			Main.Instance.gameObject.SetActive (false);
-			TodoText.GetInstance()._inputField.SetVerticalScrollOffset(0);
+			TodoText.GetInstance().InputField.SetVerticalScrollOffset(0);
 		});
 		screenMode = ScreenMode.Text;
 	}
