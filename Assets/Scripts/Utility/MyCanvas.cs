@@ -4,11 +4,22 @@ using UnityEngine.UI;
 
 public class MyCanvas : MonoBehaviour {
 
-  static Canvas _canvas;
-  void Awake () {
+ 	static Canvas _canvas;
+	static RectTransform _canvasRect;
+
+	public static Vector3 canvasScale {
+		get { return _canvasRect.localScale; }
+	}
+
+	public static Vector3 canvasSize {
+		get { return new Vector2(Screen.width/canvasScale.x, Screen.height/canvasScale.y); }
+	}
+
+	void Awake () {
     // Canvasコンポーネントを保持
-    _canvas = GetComponent<Canvas>();
-  }
+    	_canvas = GetComponent<Canvas>();
+		_canvasRect = GetComponent<RectTransform> ();
+	}
 
   /// 表示・非表示を設定する
   public static void SetActive(string name, bool b) {

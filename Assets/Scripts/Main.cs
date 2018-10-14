@@ -34,6 +34,7 @@ public class Main : Token {
 	// todoField リスト表示コルーチン
 	IEnumerator showTodoFieldsCoroutine;
 
+
 	// Use this for initialization
 	// コンポーネント取得はStartの前に処理する
 	void Awake(){
@@ -53,8 +54,7 @@ public class Main : Token {
 	}
 
 	void Start () {	
-
-
+		//Screen.fullScreen = false;
 		SetDispCal ();
 
 		// Todo表示
@@ -63,12 +63,9 @@ public class Main : Token {
 		// event text 更新
 		_mycalendar.SetEventText(Holiday.GetHoliday(DateTime.Now));
 
+
 		// set Screen size 
-		float sizeX = MyCanvas.GetCanvas ().GetComponent<RectTransform> ().localScale.x;
 		float sizeY = MyCanvas.GetCanvas ().GetComponent<RectTransform> ().localScale.y;
-		Vector2 sizeDelta = new Vector2( Screen.width / sizeX , Screen.height / sizeY) ;
-		GetComponent<RectTransform> ().sizeDelta = sizeDelta;
-		MyCanvas.Find<RectTransform> ("Body/BoardText").sizeDelta = sizeDelta;
 
 		RectTransform rect = _textDialog.transform.Find("Dialog").GetComponent<RectTransform>();
 		PluginMsgHandler.getInst ().OnShowKeyboard += (bool bKeyboardShow, int nKeyHeight) => {
@@ -79,6 +76,7 @@ public class Main : Token {
 			Vector3 pos = rect.localPosition;
 			rect.localPosition = new Vector3(pos.x, - (Screen.height - nKeyHeight*2 - rect.sizeDelta.y * sizeY)/sizeY/2, pos.z);
 		};
+
 
 	}
 
