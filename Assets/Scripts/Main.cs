@@ -68,19 +68,16 @@ public class Main : Token {
 		float sizeY = MyCanvas.GetCanvas ().GetComponent<RectTransform> ().localScale.y;
 
 		RectTransform rect = _textDialog.transform.Find("Dialog").GetComponent<RectTransform>();
+
+		PluginMsgHandler.getInst ().OnShowKeyboard = null;
 		PluginMsgHandler.getInst ().OnShowKeyboard += (bool bKeyboardShow, int nKeyHeight) => {
-			if( !_textDialog.gameObject.activeInHierarchy){
+			if (!_textDialog.gameObject.activeInHierarchy) {
 				return;
 			}
 
 			Vector3 pos = rect.localPosition;
-			rect.localPosition = new Vector3(pos.x, - (Screen.height - nKeyHeight*2 - rect.sizeDelta.y * sizeY)/sizeY/2, pos.z);
+			rect.localPosition = new Vector3 (pos.x, -(Screen.height - nKeyHeight * 2 - rect.sizeDelta.y * sizeY) / sizeY / 2, pos.z);
 		};
-
-
-	}
-
-	void Update(){
 
 	}
 

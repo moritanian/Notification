@@ -45,8 +45,8 @@ public class Setting : Token {
    	};
 
    	enum Theme{
-   		color,
-   		mono
+		mono,
+		color
    	} 
    	Theme theme;
 
