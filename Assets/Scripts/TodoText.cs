@@ -109,6 +109,10 @@ public class TodoText : MonoBehaviour {
 			return;
 		}
 
+		if (textHistory == null) {
+			return;
+		}
+
 		// En route
 		if (textHistory.Count != currentHistoryIndex + 1) {
 			textHistory.RemoveRange (

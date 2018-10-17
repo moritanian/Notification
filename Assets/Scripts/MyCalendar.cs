@@ -29,8 +29,8 @@ public class MyCalendar : Token {
 	Image CheckButton;
 	ImageObj MemoButton;
 	Token EditDateTime;
-	TextObj DispDateTimeText;
-	TextObj EventText; 
+	SwipeSlider dateTimeTextSlider;
+	Text EventText; 
 
 	  [SerializeField]
 	float CEL_WIDTH = 0; 
@@ -90,8 +90,8 @@ public class MyCalendar : Token {
 		CheckButton = MyCanvas.Find<Image>("CheckButton");
 		MemoButton = MyCanvas.Find<ImageObj>("MemoButton");
 		EditDateTime = MyCanvas.Find<Token>("EditDateTime");
-		DispDateTimeText = MyCanvas.Find<TextObj>("DispDateTimeText");
-		EventText = MyCanvas.Find<TextObj>("EventText");
+		EventText = MyCanvas.Find<Text>("EventText");
+		dateTimeTextSlider = MyCanvas.Find<SwipeSlider>("DateTimeTextSlider");
 	}
 	// Use this for initialization
 	void Start () {
@@ -154,8 +154,8 @@ public class MyCalendar : Token {
 	void SetCalImg(bool IsSet){
 		CheckButton.enabled = IsSet;
 		BattenButton.enabled = IsSet;
-		EventText.Visible = !IsSet;
-		DispDateTimeText.Visible = !IsSet;
+		EventText.enabled = !IsSet;
+		dateTimeTextSlider.gameObject.SetActive (!IsSet);
 		if(IsSet){ // editmode
 			EditDateTime.Revive();
 			if(isDispMemoButton)MemoButton.Revive();
@@ -191,14 +191,16 @@ public class MyCalendar : Token {
 
 		CalendarCel.AllUpdate();
 		// 年月表示更新
-		if(_calState==CalState.Disp)DispDateTimeText.Label = _showDateTime.Year.ToString() + "年" + _showDateTime.Month.ToString() + "月";
+		if(_calState==CalState.Disp)
+			UpdateDateTimeText();
+
 		if(_calState == CalState.SetDate) SetEditDateTimeText();
 	}
 
 	// セルが押された際の処理 (テキスト変更, dispモードの場合、コールバック実行)
 	public void OnClickCel(){
 		if(_calState==CalState.Disp){
-			DispDateTimeText.Label = _showDateTime.Year.ToString() + "年" + _showDateTime.Month.ToString() + "月";
+			UpdateDateTimeText ();
 			_callBack(MyDateTime);
 		}else{
 			_showDateTime = MyDateTime;
@@ -246,5 +248,32 @@ public class MyCalendar : Token {
   		MyCanvas.Find<Text>("EventText").text = event_text;
   	}
 
+	string GetDateTimeText(DateTime d){
+		return d.Year.ToString () + "年" + d.Month.ToString () + "月";
+	}
+
+	void UpdateDateTimeText(){
+		dateTimeTextSlider.getCurrentItem ().GetComponent<Text> ().text = GetDateTimeText (_showDateTime);
+	}
+
+	// shuld be registered in swipeSlider
+	public void OnSwipeSlideStart(SwipeSliderEventObj eventObj){
+		// copy
+		DateTime nextDateTime = _showDateTime;
+		Debug.Log (-eventObj.slideDirection);
+		nextDateTime = nextDateTime.AddMonths (- eventObj.slideDirection);
+
+		eventObj.nextItem.GetComponent<Text> ().text = GetDateTimeText (nextDateTime);
+
+	}
+
+	// shuld be registered in swipeSlider
+	public void OnSwipeSlideNext(SwipeSliderEventObj eventObj){
+
+		if (eventObj.isAutoSlide) {
+			moveMonth (-eventObj.slideDirection);
+		}
+
+	}
 }
 

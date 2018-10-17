@@ -240,8 +240,10 @@ public class Setting : Token {
 		MyCanvas.Find<Image>("TextInput").color = colors[4];
 		MyCanvas.Find<Text>("Titletxt").color = colors[1];
 		MyCanvas.Find<Text>("TodoTextField").color = colors[1];
-		MyCanvas.Find<Text>("DispDateTimeText").color = colors[1];
-    	MyCanvas.Find<Image>("SearchField").color = colors[3];
+
+		MyCanvas.Find<Text>("DispCurrentDateTimeText").color = colors[1];
+		MyCanvas.Find<Text>("DispNextDateTimeText").color = colors[1];
+		MyCanvas.Find<Image>("SearchField").color = colors[3];
     	MyCanvas.Find<Text>("SearchText").color = colors[1];
     	MyCalendar myCalendar = MyCanvas.Find<MyCalendar>("MyCalendar");
     	myCalendar.NormalDayColor = colors[0];

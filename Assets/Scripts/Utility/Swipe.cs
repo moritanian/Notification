@@ -2,33 +2,36 @@
 using System.Collections;
 using UnityEngine.Events;
 
+/* 
+ * Swipe event invoke class
+ * 
+ * {}
+ * 	=> 
+ * {
+ * 		SwipeStart(SwipeEvent)
+ * 		SwipeMove(SwipeEvent)
+ * 		SwipeEnd(SwipeEvent)
+ * 		SwipeCancel(SwipeEvent)
+ *	}
+ */ 
 public class Swipe : Token {
 
 
 	Vector2 startPosition;
 	Vector2 endPosition;
-	[SerializeField]
-	UnityEvent SwipeEventRight;
-	[SerializeField]
-	UnityEvent SwipeEventLeft;
-	[SerializeField]
-	UnityEvent SwipeEventUp;
-	[SerializeField]
-	UnityEvent SwipeEventDown;
 
-	[SerializeField] // swipe 時に処理するイベント
-	UnityEvent StartEvent;
+	[SerializeField] // on touch down event
+	SwipeEvent swipeStart;
 
-	bool isExcutedStartEvent; // startEvent処理したか
+	[SerializeField] // swipe end event
+	SwipeEvent swipeEnd;
 
-	[SerializeField] // swipe 終了時に行うイベント
-	UnityEvent EndEvent;
+	[SerializeField] // cancel swipe event
+	SwipeEvent swipeCancel;
 
+	[SerializeField]  // swiping event
+	SwipeEvent swipeMove;
 
-	[SerializeField]
-	SwipeEvent SyncSwipeEvent;
-
-	float margin_distance = 20f; // 
 	float margin_delta = 0.4f; // これ以上スワイプすれば。長押しイベントがキャンセル
 
 	enum State {
@@ -40,19 +43,22 @@ public class Swipe : Token {
 	Vector2 ObjPos1;
 	Vector2 ObjPos2;
 
-	Vector2 CrtPos;
+	SwipeEventObj eventObj;
+
 	// Use this for initialization
 	void Start () {
-		//Application.OpenURL("https://github.com/moritanian/Notification");
+		
 		state = State.Idle;
-		Vector2 sd = GetComponent<RectTransform>().sizeDelta;
+		RectTransform rt = GetComponent<RectTransform> ();
+		Vector2 sd = rt.sizeDelta;
 
 		// 自身の左上と右下を取得
-		ObjPos1.x = local_X - sd.x/2.0f;
-		ObjPos1.y = local_Y - sd.y/2.0f;
-		ObjPos2.x = local_X + sd.x/2.0f;
-		ObjPos2.y = local_Y + sd.y/2.0f;
-		//LogObjPos();
+		ObjPos1.x = local_X - rt.rect.width/2.0f;
+		ObjPos1.y = local_Y - rt.rect.height/2.0f;
+		ObjPos2.x = local_X + rt.rect.width/2.0f;
+		ObjPos2.y = local_Y + rt.rect.height/2.0f;
+
+		eventObj = new SwipeEventObj ();
 	}
 
 	public void LogObjPos(){
@@ -63,72 +69,72 @@ public class Swipe : Token {
 	
 	// Update is called once per frame
 	void Update () {
-		// async swipe event 処理
-		GetPos();
-
-		// sysnc swipe event 処理
-		SyncSwipe();
+		UpdateStatus();
 	}
 
-	void GetPos(){
-		if (Input.GetMouseButtonDown (0) && state == State.Idle) {
-			startPosition = GetMousePos();
-			if(!IsIn(startPosition))return;
-			
-			state = State.Down;
-			isExcutedStartEvent = false;
-			CrtPos = startPosition;
+	void UpdateStatus(){
 
-		}
+		eventObj.currentPosition = GetPosition();
 
 		if (Input.GetMouseButtonUp (0) && state == State.Down) {
-			EndEvent.Invoke();
-			state = State.Idle;
-			endPosition = GetMousePos();
-			if(!IsIn(endPosition))return ;
 
-			float distanceX = endPosition.x - startPosition.x;
-			float distanceY = endPosition.y - startPosition.y;
-			if(margin_distance < distanceX){
-				SwipeEventRight.Invoke();
-			}else if( -margin_distance > distanceX){
-				SwipeEventLeft.Invoke();
+			state = State.Idle;
+
+			if (!IsIn (eventObj.currentPosition)) {
+				InvokeSwipeCancel ();
+				return;
 			}
-			if(margin_distance < distanceY){
-				SwipeEventUp.Invoke();
-			}else if( -margin_distance > distanceY){
-				SwipeEventDown.Invoke();
-			}
-			
+
+			InvokeSwipeEnd ();
 		}
+
+		if (state == State.Down) {
+		
+			if (!IsIn (eventObj.currentPosition)) {
+				return;
+			}
+
+			InvokeSwipMove ();
+
+		}
+		
+		if (Input.GetMouseButtonDown (0) && state == State.Idle) {
+			if(!IsIn(eventObj.currentPosition))return;
+			state = State.Down;
+			eventObj.startPosition = eventObj.currentPosition;
+			InvokeSwipeStart ();
+		}
+
+
 	}
-	// マウスのcanvas内での位置
-	Vector2 GetMousePos(){
+	// canvas内での位置
+	Vector2 GetPosition(){
 		Vector2 pos = new Vector2(Input.mousePosition.x,Input.mousePosition.y);
 		return MyCanvas.GetCanvasPosFromWorld(pos);
 	}
 
-	void SyncSwipe(){
-		if(state == State.Down){
-			Vector2 newPos = GetMousePos();
-			Vector2 pos_delta = newPos - CrtPos;
-			CrtPos = newPos;
-			if((pos_delta.x*pos_delta.x + pos_delta.y * pos_delta.y) > margin_delta*margin_delta){
-				// 長押しイベントキャンセル
-				LongPress.PressInit();
-				if(!isExcutedStartEvent){
-					StartEvent.Invoke();
-					isExcutedStartEvent = true;
-				}
-
-				SyncSwipeEvent.Invoke(pos_delta * 2.5f);
-			}
-			
-		}
-	}
-
 	bool IsIn(Vector2 pos){
 		return (ObjPos1.x < pos.x && pos.x < ObjPos2.x && ObjPos1.y < pos.y && pos.y < ObjPos2.y );
+	}
+
+	void InvokeSwipeStart(){
+		eventObj.type = "SwipeStart";
+		swipeStart.Invoke (eventObj);	
+	}
+
+	void InvokeSwipeEnd(){
+		eventObj.type = "SwipeEnd";
+		swipeEnd.Invoke (eventObj);
+	}
+
+	void InvokeSwipeCancel(){
+		eventObj.type = "SwipeCancel";
+		swipeCancel.Invoke (eventObj);
+	}
+
+	void InvokeSwipMove(){
+		eventObj.type = "SwipeMove";
+		swipeMove.Invoke (eventObj);
 	}
 
 }
