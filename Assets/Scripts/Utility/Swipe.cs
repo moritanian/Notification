@@ -36,7 +36,8 @@ public class Swipe : Token {
 
 	enum State {
 		Idle,
-		Down
+		Down,
+		Swipe
 	}
 	State state;
 
@@ -76,7 +77,12 @@ public class Swipe : Token {
 
 		eventObj.currentPosition = GetPosition();
 
-		if (Input.GetMouseButtonUp (0) && state == State.Down) {
+		if (Input.GetMouseButtonUp (0) && (state == State.Down || state == State.Swipe)) {
+
+			if (state == State.Down) {
+				state = State.Idle;
+				return;
+			}
 
 			state = State.Idle;
 
@@ -94,15 +100,22 @@ public class Swipe : Token {
 				return;
 			}
 
-			InvokeSwipMove ();
+			if (eventObj.deltaVector.sqrMagnitude > 0) {
+				state = State.Swipe;
+			}
 
 		}
+
+		if (state == State.Swipe) {
+			InvokeSwipMove ();
+		}
+
 		
 		if (Input.GetMouseButtonDown (0) && state == State.Idle) {
 			if(!IsIn(eventObj.currentPosition))return;
 			state = State.Down;
 			eventObj.startPosition = eventObj.currentPosition;
-			InvokeSwipeStart ();
+			//InvokeSwipeStart ();
 		}
 
 

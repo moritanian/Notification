@@ -8,6 +8,7 @@ public class SwipeSliderEvent : UnityEvent <SwipeSliderEventObj> {}
 
 
 public struct SwipeSliderEventObj {
+	public GameObject previousItem;
 	public GameObject currentItem;
 	public GameObject nextItem;
 	public string type;

@@ -23,28 +23,27 @@ public class TodoField : Token {
 
 	// 編集画面に飛んでいいか
 	private static bool _canGoEdit = true;
-
-	public InputField _inputField;
-
 	// テキスト背景// 期限過ぎた場合は強調するなど
-	
-		[SerializeField]
+
+	[SerializeField]
 	Image textImage;
-		[SerializeField]
+	[SerializeField]
+	Text titleText;
+	[SerializeField]
 	Color NormalColor;
-		[SerializeField]
+	[SerializeField]
 	Color SelectedColor;
-		[SerializeField]
+	[SerializeField]
 	Color MemoColor;
 
-		[SerializeField]
+	[SerializeField]
 	Image timeTextImage;
-		[SerializeField]
+	[SerializeField]
 	Color EnphasizedColor;
-		[SerializeField]
+	[SerializeField]
 	Color NormalTimeTextColor;
-	//public Text text;
-	TextObj _timeText;
+	[SerializeField]
+	Text timeText;
 
 	//public int id; // todo のid 本文との紐づけにも
 	// todofield が　TodoDataを持つ
@@ -85,8 +84,7 @@ public class TodoField : Token {
 
 	// Use this for initialization
 	void Awake(){
-		_timeText = transform.Find("Time/TimeText").gameObject.GetComponent<TextObj>();
-		_timeText.Label = "";
+		timeText.text = "";
 		_toggle = transform.Find("Toggle").gameObject.GetComponent<Toggle>();
 	}
 
@@ -139,15 +137,11 @@ public class TodoField : Token {
 	}
 	
 	public void SetText(string text){
-		if(_inputField == null){
-			transform.Find("text").gameObject.GetComponent<TextObj>().Label = text;
-			return ;
-		}
-		_inputField.text = text;
+		titleText.text = text;
 	}
 
 	public string GetText(){
-		return transform.Find("text").gameObject.GetComponent<TextObj>().Label;
+		return titleText.text;
 	}
 
 	public void OnclickEdit(){
@@ -178,21 +172,21 @@ public class TodoField : Token {
 	}
 
 	public string TimeText{
-		set { _timeText.Label = value;}
-		get{ return _timeText.Label;}
+		set { timeText.text = value;}
+		get{ return timeText.text;}
 	}
 	// DateTime型からset
 	public void SetTimeText(DateTime Dt){
 		TodoDate = Dt;
 		if(_todoData.IsMemo){
-			TimeText = " Memo";
+			TimeText = "Memo";
 			return ;
 		}
 		// 今年の分は年表示しない
 		if(Dt.Year == DateTime.Now.Year){
-			TimeText = Dt.ToString("  MM/dd") + "\n" + Dt.ToString("  HH:mm");
+			TimeText = Dt.ToString("MM/dd") + "\n" + Dt.ToString("HH:mm");
 		} else {
-			TimeText = Dt.ToString("yy/MM/dd") + "\n" + Dt.ToString("  HH:mm");
+			TimeText = Dt.ToString("yy/MM/dd") + "\n" + Dt.ToString("HH:mm");
 		}
 	}
 

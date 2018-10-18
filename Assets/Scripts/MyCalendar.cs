@@ -257,13 +257,13 @@ public class MyCalendar : Token {
 	}
 
 	// shuld be registered in swipeSlider
-	public void OnSwipeSlideStart(SwipeSliderEventObj eventObj){
-		// copy
-		DateTime nextDateTime = _showDateTime;
-		Debug.Log (-eventObj.slideDirection);
-		nextDateTime = nextDateTime.AddMonths (- eventObj.slideDirection);
+	public void OnSwipeSlideEnd(SwipeSliderEventObj eventObj){
+
+		DateTime nextDateTime = _showDateTime.AddMonths (1);
+		DateTime previousDateTime = _showDateTime.AddMonths (- 1);
 
 		eventObj.nextItem.GetComponent<Text> ().text = GetDateTimeText (nextDateTime);
+		eventObj.previousItem.GetComponent<Text> ().text = GetDateTimeText (previousDateTime);
 
 	}
 
