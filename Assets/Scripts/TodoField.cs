@@ -161,6 +161,10 @@ public class TodoField : Token {
 		Main.Instance.SetTextDialog (GetText (), (text) => Modified(text));
 	}
 
+	void ShowTitleEditDialog(){
+		Main.Instance.SetTextDialog (GetText (), (text) => Modified(text));
+	}
+
 	// タイトル編集完了ボタン
 	public void Modified(string text){
 		SetText (text);
@@ -229,15 +233,20 @@ public class TodoField : Token {
 	}
 
 	// 長押し選択
-	public void TouchSelected(){
+	public void OnTouchSelected(){
+		ShowDeleteDialog ();
+	}
+
+	public void OnTouch(){
 		textImage.color = SelectedColor;
 	}
-	public void UnTouch(){
+
+	public void OnUnTouch(){
 		textImage.color = NormalColor;
 	}
 
 	// 消去するかダイアログ表示
-	public void AppDeleteDailog(){
+	void ShowDeleteDialog(){
 		
 		ToggleDialog toggleDialog = MyCanvas.FindChild<ToggleDialog>("ToggleDialog");
 		List<string> titles = new List<string>{"delete", "memo"};

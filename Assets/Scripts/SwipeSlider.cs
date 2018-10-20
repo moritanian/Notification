@@ -108,7 +108,7 @@ public class SwipeSlider : MonoBehaviour {
 	GameObject CreateItem(Vector2 position){
 		Vector3 vec3 = new Vector3 (position.x, position.y, 0);
 		GameObject item = (GameObject)Instantiate (prefab, Vector3.zero, Quaternion.identity);
-		item.transform.parent = this.transform;
+		item.transform.SetParent (this.transform);
 		item.transform.localPosition = vec3;
 		item.transform.localScale = Vector3.one;
 		return item;

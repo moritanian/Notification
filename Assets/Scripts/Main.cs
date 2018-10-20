@@ -146,6 +146,8 @@ public class Main : Token {
 
 		// 生成されたtodoField の notificationトグルにデータを合わせる
 		new_todo.UpdateIsNotify (_todoField.IsNotify);
+
+		_todoField.OnClickTitleEdit ();
 	}
 
 	// todo 追加ボタンの表示、非表示
