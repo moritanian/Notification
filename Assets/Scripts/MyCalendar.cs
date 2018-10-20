@@ -9,6 +9,7 @@ using UnityEngine.UI;
 DayOfWeek 列挙体
 Sunday :0 ~ 6
 */
+using UnityEngine.EventSystems;
 
 public class MyCalendar : Token {
 
@@ -31,6 +32,7 @@ public class MyCalendar : Token {
 	Token EditDateTime;
 	SwipeSlider dateTimeTextSlider;
 	Text EventText; 
+	Transform cels;
 
 	  [SerializeField]
 	float CEL_WIDTH = 0; 
@@ -92,6 +94,7 @@ public class MyCalendar : Token {
 		EditDateTime = MyCanvas.Find<Token>("EditDateTime");
 		EventText = MyCanvas.Find<Text>("EventText");
 		dateTimeTextSlider = MyCanvas.Find<SwipeSlider>("DateTimeTextSlider");
+		cels = MyCanvas.Find<Transform> ("Cels");
 	}
 	// Use this for initialization
 	void Start () {
@@ -172,7 +175,7 @@ public class MyCalendar : Token {
 		for(int row=0; row<NUM_OF_ROW;row++){
 			for(int col=0; col<DAYS_IN_WEEK; col++){
 				// セルを生成し、それをMyCalendar 以下におく
-				CalendarCel.Add(col*CEL_WIDTH + FIRST_X, FIRST_Y - row * CEL_HEIGHT, row, col).transform.SetParent(this.transform, false);
+				CalendarCel.Add(col*CEL_WIDTH + FIRST_X, FIRST_Y - row * CEL_HEIGHT, row, col).transform.SetParent(cels.transform, false);
 			}
 		}
 	}
@@ -215,10 +218,12 @@ public class MyCalendar : Token {
 	}
 
 	public void OnClickPreMonth(){
+		dateTimeTextSlider.SlideWithoutSwipe (1);
 		moveMonth (-1);
 	}
 
 	public void OnClickNextMonth(){
+		dateTimeTextSlider.SlideWithoutSwipe (-1);
 		moveMonth (1);
 	}
 
@@ -272,5 +277,6 @@ public class MyCalendar : Token {
 		}
 
 	}
+
 }
 

@@ -105,6 +105,12 @@ public class SwipeSlider : MonoBehaviour {
 	
 	}
 
+	public void SlideWithoutSwipe(int direction){
+		eventObj.directionDelta = 0; 
+		eventObj.slideDirection = direction;
+		SlideAuto ();
+	}
+
 	GameObject CreateItem(Vector2 position){
 		Vector3 vec3 = new Vector3 (position.x, position.y, 0);
 		GameObject item = (GameObject)Instantiate (prefab, Vector3.zero, Quaternion.identity);

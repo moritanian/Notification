@@ -14,7 +14,7 @@ using UnityEngine.Events;
  * 		SwipeCancel(SwipeEvent)
  *	}
  */ 
-public class Swipe : Token {
+public class Swipe : MonoBehaviour {
 
 
 	Vector2 startPosition;
@@ -48,26 +48,37 @@ public class Swipe : Token {
 
 	// Use this for initialization
 	void Start () {
-		
+
 		state = State.Idle;
+
+		StartCoroutine (GetTargetArea ());
+		eventObj = new SwipeEventObj ();
+	}
+
+	IEnumerator GetTargetArea(){
+		// wait one loop for screen size changing
+		yield return null;
+
 		RectTransform rt = GetComponent<RectTransform> ();
 		Vector2 sd = rt.sizeDelta;
 
 		// 自身の左上と右下を取得
-		ObjPos1.x = local_X - rt.rect.width/2.0f;
-		ObjPos1.y = local_Y - rt.rect.height/2.0f;
-		ObjPos2.x = local_X + rt.rect.width/2.0f;
-		ObjPos2.y = local_Y + rt.rect.height/2.0f;
+		float w =  rt.rect.width;
+		float h = rt.rect.height;
+		float x = transform.localPosition.x;
+		float y = transform.localPosition.y;
+		ObjPos1.x = (x - w/2.0f);
+		ObjPos1.y = (y - h/2.0f);
+		ObjPos2.x = (x + w/2.0f);
+		ObjPos2.y = (y + h/2.0f);
 
-		eventObj = new SwipeEventObj ();
 	}
 
 	public void LogObjPos(){
-		Debug.Log(name + "center: " +  local_X + ":" + local_Y);
 		Debug.Log("Objpos1 = " + ObjPos1.x + ": " + ObjPos1.y);
 		Debug.Log("Objpos2 = " + ObjPos2.x + ": " + ObjPos2.y);
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		UpdateStatus();
@@ -75,9 +86,9 @@ public class Swipe : Token {
 
 	void UpdateStatus(){
 
-		eventObj.currentPosition = GetPosition();
-
 		if (Input.GetMouseButtonUp (0) && (state == State.Down || state == State.Swipe)) {
+
+			eventObj.currentPosition = GetPosition();
 
 			if (state == State.Down) {
 				state = State.Idle;
@@ -95,7 +106,9 @@ public class Swipe : Token {
 		}
 
 		if (state == State.Down) {
-		
+
+			eventObj.currentPosition = GetPosition();
+
 			if (!IsIn (eventObj.currentPosition)) {
 				return;
 			}
@@ -107,15 +120,18 @@ public class Swipe : Token {
 		}
 
 		if (state == State.Swipe) {
+			eventObj.currentPosition = GetPosition();
 			InvokeSwipMove ();
 		}
 
-		
+
 		if (Input.GetMouseButtonDown (0) && state == State.Idle) {
+			eventObj.currentPosition = GetPosition();
+
 			if(!IsIn(eventObj.currentPosition))return;
 			state = State.Down;
 			eventObj.startPosition = eventObj.currentPosition;
-			//InvokeSwipeStart ();
+			InvokeSwipeStart ();
 		}
 
 
