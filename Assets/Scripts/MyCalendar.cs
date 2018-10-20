@@ -190,17 +190,13 @@ public class MyCalendar : Token {
 		last_day = days_in_month;
 
 		CalendarCel.AllUpdate();
-		// 年月表示更新
-		if(_calState==CalState.Disp)
-			UpdateDateTimeText();
-
+	
 		if(_calState == CalState.SetDate) SetEditDateTimeText();
 	}
 
 	// セルが押された際の処理 (テキスト変更, dispモードの場合、コールバック実行)
 	public void OnClickCel(){
 		if(_calState==CalState.Disp){
-			UpdateDateTimeText ();
 			_callBack(MyDateTime);
 		}else{
 			_showDateTime = MyDateTime;
@@ -262,6 +258,7 @@ public class MyCalendar : Token {
 		DateTime nextDateTime = _showDateTime.AddMonths (1);
 		DateTime previousDateTime = _showDateTime.AddMonths (- 1);
 
+		eventObj.currentItem.GetComponent<Text> ().text = GetDateTimeText (_showDateTime);
 		eventObj.nextItem.GetComponent<Text> ().text = GetDateTimeText (nextDateTime);
 		eventObj.previousItem.GetComponent<Text> ().text = GetDateTimeText (previousDateTime);
 

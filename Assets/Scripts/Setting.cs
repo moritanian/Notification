@@ -241,6 +241,8 @@ public class Setting : Token {
 		MyCanvas.Find<Text>("Titletxt").color = colors[1];
 		MyCanvas.Find<Text>("TodoTextField").color = colors[1];
 
+		MyCanvas.Find<SwipeSlider>("DateTimeTextSlider").prefab.GetComponent<Text>().color = colors[1];
+
 		MyCanvas.Find<Image>("SearchField").color = colors[3];
     	MyCanvas.Find<Text>("SearchText").color = colors[1];
     	MyCalendar myCalendar = MyCanvas.Find<MyCalendar>("MyCalendar");

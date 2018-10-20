@@ -21,8 +21,7 @@ using UnityEngine.Events;
  *	}
  */ 
 public class SwipeSlider : MonoBehaviour {
-	[SerializeField]
-	GameObject prefab;
+	public GameObject prefab;
 
 	[SerializeField]
 	SwipeSliderEvent slideStart;
@@ -89,13 +88,14 @@ public class SwipeSlider : MonoBehaviour {
 		nextItemInitPosition = currentItemInitPosition + distanceVector;
 
 		eventObj = new SwipeSliderEventObj ();
-		eventObj.currentItem = CreateItem( currentItemInitPosition );
-		eventObj.previousItem = CreateItem( previousItemInitPosition );
-		eventObj.nextItem = CreateItem( nextItemInitPosition );
+
 	}
 
 	// Use this for initialization
 	void Start () {
+		eventObj.currentItem = CreateItem( currentItemInitPosition );
+		eventObj.previousItem = CreateItem( previousItemInitPosition );
+		eventObj.nextItem = CreateItem( nextItemInitPosition );
 		itemDistance = Vector2.Distance (currentItemInitPosition, nextItemInitPosition);
 		InvokeSlideEnd ();
 	}
@@ -142,12 +142,9 @@ public class SwipeSlider : MonoBehaviour {
 	public void OnSwipeEnd(SwipeEventObj obj){
 		if (eventObj.directionDelta * eventObj.slideDirection > slideMinDistance) {
 			SlideAuto ();
-			Debug.Log ("slideAuto");
 			InvokeSlideNext ();
 		} else {
 			SlideReturn ();
-			Debug.Log ("slideReturn");
-
 			InvokeSlideNext ();
 		}
 	}
@@ -155,7 +152,6 @@ public class SwipeSlider : MonoBehaviour {
 
 	// should register in swipe
 	public void OnSwipeCancel(SwipeEventObj obj){
-		Debug.Log("OnSwipeCancel");
 		if (state == State.SwipeSliding) {
 			SlideReturn ();
 		} else if (state == State.AutoSliding) {
@@ -214,14 +210,11 @@ public class SwipeSlider : MonoBehaviour {
 
 		InvokeSlideStart ();
 
-		Debug.Log ("OnStart");
-
 	}
 
 	void FinishSlide(){
 
 		if (state == State.AutoSliding) {
-			Debug.Log ("ENd");
 			// swap item
 			if (eventObj.slideDirection == 1) {
 				GameObject temp = eventObj.nextItem;
@@ -239,7 +232,6 @@ public class SwipeSlider : MonoBehaviour {
 
 		} else {
 			InvokeSlideCancel ();
-			Debug.Log ("Cancel");
 		}
 
 		state = State.Idle;
@@ -249,8 +241,6 @@ public class SwipeSlider : MonoBehaviour {
 		previousItemTransform.localPosition = previousItemInitPosition;
 
 		currentItemTransform.localScale =  Vector3.one ;
-		//nextItemTransform.localScale = Vector3.one;
-		//previousItemTransform.localScale = Vector3.one;
 
 		currentItemTransform.localRotation = Quaternion.AngleAxis(0,  Vector3.forward);
 		nextItemTransform.localRotation = Quaternion.AngleAxis(0,  Vector3.forward);
@@ -274,9 +264,9 @@ public class SwipeSlider : MonoBehaviour {
 		nextItemTransform.localPosition +=  (1.0f - ratio) * 3.0f * Vector3.up;
 
 		Vector3 angleAxis = new Vector3(0, 0.9f, -0.05f);
-		previousItemTransform.localRotation = Quaternion.AngleAxis(-(1.0f - ratio) * 130.0f * (- eventObj.slideDirection), angleAxis);
-		currentItemTransform.localRotation = Quaternion.AngleAxis(ratio * 130.0f * (- eventObj.slideDirection), angleAxis);
-		nextItemTransform.localRotation = Quaternion.AngleAxis(-(1.0f - ratio) * 130.0f *(- eventObj.slideDirection),  angleAxis);
+		previousItemTransform.localRotation = Quaternion.AngleAxis((1.0f - ratio) * 130.0f * ( eventObj.slideDirection), angleAxis);
+		currentItemTransform.localRotation = Quaternion.AngleAxis(-ratio * 130.0f * ( eventObj.slideDirection), angleAxis);
+		nextItemTransform.localRotation = Quaternion.AngleAxis((1.0f - ratio) * 130.0f *( eventObj.slideDirection),  angleAxis);
 	
 	}
 
