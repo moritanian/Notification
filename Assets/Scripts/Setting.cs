@@ -53,22 +53,25 @@ public class Setting : Token {
    	Color[] style_mono_colors = {
    		Color.black,						// 基本色
    		Color.white,						// 文字色
-   		new Color(0.3f,0.3f,0.3f),			// スクロール背景
-   		new Color(0.1f, 0.1f, 0.1f, 0.5f),	// outofrange
+   		new Color(0.3f,0.3f,0.3f, 0.5f),			// スクロール背景
+   		new Color(0.1f, 0.1f, 0.1f, 0.35f),	// outofrange
    		new Color(0, 0, 0, 206.0f/255.0f), // textInput 背景
    		new Color(0, 0, 0, 44.0f/255.0f), // boardMain 背景
    		new Color(182.0f/255.0f, 175.0f/255.0f, 24.0f/255.0f), // 押したセルの色
-   		new Color(7.0f/255.0f , 92.0f/255.0f ,71.0f/255.0f),
+   		new Color(7.0f/255.0f , 92.0f/255.0f ,71.0f/255.0f), // Tody color
+		new Color(1.0f, 1.0f, 1.0f, 20.0f/255.0f), // calendar background
+
    	};
    	Color[] style_default_colors = {
-   		Color.white,
+		new Color(1.0f, 1.0f, 1.0f, 0.9f),
    		Color.black,
-   		new Color(63.0f/255.0f,113.0f/255.0f,35.0f/255.0f),
-   		new Color(255,255,255, 0.5f),
-   		Color.white,
-   		Color.white,
-   		new Color(1.0f,247.0f ,59.0f/255.0f),
-   		new Color(156.0f/255.0f, 1.0f, 230.0f/255.0f),
+		new Color(0.0f/255.0f,0.0f/255.0f,0.0f/255.0f, 0.3f), 	// スクロール背景
+		new Color(255,255,255, 0.5f), 					// outofrange
+		new Color(1.0f, 1.0f, 1.0f, 144.0f/255.0f), // textInput 背景
+		Color.white,								// boardMain 背景
+		new Color(1.0f,247.0f ,59.0f/255.0f),		 // 押したセルの色
+		new Color(156.0f/255.0f, 1.0f, 230.0f/255.0f), // Tody color
+		new Color(0, 120.0f/256.0f, 160.0f/256.0f, 80.0f/256.0f) // calendar background
    	};
 
 	public static Setting Instance; 
@@ -242,6 +245,7 @@ public class Setting : Token {
 		MyCanvas.Find<Text>("TodoTextField").color = colors[1];
 
 		MyCanvas.Find<SwipeSlider>("DateTimeTextSlider").prefab.GetComponent<Text>().color = colors[1];
+		MyCanvas.Find<Image>("CalendarBackground").color = colors[8];
 
 		MyCanvas.Find<Image>("SearchField").color = colors[3];
     	MyCanvas.Find<Text>("SearchText").color = colors[1];
