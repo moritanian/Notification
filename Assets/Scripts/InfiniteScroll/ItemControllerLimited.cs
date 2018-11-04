@@ -44,7 +44,6 @@ public class ItemControllerLimited<Item, ItemData> : UIBehaviour, IInfiniteScrol
     {
         this.itemDataList = itemDataList;
         UpdateRectSize();
-        infiniteScroll.UpdateAllItems();
         infiniteScroll.Scroll(0);
     }
 
@@ -65,9 +64,11 @@ public class ItemControllerLimited<Item, ItemData> : UIBehaviour, IInfiniteScrol
     {
         this.itemDataList.Insert(position, itemData);
         UpdateRectSize();
-        infiniteScroll.UpdateAllItems();
         if (isScroll)
             infiniteScroll.Scroll(position);
+        else
+            infiniteScroll.UpdateAllItems();
+
         return GetItem(position);
     }
 
@@ -80,7 +81,7 @@ public class ItemControllerLimited<Item, ItemData> : UIBehaviour, IInfiniteScrol
     {
         var rectTransform = GetComponent<RectTransform>();
         var delta = rectTransform.sizeDelta;
-        delta.y = infiniteScroll.itemScale * itemListSize;
+        delta.y = infiniteScroll.itemScale * (itemListSize + 0.5f);
         rectTransform.sizeDelta = delta;
     }
 }

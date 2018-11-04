@@ -98,8 +98,12 @@ public class InfiniteScroll : UIBehaviour
 		}
 	}
 
-	void Update()
-	{
+    void Update()
+    {
+        UpdateAllItemsPosition();
+    }
+
+    void UpdateAllItemsPosition() {
 		if (itemList.First == null) {
 			return;
 		}
@@ -125,7 +129,7 @@ public class InfiniteScroll : UIBehaviour
 			currentItemNo++;
 		}
 
-		while(anchoredPosition - diffPreFramePosition > 0) {
+		while(anchoredPosition - diffPreFramePosition > -0.5 * itemScale) {
 			diffPreFramePosition += itemScale;
 
 			var item = itemList.Last.Value;
@@ -142,6 +146,10 @@ public class InfiniteScroll : UIBehaviour
     
     public void UpdateAllItems()
     {
+
+        UpdateAllItemsPosition();
+
+
         int i = 0;
         foreach (var item in itemList)
         {
@@ -152,12 +160,15 @@ public class InfiniteScroll : UIBehaviour
 
     public GameObject GetItem(int position)
     {
-        return itemList.ElementAt(position).gameObject;
+        return itemList.ElementAt(position - currentItemNo).gameObject;
     }
 
     public void Scroll(int position)
     {
         anchoredPosition = position * itemScale;
+
+        UpdateAllItems();
+
     }
 
 	[System.Serializable]

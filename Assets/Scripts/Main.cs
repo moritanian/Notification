@@ -97,7 +97,7 @@ public class Main : Token {
 		
 		SelectOpt opt = GetSelectOpt();
 
-		TodoAdd(getDefaultTime(_mycalendar.MyDateTime),true, opt.IsMemo());
+		TodoAdd(getDefaultTime(_mycalendar.MyDateTime), true, opt.IsMemo());
 	
 	}
 
@@ -108,7 +108,6 @@ public class Main : Token {
 	
 	// 追加モードのカレンダーで日にち確定した際に呼ばれる
 	public void TodoAdd(DateTime dt, bool IsSet = true, bool IsMemo = false){
-		SetTodoAddImg(true);
 		if(!IsSet){
 			// Dispモード指定
 			SetDispCal(_mycalendar.MyDateTime);
@@ -118,23 +117,15 @@ public class Main : Token {
 		TodoData newTodo = new TodoData(id);
 		newTodo.IsMemo = IsMemo;
         newTodo.TodoTime = dt;
-
         // unity に保存する手続き
         newTodo.SaveCreation();
 
         Todos.Add(newTodo);// Todo 配列に追加
 
-
-		SelectOpt selectOpt = GetSelectOpt ();
-		_dpDown.value = selectOpt.OptAfterAdd ();
-
-		// Dispモード指定
-		//Restart();
-		SetDispCal(_mycalendar.MyDateTime);
-
+        // Dispモード指定
+        //Restart();
+        SetDispCal(_mycalendar.MyDateTime);
         TodoField todoField = todoFieldScroll.InsertItem(0, newTodo, /* isScroll  =*/ true);
-		// 生成されたtodoField の notificationトグルにデータを合わせる
-		//newTodo.UpdateIsNotify (_todoField.IsNotify);
 
 		todoField.OnClickTitleEdit ();
 	}
@@ -197,7 +188,9 @@ public class Main : Token {
 
 	public void ApplySelectOpt(){
 		SelectOpt opt = GetSelectOpt();
-		Show(opt);
+        SetTodoAddImg(opt.EnableAddButton());
+
+        Show(opt);
 	}
 
 	public void ShowById(int id){

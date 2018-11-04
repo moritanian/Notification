@@ -193,8 +193,10 @@ public class TodoData : ISerializationCallbackReceiver{
 	public static List<TodoData> LoadAll(){
 		List<TodoData> _todos = new List<TodoData>();
 		int head_id = MaxId();
-        head_id = 600;
-		Debug.Log ("max id = " + head_id.ToString ());
+#if UNITY_EDITOR 
+        head_id = 1000;
+#endif
+        Debug.Log ("max id = " + head_id.ToString ());
 		if(head_id>0){
 			for(int id= 1; id<=head_id; id++){
 				string create_time_str = Util.LoadData(_get_data_key(DataKeys.CreateTime, id));

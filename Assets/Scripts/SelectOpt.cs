@@ -52,7 +52,12 @@ public class SelectOpt {
 		return false;
 	}
 
-	public class PointedDay : SelectOpt {
+    public virtual bool EnableAddButton()
+    {
+        return false;
+    }
+
+    public class PointedDay : SelectOpt {
 
 		public new const int id = 0;
 
@@ -66,7 +71,12 @@ public class SelectOpt {
 			return IsSameDay(td.TodoTime, pointedDateTime) && !td.IsMemo;
 		}
 
-		bool IsSameDay(DateTime dt1, DateTime dt2){
+        public override bool EnableAddButton()
+        {
+            return true;
+        }
+
+        bool IsSameDay(DateTime dt1, DateTime dt2){
 			return (dt1.Year == dt2.Year && dt1.Month == dt2.Month && dt1.Day == dt2.Day);
 		}
 	
@@ -92,7 +102,12 @@ public class SelectOpt {
 			return Memo.id;
 		}
 
-	}
+        public override bool EnableAddButton()
+        {
+            return true;
+        }
+
+    }
 
 	public class ThisMonth: SelectOpt {
 
