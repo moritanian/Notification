@@ -17988,7 +17988,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BG:
   - {fileID: 0}
-  - {fileID: 21300000, guid: f92a7352eb30cb64f9e16c59da055df1, type: 3}
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
 --- !u!1 &2092809784

@@ -30,8 +30,9 @@ public class InfiniteScroll : UIBehaviour
 	}
 
 	// cache component
+    private ScrollRect scrollRect;
 
-	private RectTransform _rectTransform;
+    private RectTransform _rectTransform;
 	protected RectTransform rectTransform {
 		get {
 			if(_rectTransform == null) _rectTransform = GetComponent<RectTransform>();
@@ -53,7 +54,22 @@ public class InfiniteScroll : UIBehaviour
         }
 	}
 
-	private float _itemScale = -1;
+    private float scrollVeclocity
+    {
+        get
+        {
+            return direction == Direction.Vertical ? -scrollRect.velocity.y : scrollRect.velocity.x;
+        }
+        set
+        {
+            if (direction == Direction.Vertical)
+                scrollRect.velocity = new Vector2(0, -value);
+            else
+                scrollRect.velocity = new Vector2(value, 0);
+        }
+    }
+
+    private float _itemScale = -1;
 	public float itemScale {
 		get {
 			if(itemPrototype != null && _itemScale == -1) {
@@ -63,7 +79,13 @@ public class InfiniteScroll : UIBehaviour
 		}
 	}
 
-	protected override void Start ()
+    protected override void Awake()
+    {
+        base.Awake();
+        scrollRect = GetComponentInParent<ScrollRect>();
+    }
+
+    protected override void Start ()
 	{
 		var controllers = GetComponents<MonoBehaviour>()
 				.Where(item => item is IInfiniteScrollSetup)
@@ -72,7 +94,6 @@ public class InfiniteScroll : UIBehaviour
 
 		// create items
 
-		var scrollRect = GetComponentInParent<ScrollRect>();
 		scrollRect.horizontal = direction == Direction.Horizontal;
 		scrollRect.vertical = direction == Direction.Vertical;
 		scrollRect.content = rectTransform;
@@ -165,7 +186,10 @@ public class InfiniteScroll : UIBehaviour
 
     public void Scroll(int position)
     {
+        
         anchoredPosition = position * itemScale;
+
+        scrollVeclocity = 0;
 
         UpdateAllItems();
 
