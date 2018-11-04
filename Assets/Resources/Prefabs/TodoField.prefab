@@ -70,7 +70,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &133614
 GameObject:
   m_ObjectHideFlags: 1
@@ -230,12 +230,12 @@ MonoBehaviour:
   EnphasizedColor: {r: 1, g: 0.31790662, b: 0.8118362, a: 1}
   NormalTimeTextColor: {r: 0.7, g: 0.62, b: 0.253, a: 0.934}
   timeText: {fileID: 11447814}
-  _todoData:
+  todoData:
     id: 0
     createTimeStr: 
-    todoTimeStr: 1/1/0001 12:00:00 AM
-    lookupTimeStr: 1/1/0001 12:00:00 AM
-    notificationTimeStr: 1/1/0001 12:00:00 AM
+    todoTimeStr: 
+    lookupTimeStr: 
+    notificationTimeStr: 
     todoText: 
     titleStr: 
     IsNotify: 0
@@ -721,10 +721,10 @@ RectTransform:
   - {fileID: 22418226}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 27.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &22418226
 RectTransform:
@@ -742,7 +742,7 @@ RectTransform:
   m_RootOrder: 2
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -106, y: -2.3}
+  m_AnchoredPosition: {x: -97.4, y: -14.1}
   m_SizeDelta: {x: 17, y: 17}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &22423568
@@ -761,7 +761,7 @@ RectTransform:
   m_RootOrder: 1
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -82.5, y: -1}
+  m_AnchoredPosition: {x: -73.9, y: -13.7}
   m_SizeDelta: {x: 30, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &22427054
@@ -817,7 +817,7 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 14.300007, y: -1}
+  m_AnchoredPosition: {x: 24.3, y: -14.6}
   m_SizeDelta: {x: 165.7, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &22474980

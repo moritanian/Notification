@@ -257,14 +257,15 @@ public class Setting : Token {
     	myCalendar.TodayColor = colors[7];
     	myCalendar.FindChild<Text>("EditDateTime").color = colors[1];
 
-		// set TodoField prefab
+        // set TodoField prefab
+        InfiniteScroll infiniteScroll = MyCanvas.Find<InfiniteScroll>("TodoContent");
 		switch (theme) {
-		case Theme.color:
-			TodoField.parent = new TokenMgr<TodoField> ("TodoField", 40);
-			break;
-		case Theme.mono:
-			TodoField.parent = new TokenMgr<TodoField> ("TodoFieldMono", 40);
-			break;
+		    case Theme.color:
+                infiniteScroll.itemPrototype = Util.GetPrefab(null, "TodoField").GetComponent<RectTransform>();
+			    break;
+		    case Theme.mono:
+                infiniteScroll.itemPrototype = Util.GetPrefab(null, "TodoFieldMono").GetComponent<RectTransform>();
+			    break;
 		}
     }
 

@@ -41,7 +41,6 @@ public class Body : Token {
 					break;
 				case ScreenMode.Text:
 					TodoText.Instance.GoBack(true);
-					//MyCanvas.Find<TodoText>("BoardText").OnClickGoBack();
 					break;
 				default:
 					break;

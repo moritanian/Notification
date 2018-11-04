@@ -229,6 +229,7 @@ public class TodoText : MonoBehaviour {
 
 		// saveするかしないか指定
 	public void GoBack(bool IsSave = true){
+        Main.Instance.UpdateTodoScroll();
 		Body.GoBoardMain();
 		if( IsChanged()){
 			if (IsSave) {
@@ -248,12 +249,6 @@ public class TodoText : MonoBehaviour {
 	// タイトル編集完了
 	public void TitleModified(){
 		string title_str = _get_title_text();
-		TodoField.parent.ForEachExists (todoField => {
-			if(todoField._todoData.Id == _todoData.Id){
-				todoField.SetText(title_str);
-			}
-		});
-
 		_todoData.UpdateTitle(title_str);
 		if (_todoData.IsNotify)
 			_todoData.setCall ();

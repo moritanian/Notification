@@ -17,8 +17,7 @@ public class Main : Token {
 
 	readonly string[] japanese_week = {"日", "月", "火", "水", "木", "金", "土"};
 
-	// スクロ＾ルcontent
-	ScrollController todo_scl;
+    TodoFieldScrollController todoFieldScroll;
 	Image todoadd_button;
 
 	MyCalendar _mycalendar;
@@ -31,16 +30,13 @@ public class Main : Token {
 	int def_hour = 8;
 	int def_min = 0;
 
-	// todoField リスト表示コルーチン
-	IEnumerator showTodoFieldsCoroutine;
-
 
 	// Use this for initialization
 	// コンポーネント取得はStartの前に処理する
 	void Awake(){
 		Instance = this;
 		_dpDown = MyCanvas.Find<Dropdown>("Dropdown");
-		todo_scl = MyCanvas.Find<ScrollController>("TodoContent");
+		todoFieldScroll = MyCanvas.Find<TodoFieldScrollController>("TodoContent");
 		todoadd_button = MyCanvas.Find<Image>("TodoAdd");
 		_mycalendar = MyCanvas.Find<MyCalendar>("MyCalendar");
 		_searchField = MyCanvas.Find<SearchField>("SearchField");
@@ -103,8 +99,6 @@ public class Main : Token {
 
 		TodoAdd(getDefaultTime(_mycalendar.MyDateTime),true, opt.IsMemo());
 	
-		// 最上部に追加されるため、そこまでスクロール
-		todo_scl.ScrollTop();
 	}
 
 	public void OnClickGoSetting(){
@@ -113,7 +107,7 @@ public class Main : Token {
 
 	
 	// 追加モードのカレンダーで日にち確定した際に呼ばれる
-	public void TodoAdd(DateTime Dt, bool IsSet = true, bool IsMemo = false){
+	public void TodoAdd(DateTime dt, bool IsSet = true, bool IsMemo = false){
 		SetTodoAddImg(true);
 		if(!IsSet){
 			// Dispモード指定
@@ -121,21 +115,15 @@ public class Main : Token {
 			return ;
 		}
 		int id = TodoData.NewId(Todos);
-		TodoData new_todo = new TodoData(id);
-		new_todo.IsMemo = IsMemo; //
-		
-		Todos.Add(new_todo);// Todo 配列に追加
+		TodoData newTodo = new TodoData(id);
+		newTodo.IsMemo = IsMemo;
+        newTodo.TodoTime = dt;
 
-		// todoField を生成
-		TodoField _todoField = TodoField.Add(new_todo);
-		
-		// TododField をスクロールビューの子要素にする
-		todo_scl.SetContentFirst(_todoField.transform);
-		
-		_todoField.Create(Dt);	//新規に作成時の処理
+        // unity に保存する手続き
+        newTodo.SaveCreation();
 
-		// unity に保存する手続き
-		new_todo.SaveCreation();
+        Todos.Add(newTodo);// Todo 配列に追加
+
 
 		SelectOpt selectOpt = GetSelectOpt ();
 		_dpDown.value = selectOpt.OptAfterAdd ();
@@ -144,10 +132,11 @@ public class Main : Token {
 		//Restart();
 		SetDispCal(_mycalendar.MyDateTime);
 
+        TodoField todoField = todoFieldScroll.InsertItem(0, newTodo, /* isScroll  =*/ true);
 		// 生成されたtodoField の notificationトグルにデータを合わせる
-		new_todo.UpdateIsNotify (_todoField.IsNotify);
+		//newTodo.UpdateIsNotify (_todoField.IsNotify);
 
-		_todoField.OnClickTitleEdit ();
+		todoField.OnClickTitleEdit ();
 	}
 
 	// todo 追加ボタンの表示、非表示
@@ -157,13 +146,8 @@ public class Main : Token {
 	}
 
 	void Show (SelectOpt selectOpt){	
-		if(showTodoFieldsCoroutine != null)
-			StopCoroutine (showTodoFieldsCoroutine);
-		// 破棄する前に場所をcanvas 直下に移動
-		TodoField.parent.ForEachExists(t => t.transform.SetParent(MyCanvas.GetCanvas().transform,false));
-		// 生存しているフィールドをすべて破棄
-		TodoField.parent.Vanish();
-		List<TodoData> showList = new List<TodoData>(); 
+
+        List<TodoData> showList = new List<TodoData>(); 
 		for(int i=0; i<Todos.Count; i++){
 			if(!selectOpt.IsContain(Todos[i]))continue;
 			if(!searchWord(Todos[i].Title))continue;// サーチワードある場合はそれにひっかからなかったものも除外
@@ -172,20 +156,7 @@ public class Main : Token {
 		// ソート
 		showList.Sort( (x, y) => selectOpt.Sort(x, y) );
 
-		showTodoFieldsCoroutine = ShowTodoFieldsCoroutine (showList);
-		StartCoroutine (showTodoFieldsCoroutine);
-	}
-
-	private IEnumerator ShowTodoFieldsCoroutine(List<TodoData> showList){
-		foreach(TodoData todo_data in showList){
-			TodoField _todoField = TodoField.Add(todo_data);
-			todo_scl.SetContent(_todoField.transform);
-			_todoField.SetText(todo_data.Title);
-			_todoField.IsNotify = todo_data.IsNotify;
-			_todoField.SetTimeText(todo_data.TodoTime);
-			yield return null;
-		}	
-		showTodoFieldsCoroutine = null;
+        todoFieldScroll.SetItems(showList);
 	}
 
 	public void ShowMyDay(DateTime dt){
@@ -318,5 +289,10 @@ public class Main : Token {
 		});
 
 	}
+
+    public void UpdateTodoScroll()
+    {
+        todoFieldScroll.UpdateItems();
+    }
 
 }

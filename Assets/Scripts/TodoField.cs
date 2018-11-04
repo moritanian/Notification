@@ -16,10 +16,7 @@ datetime = DateTime.Parse()
 */
 
 // タイトル
-public class TodoField : Token {
-
-	// 管理オブジェクト
-	public static TokenMgr<TodoField> parent = null;
+public class TodoField : InfiniteScrollItemBase<TodoData> {
 
 	// 編集画面に飛んでいいか
 	private static bool _canGoEdit = true;
@@ -47,16 +44,10 @@ public class TodoField : Token {
 
 	//public int id; // todo のid 本文との紐づけにも
 	// todofield が　TodoDataを持つ
-	public TodoData _todoData;
+	public TodoData todoData;
 
 	TouchScreenKeyboard keyboard;
 
-	// todo idのわりあて方法考える
-	enum Status{
-		Inactive,	//利用なし
-		Active,	//利用している
-		Protected,	//利用しているが、表示に制限あり
-	};
 	
 	Toggle _toggle = null;
 	public bool IsNotify{
@@ -67,30 +58,12 @@ public class TodoField : Token {
 	DateTime TodoDate;
 	
 	// android keyboard 用
-	bool isTitleEdit; 
-
-	public static TodoField Add(TodoData todoData){
-		//TodoField obj = CreateInstanceEasy<TodoField>("TodoField",x,y);
-		TodoField obj = parent.Add(0,0);
-		if(obj == null){
-			Debug.Log("null TodoField作成できず");
-			return null;
-		}
-		obj._todoData = todoData;
-		return obj;
-	}
-
-	Status status = Status.Inactive;
+	bool isTitleEdit;
 
 	// Use this for initialization
 	void Awake(){
 		timeText.text = "";
 		_toggle = transform.Find("Toggle").gameObject.GetComponent<Toggle>();
-	}
-
-	public override void Revive(){
-		base.Revive();
-		
 	}
 
 	void Start(){
@@ -108,7 +81,15 @@ public class TodoField : Token {
         }
 	}
 
-	void OnKeyboardClosed(){
+    public override void UpdateItem(TodoData todoData)
+    {
+        this.todoData = todoData;
+        SetText(todoData.Title);
+        IsNotify = todoData.IsNotify;
+        SetTimeText(todoData.TodoTime);
+    }
+
+    void OnKeyboardClosed(){
 		isTitleEdit = false;
 
 		if (this.keyboard.wasCanceled) {
@@ -118,24 +99,15 @@ public class TodoField : Token {
 
 		Debug.Log("updated");
 		string text = this.keyboard.text;
-		_todoData.UpdateTitle(text);
+		todoData.UpdateTitle(text);
 		SetText(text);
 
 		if(IsNotify){
 			// ローカル通知変更
-			_todoData.setCall();
+			todoData.setCall();
 		} 
 	}
 
-	// 新規todo作成時のtodofield設定処理
-	public void Create(DateTime Dt){
-		SetTime(Dt);
-		//_todoData.UpdateCreate();
-		status = Status.Active;
-		//再利用している場合、値が入っていることがあるため消去
-		SetText("");
-	}
-	
 	public void SetText(string text){
 		titleText.text = text;
 	}
@@ -152,7 +124,7 @@ public class TodoField : Token {
 	// 本文を編集する
 	void _edit(){
 		TodoText.Instance.gameObject.SetActive (true);
-		TodoText.Instance.SetUp(_todoData);
+		TodoText.Instance.SetUp(todoData);
 		Body.GoBoardText();
 	}
 
@@ -168,10 +140,10 @@ public class TodoField : Token {
 	// タイトル編集完了ボタン
 	public void Modified(string text){
 		SetText (text);
-		_todoData.UpdateTitle(text);
+		todoData.UpdateTitle(text);
 		if(IsNotify){
 			// ローカル通知変更
-			_todoData.setCall();
+			todoData.setCall();
 		}
 	}
 
@@ -182,7 +154,7 @@ public class TodoField : Token {
 	// DateTime型からset
 	public void SetTimeText(DateTime Dt){
 		TodoDate = Dt;
-		if(_todoData.IsMemo){
+		if(todoData.IsMemo){
 			TimeText = "Memo";
 			return ;
 		}
@@ -195,13 +167,13 @@ public class TodoField : Token {
 	}
 
 	public void SetTime(DateTime Dt){
-		_todoData.UpdateTodoTime(Dt);
+		todoData.UpdateTodoTime(Dt);
 		// 表示の更新
 		SetTimeText(Dt);
 	}
 	// 通知On/Off
 	public void OnClickIsNotify(){
-		_todoData.UpdateIsNotify(IsNotify);
+		todoData.UpdateIsNotify(IsNotify);
 	}
 	
 	// 時間変更確定したときに呼ばれる
@@ -218,7 +190,7 @@ public class TodoField : Token {
 		if(IsNotify) {
 			
 			// ローカル通知設定変更
-			_todoData.setCall ();
+			todoData.setCall ();
 		}
 
 		Main.Instance.Restart();
@@ -226,7 +198,7 @@ public class TodoField : Token {
 	// 時間ボタン
 	public void OnClickTime(){
 		// Memoの場合は設定できない
-		if(_todoData.IsMemo) return ;
+		if(todoData.IsMemo) return ;
 
 		Main.Instance.SetTodoAddImg(false);
 		MyCanvas.Find<MyCalendar>("MyCalendar").GoCal(TodoDate, (DateTime _celTime, bool IsSet, bool IsMemo) => TimeModified(_celTime, IsSet));
@@ -274,15 +246,13 @@ public class TodoField : Token {
 	public void Delete(){
 		// ローカル通知あれば削除
 		if(IsNotify){
-			if(_todoData.deleteCall())
+			if(todoData.deleteCall())
 				Debug.Log("Successfully delete Local Call");
 		}
 		// Todo Mainがもってるデータ消去、保存データ消去
-		Main.Instance.DeleteDataById(_todoData.Id);
+		Main.Instance.DeleteDataById(todoData.Id);
 		// ファイル削除
-		TodoText.DeleteFile(_todoData.Id);
-		//mainBoard.ShowToday();
-		Vanish();
+		TodoText.DeleteFile(todoData.Id);
 		Main.Instance.Restart();
 		
 	}
@@ -290,17 +260,17 @@ public class TodoField : Token {
 	// メモに
 	public void ChangeIsMemo(bool isMemo = true){
 		Debug.Log(isMemo.ToString() + "memo");
-		_todoData.UpdateIsMemo(isMemo);
+		todoData.UpdateIsMemo(isMemo);
 		Main.Instance.Restart();		
 	}
 
 	// テキスト背景色変更 /
 	void SetTimeTextColor(){
-		if(_todoData.IsMemo){
+		if(todoData.IsMemo){
 			timeTextImage.color = MemoColor;
 			return ;
 		}
-		if(_todoData.TodoTime.CompareTo(DateTime.Now) < 0 && !_todoData.IsMemo)timeTextImage.color = EnphasizedColor;
+		if(todoData.TodoTime.CompareTo(DateTime.Now) < 0 && !todoData.IsMemo)timeTextImage.color = EnphasizedColor;
 		else timeTextImage.color = NormalTimeTextColor;
 	}
 	

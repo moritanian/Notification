@@ -101,19 +101,7 @@ public class TodoData : ISerializationCallbackReceiver{
 		}
 		return "";
 	}
-	/*
-	// タイトルセーブ
-	public static void TitleSave(int id,string title){
-		Util.SaveData(_get_data_key(DataKeys.Title,id),title);
-		Util.SaveData(_get_data_key(DataKeys.ModifiedTime,id),DateTime.Now.ToString());
-		Util.DoneSave();
-	}
-	// 更新時の処理
-	public static void TitleModify(int id,string title){
-		//modified_time = DateTime.Now.ToString();
-		TitleSave(id,title);
-	}
-	*/
+
 	// タイトル更新
 	public void UpdateTitle(string new_title){
 		_title = new_title;
@@ -137,6 +125,7 @@ public class TodoData : ISerializationCallbackReceiver{
 		if (MaxId () < id)
 			SaveMaxId (id);
 		UpdateLookupTime();
+        UpdateTodoTime(TodoTime);
 	}
 
 	public void UpdateLookupTime(){
@@ -204,6 +193,7 @@ public class TodoData : ISerializationCallbackReceiver{
 	public static List<TodoData> LoadAll(){
 		List<TodoData> _todos = new List<TodoData>();
 		int head_id = MaxId();
+        head_id = 600;
 		Debug.Log ("max id = " + head_id.ToString ());
 		if(head_id>0){
 			for(int id= 1; id<=head_id; id++){
